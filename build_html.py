@@ -647,7 +647,7 @@ def build_schedule_tab():
 
 # ── Assemble full HTML ─────────────────────────────────────────────────────────
 standings_html = ''
-for div_name in ['North','South','West']:
+for div_name in ['West','North','South']:
     standings_html += build_standings_div(div_name, divisions[div_name])
 
 results_html    = build_results_tab()
@@ -666,9 +666,9 @@ HTML = f'''<!DOCTYPE html>
 <title>🏒 10U Advance League – Season 2026</title>
 <style>
   :root {{
-    --navy:       #1F4E79;
-    --blue:       #2E75B6;
-    --blue-light: #BDD7EE;
+    --navy:       #23282B;
+    --blue:       #CD0000;
+    --blue-light: #FFE8E8;
     --pickle:     #22C55E;
     --pickle-dark:#15803D;
     --pickle-bg:  #F0FDF4;
@@ -679,13 +679,13 @@ HTML = f'''<!DOCTYPE html>
     --loss-fg:    #DC2626;
     --tie-bg:     #FEF3C7;
     --tie-fg:     #D97706;
-    --bg:         #F8FAFC;
+    --bg:         #FAF9F5;
     --surface:    #FFFFFF;
-    --border:     #E2E8F0;
-    --text:       #1E293B;
-    --text-muted: #64748B;
-    --shadow:     0 1px 3px rgba(0,0,0,.10), 0 1px 2px rgba(0,0,0,.06);
-    --shadow-md:  0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+    --border:     #E2E0DC;
+    --text:       #1A1A1A;
+    --text-muted: #6B6460;
+    --shadow:     0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+    --shadow-md:  0 4px 6px rgba(0,0,0,.10), 0 2px 4px rgba(0,0,0,.07);
     --radius:     12px;
   }}
   *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -698,13 +698,15 @@ HTML = f'''<!DOCTYPE html>
 
   /* ── Header ─────────────────────────────────────────────────── */
   .site-header {{
-    background: linear-gradient(135deg, var(--navy) 0%, #0F3460 100%);
+    background: linear-gradient(135deg, #1A1A1A 0%, #23282B 60%, #3a0000 100%);
     color: white;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2rem;
     display: flex; align-items: center; gap: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    box-shadow: 0 2px 12px rgba(0,0,0,.5);
+    border-bottom: 3px solid var(--blue);
   }}
-  .site-header .logo {{ font-size: 2.4rem; }}
+  .site-header .logo {{ display: flex; align-items: center; }}
+  .site-header .logo img {{ height: 52px; width: 52px; object-fit: contain; border-radius: 50%; }}
   .site-header h1 {{ font-size: 1.6rem; font-weight: 700; }}
   .site-header .subtitle {{ font-size: 0.85rem; opacity: 0.75; margin-top: 2px; }}
   .site-header .season-badge {{
@@ -790,7 +792,7 @@ HTML = f'''<!DOCTYPE html>
     white-space: nowrap;
   }}
   .tab-btn:hover {{ color: var(--blue); }}
-  .tab-btn.active {{ color: var(--navy); border-bottom-color: var(--navy); }}
+  .tab-btn.active {{ color: var(--blue); border-bottom-color: var(--blue); }}
   .tab-panel {{ display: none; animation: fadeIn .2s ease; }}
   .tab-panel.active {{ display: block; }}
   @keyframes fadeIn {{ from {{ opacity:0; transform:translateY(4px); }} to {{ opacity:1; transform:none; }} }}
@@ -810,7 +812,7 @@ HTML = f'''<!DOCTYPE html>
     font-size: 1rem; font-weight: 700;
   }}
   .standings-table {{ width: 100%; border-collapse: collapse; font-size: 0.875rem; }}
-  .standings-table thead tr {{ background: #F1F5F9; }}
+  .standings-table thead tr {{ background: #F5F0F0; }}
   .standings-table th {{
     padding: 0.5rem 0.6rem; text-align: center;
     font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em;
@@ -823,7 +825,7 @@ HTML = f'''<!DOCTYPE html>
     border-bottom: 1px solid var(--border);
   }}
   .standings-table td:nth-child(2) {{ text-align: left; font-weight: 600; }}
-  .standings-table tbody tr:hover {{ background: #F8FAFC; }}
+  .standings-table tbody tr:hover {{ background: #FDF5F5; }}
   .standings-table tbody tr:last-child td {{ border-bottom: none; }}
   .dp-row {{ background: var(--pickle-bg) !important; }}
   .dp-row td {{ color: var(--pickle-dark); }}
@@ -862,7 +864,7 @@ HTML = f'''<!DOCTYPE html>
     flex-wrap: wrap;
   }}
   .game-row:last-child {{ border-bottom: none; }}
-  .game-row:hover {{ background: #F8FAFC; }}
+  .game-row:hover {{ background: #FDF5F5; }}
   .dp-game {{ background: var(--pickle-bg); }}
   .dp-game:hover {{ background: #DCFCE7; }}
   .game-teams {{ flex: 1; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }}
@@ -900,7 +902,7 @@ HTML = f'''<!DOCTYPE html>
 
   .pred-card-header {{
     padding: 0.6rem 1rem;
-    background: #F8FAFC;
+    background: #F5F0F0;
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
     font-size: 0.8rem;
@@ -928,7 +930,7 @@ HTML = f'''<!DOCTYPE html>
   .conf-pct {{ width: 32px; text-align: right; font-weight: 600; color: var(--text-muted); }}
   .pred-paths {{ list-style: none; margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.2rem; }}
   .hop-badge {{ display: inline-block; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.7rem; font-weight: 700; margin-right: 0.25rem; }}
-  .h1 {{ background: #DBEAFE; color: #1D4ED8; }}
+  .h1 {{ background: #FFE4E4; color: #9B0000; }}
   .h2 {{ background: #EDE9FE; color: #6D28D9; }}
 
   /* ── Spotlight ───────────────────────────────────────────────── */
@@ -949,14 +951,14 @@ HTML = f'''<!DOCTYPE html>
 
   .section-title {{
     font-size: 1.1rem; font-weight: 700; color: var(--navy);
-    padding-bottom: 0.5rem; border-bottom: 2px solid var(--blue-light);
+    padding-bottom: 0.5rem; border-bottom: 2px solid var(--blue);
     margin-bottom: 0.5rem;
   }}
   .detail-table {{ width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); font-size: 0.9rem; }}
   .detail-table th {{ background: var(--navy); color: white; padding: 0.6rem 1rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing:.05em; }}
   .detail-table td {{ padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }}
   .detail-table tbody tr:last-child td {{ border-bottom: none; }}
-  .detail-table tbody tr:hover {{ background: #F8FAFC; }}
+  .detail-table tbody tr:hover {{ background: #FDF5F5; }}
   .win-row  {{ background: var(--win-bg); }}
   .loss-row {{ background: var(--loss-bg); }}
   .tie-row  {{ background: var(--tie-bg); }}
@@ -1039,7 +1041,7 @@ HTML = f'''<!DOCTYPE html>
       padding: 0.9rem 1rem;
       gap: 0.4rem;
     }}
-    .site-header .logo {{ font-size: 1.8rem; }}
+    .site-header .logo img {{ height: 38px; width: 38px; }}
     .site-header h1 {{ font-size: 1.25rem; }}
     .site-header .subtitle {{ font-size: 0.78rem; }}
     .site-header .season-badge {{ display: none; }}
@@ -1115,10 +1117,13 @@ HTML = f'''<!DOCTYPE html>
 
 <!-- ── Site Header ──────────────────────────────────────────────────────────── -->
 <header class="site-header">
-  <div class="logo">🏒</div>
+  <div class="logo">
+    <img src="https://cdn4.sportngin.com/attachments/logo_graphic/8511/0262/YouthHockey_Logos_vF-04_WhiteJersey_small.png"
+         alt="PHHL Hurricanes House League" title="Polar Hurricanes House League">
+  </div>
   <div>
     <h1>10U Advance League</h1>
-    <div class="subtitle">Polar Ice Hockey League</div>
+    <div class="subtitle">Polar Hurricanes House League</div>
   </div>
   <div class="season-badge">Season 2026</div>
   <div class="last-updated">🔄 Last updated: {LAST_UPDATED}</div>
