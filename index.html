@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏒 10U Advanced League - Spring 2026</title>
+<title>🏒 10U Advance League – Season 2026</title>
 <style>
   :root {
     --navy:       #23282B;
@@ -138,12 +138,20 @@
   @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
 
   /* ── Standings ───────────────────────────────────────────────── */
-  .standings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px,1fr)); gap: 1.5rem; }
+  .standings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 1.5rem; }
   .standings-div {
     background: var(--surface);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
+    /* Enable container queries so columns can respond to the card's own width */
+    container-type: inline-size;
+    container-name: standings;
+  }
+  /* Scrollable wrapper — safety net if content still overflows */
+  .standings-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .div-header {
     background: var(--navy);
@@ -151,17 +159,18 @@
     padding: 0.75rem 1rem;
     font-size: 1rem; font-weight: 700;
   }
-  .standings-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .standings-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 340px; }
   .standings-table thead tr { background: #F5F0F0; }
   .standings-table th {
-    padding: 0.5rem 0.6rem; text-align: center;
-    font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em;
+    padding: 0.5rem 0.5rem; text-align: center;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em;
     color: var(--text-muted); font-weight: 600;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }
   .standings-table th:nth-child(2) { text-align: left; }
   .standings-table td {
-    padding: 0.55rem 0.6rem; text-align: center;
+    padding: 0.5rem 0.5rem; text-align: center;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
   }
@@ -175,6 +184,21 @@
   .pos-gd { color: var(--win-fg); font-weight: 600; }
   .neg-gd { color: var(--loss-fg); font-weight: 600; }
   .team-cell { max-width: 180px; }
+
+  /* Container queries — hide GF/GA when the card itself is narrower than 400px.
+     This fires at any layout (1-up, 2-up, 3-up) without needing a specific
+     viewport breakpoint, which is exactly what container queries are for. */
+  @container standings (max-width: 400px) {
+    .standings-table th:nth-child(7),
+    .standings-table td:nth-child(7),
+    .standings-table th:nth-child(8),
+    .standings-table td:nth-child(8) { display: none; }
+  }
+  /* Very narrow cards (e.g. small phone) — also hide T column */
+  @container standings (max-width: 310px) {
+    .standings-table th:nth-child(5),
+    .standings-table td:nth-child(5) { display: none; }
+  }
 
   /* badges */
   .badge-row {
@@ -465,14 +489,10 @@
     .tabs-wrap { padding: 0.75rem; }
     .tab-btn { padding: 0.45rem 0.7rem; font-size: 0.8rem; }
 
-    /* Standings — hide GF & GA on small screens (GD summarises them) */
+    /* Standings — tighten padding; GF/GA already hidden via container query */
     .standings-table { font-size: 0.8rem; }
-    .standings-table th:nth-child(7),
-    .standings-table td:nth-child(7),
-    .standings-table th:nth-child(8),
-    .standings-table td:nth-child(8) { display: none; }
     .standings-table th,
-    .standings-table td { padding: 0.45rem 0.4rem; }
+    .standings-table td { padding: 0.4rem 0.35rem; }
     .team-cell { max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .standings-grid { gap: 1rem; }
 
@@ -524,10 +544,10 @@
          alt="PHHL Hurricanes House League" title="Polar Hurricanes House League">
   </div>
   <div>
-    <h1>10U Advanced League</h1>
+    <h1>10U Advance League</h1>
     <div class="subtitle">Polar Hurricanes House League</div>
   </div>
-  <div class="season-badge">Spring 2026</div>
+  <div class="season-badge">Season 2026</div>
   <div class="last-updated">🔄 Last updated: 2:28 PM on Saturday, April 18, 2026</div>
 </header>
 
@@ -593,14 +613,15 @@
       
     <div class="standings-div">
       <h3 class="div-header">West Division</h3>
-      <table class="standings-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
-            <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="standings-table-wrap">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
+              <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
+            </tr>
+          </thead>
+          <tbody>
         <tr class="dp-row">
           <td class="rank-cell">1</td>
           <td class="team-cell">Disco Pickles 🥇</td>
@@ -655,19 +676,21 @@
           <td class="neg-gd">-9</td>
           <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></span></td>
         </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="standings-div">
       <h3 class="div-header">North Division</h3>
-      <table class="standings-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
-            <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="standings-table-wrap">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
+              <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
+            </tr>
+          </thead>
+          <tbody>
         <tr class="">
           <td class="rank-cell">1</td>
           <td class="team-cell">Hawks (District 6) 🥇</td>
@@ -713,19 +736,21 @@
           <td class="neg-gd">-22</td>
           <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></span></td>
         </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="standings-div">
       <h3 class="div-header">South Division</h3>
-      <table class="standings-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
-            <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="standings-table-wrap">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
+              <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
+            </tr>
+          </thead>
+          <tbody>
         <tr class="">
           <td class="rank-cell">1</td>
           <td class="team-cell">Snow Troopers 🥇</td>
@@ -771,8 +796,9 @@
           <td class="neg-gd">-15</td>
           <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-t">T</span><span class="badge badge-w">W</span></span></td>
         </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
     </div>
   </div>
