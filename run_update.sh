@@ -62,5 +62,20 @@ fi
 # Record the time of this run
 date +%s > "$LAST_RUN_FILE"
 
+# Sync to GitHub Pages repo
+REPO=~/nobackup/phhl-league
+if [ -d "$REPO/.git" ]; then
+    cp /Users/wgibbons/Desktop/10U_ADV_League_6130.html "$REPO/index.html"
+    cp "$SCRIPT_DIR/data/league_6130.json" "$REPO/data/league_6130.json"
+    cd "$REPO"
+    export PATH="/opt/homebrew/bin:$PATH"
+    git add index.html data/league_6130.json
+    if ! git diff --cached --quiet; then
+        git commit -m "Weekly update: $(date '+%Y-%m-%d %H:%M')" >> "$LOG_FILE" 2>&1
+        git push origin main >> "$LOG_FILE" 2>&1
+        echo "STATUS: Pushed updated index.html to GitHub Pages." >> "$LOG_FILE"
+    fi
+fi
+
 echo "" >> "$LOG_FILE"
 exit 0
