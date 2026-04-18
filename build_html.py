@@ -263,65 +263,75 @@ def build_standings_div(div_name, team_ids):
 
 # ── Build game results ─────────────────────────────────────────────────────────
 def build_results_tab():
-    # Group by week
-    by_date = defaultdict(list)
-    for g in games:
-        by_date[g['start_d']].append(g)
+    # Separate real games into upcoming (future dates) vs completed/past
+    # Past games without scores show as "Score Pending" in the completed section
+    upcoming_by_date  = defaultdict(list)
+    completed_by_date = defaultdict(list)
+    for g in real_games:
+        if g['start_d'] >= TODAY:
+            upcoming_by_date[g['start_d']].append(g)
+        else:
+            completed_by_date[g['start_d']].append(g)
+
+    def game_rows_html(date_dict, date_order):
+        html = ''
+        for d in date_order:
+            html += f'<div class="date-group"><div class="date-header">{format_date(d)}</div>'
+            for g in date_dict[d]:
+                h_name = short_name(g['hid'])
+                v_name = short_name(g['vid'])
+                is_dp  = (DISCO_ID in (g['hid'], g['vid']))
+                row_cls= 'game-row dp-game' if is_dp else 'game-row'
+
+                if g['completed']:
+                    hs, vs = g['hs'], g['vs']
+                    if hs > vs:   h_res, v_res = 'res-w','res-l'
+                    elif vs > hs: h_res, v_res = 'res-l','res-w'
+                    else:         h_res = v_res = 'res-t'
+                    score_html = f'<span class="{h_res}">{hs}</span> – <span class="{v_res}">{vs}</span>'
+                    outcome_label = ''
+                    if is_dp:
+                        dp_won = (g['hid']==DISCO_ID and hs>vs) or (g['vid']==DISCO_ID and vs>hs)
+                        dp_tie = hs == vs
+                        outcome_label = '<span class="outcome-badge win-badge">DP Win</span>' if dp_won else \
+                                        ('<span class="outcome-badge tie-badge">Tie</span>' if dp_tie else \
+                                         '<span class="outcome-badge loss-badge">DP Loss</span>')
+                elif g['start_d'] < TODAY:
+                    # Past game, score not yet entered in system
+                    score_html = '<span class="score-pending">Score Pending</span>'
+                    outcome_label = ''
+                else:
+                    pgd = g.get('pred_gd')
+                    pred_str = f'<span class="pred-score">~{pgd:+.1f} GD</span>' if pgd is not None \
+                               else '<span class="pred-score">No prediction</span>'
+                    score_html = f'<span class="upcoming-tbd">TBD</span> {pred_str}'
+                    outcome_label = ''
+
+                html += f'''
+                <div class="{row_cls}">
+                  <div class="game-teams">
+                    <span class="home-team">{esc(h_name)}</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">{esc(v_name)}</span>
+                  </div>
+                  <div class="game-score">{score_html} {outcome_label}</div>
+                  <div class="game-time">{g["start_dt"].strftime("%-I:%M %p")}</div>
+                </div>'''
+            html += '</div>'
+        return html
 
     html = '<div class="results-container">'
-    for d in sorted(by_date.keys()):
-        html += f'<div class="date-group"><div class="date-header">{format_date(d)}</div>'
-        for g in by_date[d]:
-            h_name = short_name(g['hid'])
-            v_name = short_name(g['vid'])
-            is_dp  = (DISCO_ID in (g['hid'], g['vid']))
-            row_cls= 'game-row dp-game' if is_dp else 'game-row'
 
-            if g['completed']:
-                hs, vs = g['hs'], g['vs']
-                if hs > vs:
-                    h_res, v_res = 'res-w','res-l'
-                elif vs > hs:
-                    h_res, v_res = 'res-l','res-w'
-                else:
-                    h_res = v_res = 'res-t'
-                score_html = f'<span class="{h_res}">{hs}</span> – <span class="{v_res}">{vs}</span>'
-                outcome_label = ''
-                if is_dp:
-                    dp_won = (g['hid']==DISCO_ID and hs>vs) or (g['vid']==DISCO_ID and vs>hs)
-                    dp_tie = hs == vs
-                    outcome_label = '<span class="outcome-badge win-badge">DP Win</span>' if dp_won else \
-                                    ('<span class="outcome-badge tie-badge">Tie</span>' if dp_tie else \
-                                     '<span class="outcome-badge loss-badge">DP Loss</span>')
-            else:
-                pgd  = g.get('pred_gd')
-                conf = g.get('pred_conf', 0)
-                if pgd is not None:
-                    # Express as predicted home score advantage
-                    pred_str = f'<span class="pred-score">~{pgd:+.1f} GD</span>'
-                else:
-                    pred_str = '<span class="pred-score">No prediction</span>'
-                score_html = f'<span class="upcoming-tbd">TBD</span> {pred_str}'
-                outcome_label = ''
+    # ── UPCOMING (soonest first) ──────────────────────────────────────────────
+    if upcoming_by_date:
+        html += '<div class="results-section-hdr">📅 Upcoming Games &amp; Predictions</div>'
+        html += game_rows_html(upcoming_by_date, sorted(upcoming_by_date.keys()))
 
-            html += f'''
-            <div class="{row_cls}">
-              <div class="game-teams">
-                <span class="home-team">{esc(h_name)}</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">{esc(v_name)}</span>
-              </div>
-              <div class="game-score">{score_html} {outcome_label}</div>
-              <div class="game-time">{g["start_dt"].strftime("%-I:%M %p")}</div>
-            </div>'''
-        html += '</div>'
-
-    # Show placeholder weekends (TBD matchups)
+    # ── TBD placeholder weekends ──────────────────────────────────────────────
     placeholder_by_weekend = defaultdict(list)
     for g in placeholder_games:
         lbl = g.get('weekend_label', 'TBD Weekend')
         placeholder_by_weekend[lbl].append(g)
-
     for wk_label in sorted(placeholder_by_weekend.keys()):
         wk_games = placeholder_by_weekend[wk_label]
         html += f'''<div class="date-group">
@@ -330,6 +340,11 @@ def build_results_tab():
             Matchups TBD &mdash; {len(wk_games)} games
           </div>
         </div>'''
+
+    # ── COMPLETED (newest first) ──────────────────────────────────────────────
+    if completed_by_date:
+        html += '<div class="results-section-hdr">✅ Completed Games <span class="sort-indicator">↓ Newest First</span></div>'
+        html += game_rows_html(completed_by_date, sorted(completed_by_date.keys(), reverse=True))
 
     html += '</div>'
     return html
@@ -844,6 +859,21 @@ HTML = f'''<!DOCTYPE html>
 
   /* ── Results ─────────────────────────────────────────────────── */
   .results-container {{ display: flex; flex-direction: column; gap: 1.5rem; }}
+  .results-section-hdr {{
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .07em; color: var(--text-muted);
+    padding: 0.25rem 0.25rem 0;
+    border-top: 2px solid var(--border);
+    margin-top: 0.25rem;
+  }}
+  .results-container > .results-section-hdr:first-child {{ border-top: none; margin-top: 0; }}
+  .sort-indicator {{
+    font-size: 0.72rem; font-weight: 700;
+    background: var(--navy); color: white;
+    border-radius: 10px; padding: 0.15rem 0.6rem;
+    letter-spacing: .03em; text-transform: none;
+  }}
   .date-group {{
     background: var(--surface);
     border-radius: var(--radius);
@@ -877,6 +907,7 @@ HTML = f'''<!DOCTYPE html>
   .res-l {{ color: var(--loss-fg); }}
   .res-t {{ color: var(--tie-fg); }}
   .upcoming-tbd {{ color: var(--text-muted); font-style: italic; }}
+  .score-pending {{ color: var(--tie-fg); font-style: italic; font-size: 0.82rem; font-weight: 600; }}
   .pred-score {{ color: var(--blue); font-size: 0.82rem; font-weight: 500; }}
   .outcome-badge {{ padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }}
   .win-badge  {{ background: var(--win-bg);  color: var(--win-fg);  }}

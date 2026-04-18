@@ -184,6 +184,21 @@
 
   /* ── Results ─────────────────────────────────────────────────── */
   .results-container { display: flex; flex-direction: column; gap: 1.5rem; }
+  .results-section-hdr {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .07em; color: var(--text-muted);
+    padding: 0.25rem 0.25rem 0;
+    border-top: 2px solid var(--border);
+    margin-top: 0.25rem;
+  }
+  .results-container > .results-section-hdr:first-child { border-top: none; margin-top: 0; }
+  .sort-indicator {
+    font-size: 0.72rem; font-weight: 700;
+    background: var(--navy); color: white;
+    border-radius: 10px; padding: 0.15rem 0.6rem;
+    letter-spacing: .03em; text-transform: none;
+  }
   .date-group {
     background: var(--surface);
     border-radius: var(--radius);
@@ -217,6 +232,7 @@
   .res-l { color: var(--loss-fg); }
   .res-t { color: var(--tie-fg); }
   .upcoming-tbd { color: var(--text-muted); font-style: italic; }
+  .score-pending { color: var(--tie-fg); font-style: italic; font-size: 0.82rem; font-weight: 600; }
   .pred-score { color: var(--blue); font-size: 0.82rem; font-weight: 500; }
   .outcome-badge { padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
   .win-badge  { background: var(--win-bg);  color: var(--win-fg);  }
@@ -702,655 +718,151 @@
 
   <!-- Results -->
   <div id="tab-results" class="tab-panel">
-    <div class="results-container"><div class="date-group"><div class="date-header">Sun Mar 22, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Arctic Arsenals</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Knight Furies</span>
-              </div>
-              <div class="game-score"><span class="res-l">5</span> – <span class="res-w">6</span> </div>
-              <div class="game-time">10:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Thunder Blades</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Puckaneers</span>
-              </div>
-              <div class="game-score"><span class="res-w">7</span> – <span class="res-l">3</span> </div>
-              <div class="game-time">11:15 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">10S3</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Frozen Fury</span>
-              </div>
-              <div class="game-score"><span class="res-w">5</span> – <span class="res-l">2</span> </div>
-              <div class="game-time">11:15 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Mighty Canes</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Hawks (District 6)</span>
-              </div>
-              <div class="game-score"><span class="res-l">0</span> – <span class="res-w">12</span> </div>
-              <div class="game-time">12:30 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Flying SAUCErs</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Snow Troopers</span>
-              </div>
-              <div class="game-score"><span class="res-t">5</span> – <span class="res-t">5</span> </div>
-              <div class="game-time">1:45 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Lamp Lighters</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Ice Outlaws</span>
-              </div>
-              <div class="game-score"><span class="res-w">7</span> – <span class="res-l">4</span> </div>
-              <div class="game-time">2:15 PM</div>
-            </div>
-            <div class="game-row dp-game">
-              <div class="game-teams">
-                <span class="home-team">Disco Pickles</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Carolina Havoc</span>
-              </div>
-              <div class="game-score"><span class="res-w">6</span> – <span class="res-l">2</span> <span class="outcome-badge win-badge">DP Win</span></div>
-              <div class="game-time">3:30 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Polar Predators</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10W4</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.7 GD</span> </div>
-              <div class="game-time">4:45 PM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun Mar 29, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Snow Troopers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Knight Furies</span>
-              </div>
-              <div class="game-score"><span class="res-w">6</span> – <span class="res-l">4</span> </div>
-              <div class="game-time">7:30 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Flying SAUCErs</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Puckaneers</span>
-              </div>
-              <div class="game-score"><span class="res-w">9</span> – <span class="res-l">3</span> </div>
-              <div class="game-time">8:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Arctic Arsenals</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10S3</span>
-              </div>
-              <div class="game-score"><span class="res-w">8</span> – <span class="res-l">2</span> </div>
-              <div class="game-time">8:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Thunder Blades</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Mighty Canes</span>
-              </div>
-              <div class="game-score"><span class="res-w">5</span> – <span class="res-l">2</span> </div>
-              <div class="game-time">10:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Lamp Lighters</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Carolina Havoc</span>
-              </div>
-              <div class="game-score"><span class="res-w">5</span> – <span class="res-l">4</span> </div>
-              <div class="game-time">10:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Ice Outlaws</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10W4</span>
-              </div>
-              <div class="game-score"><span class="res-w">2</span> – <span class="res-l">1</span> </div>
-              <div class="game-time">11:15 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Hawks (District 6)</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Frozen Fury</span>
-              </div>
-              <div class="game-score"><span class="res-w">13</span> – <span class="res-l">0</span> </div>
-              <div class="game-time">1:45 PM</div>
-            </div>
-            <div class="game-row dp-game">
-              <div class="game-teams">
-                <span class="home-team">Disco Pickles</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Polar Predators</span>
-              </div>
-              <div class="game-score"><span class="res-w">6</span> – <span class="res-l">5</span> <span class="outcome-badge win-badge">DP Win</span></div>
-              <div class="game-time">3:30 PM</div>
-            </div></div><div class="date-group"><div class="date-header">Sat Apr 4, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Thunder Blades</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Arctic Arsenals</span>
-              </div>
-              <div class="game-score"><span class="res-w">5</span> – <span class="res-l">3</span> </div>
-              <div class="game-time">10:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">10S3</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Knight Furies</span>
-              </div>
-              <div class="game-score"><span class="res-l">3</span> – <span class="res-w">6</span> </div>
-              <div class="game-time">12:00 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Polar Predators</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Carolina Havoc</span>
-              </div>
-              <div class="game-score"><span class="res-w">7</span> – <span class="res-l">1</span> </div>
-              <div class="game-time">12:30 PM</div>
-            </div>
-            <div class="game-row dp-game">
-              <div class="game-teams">
-                <span class="home-team">Disco Pickles</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Ice Outlaws</span>
-              </div>
-              <div class="game-score"><span class="res-w">7</span> – <span class="res-l">2</span> <span class="outcome-badge win-badge">DP Win</span></div>
-              <div class="game-time">1:45 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Snow Troopers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Frozen Fury</span>
-              </div>
-              <div class="game-score"><span class="res-t">4</span> – <span class="res-t">4</span> </div>
-              <div class="game-time">2:45 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Lamp Lighters</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10W4</span>
-              </div>
-              <div class="game-score"><span class="res-w">7</span> – <span class="res-l">2</span> </div>
-              <div class="game-time">4:00 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Flying SAUCErs</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Hawks (District 6)</span>
-              </div>
-              <div class="game-score"><span class="res-l">1</span> – <span class="res-w">9</span> </div>
-              <div class="game-time">4:30 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Mighty Canes</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Puckaneers</span>
-              </div>
-              <div class="game-score"><span class="res-l">1</span> – <span class="res-w">7</span> </div>
-              <div class="game-time">5:45 PM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun Apr 12, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Hawks (District 6)</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Puckaneers</span>
-              </div>
-              <div class="game-score"><span class="res-w">8</span> – <span class="res-l">0</span> </div>
-              <div class="game-time">7:30 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Snow Troopers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Arctic Arsenals</span>
-              </div>
-              <div class="game-score"><span class="res-t">1</span> – <span class="res-t">1</span> </div>
-              <div class="game-time">8:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Frozen Fury</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Knight Furies</span>
-              </div>
-              <div class="game-score"><span class="res-w">4</span> – <span class="res-l">3</span> </div>
-              <div class="game-time">10:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Mighty Canes</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10S3</span>
-              </div>
-              <div class="game-score"><span class="res-l">3</span> – <span class="res-w">4</span> </div>
-              <div class="game-time">12:30 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Flying SAUCErs</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Thunder Blades</span>
-              </div>
-              <div class="game-score"><span class="res-t">3</span> – <span class="res-t">3</span> </div>
-              <div class="game-time">12:45 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Carolina Havoc</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Ice Outlaws</span>
-              </div>
-              <div class="game-score"><span class="res-w">7</span> – <span class="res-l">4</span> </div>
-              <div class="game-time">2:15 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Lamp Lighters</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Polar Predators</span>
-              </div>
-              <div class="game-score"><span class="res-l">2</span> – <span class="res-w">3</span> </div>
-              <div class="game-time">3:30 PM</div>
-            </div>
-            <div class="game-row dp-game">
-              <div class="game-teams">
-                <span class="home-team">Disco Pickles</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10W4</span>
-              </div>
-              <div class="game-score"><span class="res-w">6</span> – <span class="res-l">3</span> <span class="outcome-badge win-badge">DP Win</span></div>
-              <div class="game-time">4:45 PM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun Apr 19, 2026</div>
-            <div class="game-row dp-game">
-              <div class="game-teams">
-                <span class="home-team">Lamp Lighters</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Disco Pickles</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-1.4 GD</span> </div>
-              <div class="game-time">7:30 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Polar Predators</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Ice Outlaws</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.5 GD</span> </div>
-              <div class="game-time">7:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Snow Troopers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10S3</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+2.9 GD</span> </div>
-              <div class="game-time">8:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">10W4</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Carolina Havoc</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-1.8 GD</span> </div>
-              <div class="game-time">9:30 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Flying SAUCErs</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Mighty Canes</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+6.9 GD</span> </div>
-              <div class="game-time">11:15 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Arctic Arsenals</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Frozen Fury</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+1.9 GD</span> </div>
-              <div class="game-time">11:30 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Thunder Blades</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Hawks (District 6)</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-6.7 GD</span> </div>
-              <div class="game-time">12:30 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Puckaneers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Knight Furies</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+0.2 GD</span> </div>
-              <div class="game-time">12:45 PM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun Apr 26, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Lamp Lighters</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Ice Outlaws</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+4.5 GD</span> </div>
-              <div class="game-time">7:30 AM</div>
-            </div>
-            <div class="game-row dp-game">
-              <div class="game-teams">
-                <span class="home-team">Disco Pickles</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Carolina Havoc</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+2.8 GD</span> </div>
-              <div class="game-time">8:45 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Flying SAUCErs</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Knight Furies</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+1.8 GD</span> </div>
-              <div class="game-time">11:15 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Snow Troopers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Hawks (District 6)</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-9.3 GD</span> </div>
-              <div class="game-time">11:15 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Thunder Blades</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10S3</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.5 GD</span> </div>
-              <div class="game-time">11:30 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Arctic Arsenals</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Mighty Canes</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+4.5 GD</span> </div>
-              <div class="game-time">12:30 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Puckaneers</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">Frozen Fury</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+3.0 GD</span> </div>
-              <div class="game-time">1:45 PM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">Polar Predators</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">10W4</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.7 GD</span> </div>
-              <div class="game-time">4:45 PM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun May 10, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun May 17, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div></div><div class="date-group"><div class="date-header">Sun May 31, 2026</div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div>
-            <div class="game-row">
-              <div class="game-teams">
-                <span class="home-team">None</span>
-                <span class="vs-sep">vs</span>
-                <span class="away-team">None</span>
-              </div>
-              <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">No prediction</span> </div>
-              <div class="game-time">12:00 AM</div>
-            </div></div><div class="date-group">
+    <div class="results-container"><div class="results-section-hdr">📅 Upcoming Games &amp; Predictions</div><div class="date-group"><div class="date-header">Sun Apr 19, 2026</div>
+                <div class="game-row dp-game">
+                  <div class="game-teams">
+                    <span class="home-team">Lamp Lighters</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Disco Pickles</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-1.4 GD</span> </div>
+                  <div class="game-time">7:30 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Polar Predators</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Ice Outlaws</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.5 GD</span> </div>
+                  <div class="game-time">7:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Snow Troopers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10S3</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+2.9 GD</span> </div>
+                  <div class="game-time">8:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">10W4</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Carolina Havoc</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-1.8 GD</span> </div>
+                  <div class="game-time">9:30 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Flying SAUCErs</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Mighty Canes</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+6.9 GD</span> </div>
+                  <div class="game-time">11:15 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Arctic Arsenals</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Frozen Fury</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+1.9 GD</span> </div>
+                  <div class="game-time">11:30 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Thunder Blades</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Hawks (District 6)</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-6.7 GD</span> </div>
+                  <div class="game-time">12:30 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Puckaneers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Knight Furies</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+0.2 GD</span> </div>
+                  <div class="game-time">12:45 PM</div>
+                </div></div><div class="date-group"><div class="date-header">Sun Apr 26, 2026</div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Lamp Lighters</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Ice Outlaws</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+4.5 GD</span> </div>
+                  <div class="game-time">7:30 AM</div>
+                </div>
+                <div class="game-row dp-game">
+                  <div class="game-teams">
+                    <span class="home-team">Disco Pickles</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Carolina Havoc</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+2.8 GD</span> </div>
+                  <div class="game-time">8:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Flying SAUCErs</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Knight Furies</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+1.8 GD</span> </div>
+                  <div class="game-time">11:15 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Snow Troopers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Hawks (District 6)</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~-9.3 GD</span> </div>
+                  <div class="game-time">11:15 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Thunder Blades</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10S3</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.5 GD</span> </div>
+                  <div class="game-time">11:30 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Arctic Arsenals</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Mighty Canes</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+4.5 GD</span> </div>
+                  <div class="game-time">12:30 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Puckaneers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Frozen Fury</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+3.0 GD</span> </div>
+                  <div class="game-time">1:45 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Polar Predators</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10W4</span>
+                  </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">~+5.7 GD</span> </div>
+                  <div class="game-time">4:45 PM</div>
+                </div></div><div class="date-group">
           <div class="date-header">May 10 Weekend (Week 7)</div>
           <div class="game-row" style="justify-content:center; color:var(--text-muted); font-style:italic; padding:1rem;">
             Matchups TBD &mdash; 8 games
@@ -1365,7 +877,295 @@
           <div class="game-row" style="justify-content:center; color:var(--text-muted); font-style:italic; padding:1rem;">
             Matchups TBD &mdash; 8 games
           </div>
-        </div></div>
+        </div><div class="results-section-hdr">✅ Completed Games <span class="sort-indicator">↓ Newest First</span></div><div class="date-group"><div class="date-header">Sun Apr 12, 2026</div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Hawks (District 6)</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Puckaneers</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">8</span> – <span class="res-l">0</span> </div>
+                  <div class="game-time">7:30 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Snow Troopers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Arctic Arsenals</span>
+                  </div>
+                  <div class="game-score"><span class="res-t">1</span> – <span class="res-t">1</span> </div>
+                  <div class="game-time">8:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Frozen Fury</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Knight Furies</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">4</span> – <span class="res-l">3</span> </div>
+                  <div class="game-time">10:00 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Mighty Canes</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10S3</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">3</span> – <span class="res-w">4</span> </div>
+                  <div class="game-time">12:30 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Flying SAUCErs</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Thunder Blades</span>
+                  </div>
+                  <div class="game-score"><span class="res-t">3</span> – <span class="res-t">3</span> </div>
+                  <div class="game-time">12:45 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Carolina Havoc</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Ice Outlaws</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">7</span> – <span class="res-l">4</span> </div>
+                  <div class="game-time">2:15 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Lamp Lighters</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Polar Predators</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">2</span> – <span class="res-w">3</span> </div>
+                  <div class="game-time">3:30 PM</div>
+                </div>
+                <div class="game-row dp-game">
+                  <div class="game-teams">
+                    <span class="home-team">Disco Pickles</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10W4</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">6</span> – <span class="res-l">3</span> <span class="outcome-badge win-badge">DP Win</span></div>
+                  <div class="game-time">4:45 PM</div>
+                </div></div><div class="date-group"><div class="date-header">Sat Apr 4, 2026</div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Thunder Blades</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Arctic Arsenals</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">5</span> – <span class="res-l">3</span> </div>
+                  <div class="game-time">10:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">10S3</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Knight Furies</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">3</span> – <span class="res-w">6</span> </div>
+                  <div class="game-time">12:00 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Polar Predators</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Carolina Havoc</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">7</span> – <span class="res-l">1</span> </div>
+                  <div class="game-time">12:30 PM</div>
+                </div>
+                <div class="game-row dp-game">
+                  <div class="game-teams">
+                    <span class="home-team">Disco Pickles</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Ice Outlaws</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">7</span> – <span class="res-l">2</span> <span class="outcome-badge win-badge">DP Win</span></div>
+                  <div class="game-time">1:45 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Snow Troopers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Frozen Fury</span>
+                  </div>
+                  <div class="game-score"><span class="res-t">4</span> – <span class="res-t">4</span> </div>
+                  <div class="game-time">2:45 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Lamp Lighters</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10W4</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">7</span> – <span class="res-l">2</span> </div>
+                  <div class="game-time">4:00 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Flying SAUCErs</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Hawks (District 6)</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">1</span> – <span class="res-w">9</span> </div>
+                  <div class="game-time">4:30 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Mighty Canes</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Puckaneers</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">1</span> – <span class="res-w">7</span> </div>
+                  <div class="game-time">5:45 PM</div>
+                </div></div><div class="date-group"><div class="date-header">Sun Mar 29, 2026</div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Snow Troopers</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Knight Furies</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">6</span> – <span class="res-l">4</span> </div>
+                  <div class="game-time">7:30 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Flying SAUCErs</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Puckaneers</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">9</span> – <span class="res-l">3</span> </div>
+                  <div class="game-time">8:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Arctic Arsenals</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10S3</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">8</span> – <span class="res-l">2</span> </div>
+                  <div class="game-time">8:45 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Thunder Blades</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Mighty Canes</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">5</span> – <span class="res-l">2</span> </div>
+                  <div class="game-time">10:00 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Lamp Lighters</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Carolina Havoc</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">5</span> – <span class="res-l">4</span> </div>
+                  <div class="game-time">10:00 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Ice Outlaws</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10W4</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">2</span> – <span class="res-l">1</span> </div>
+                  <div class="game-time">11:15 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Hawks (District 6)</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Frozen Fury</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">13</span> – <span class="res-l">0</span> </div>
+                  <div class="game-time">1:45 PM</div>
+                </div>
+                <div class="game-row dp-game">
+                  <div class="game-teams">
+                    <span class="home-team">Disco Pickles</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Polar Predators</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">6</span> – <span class="res-l">5</span> <span class="outcome-badge win-badge">DP Win</span></div>
+                  <div class="game-time">3:30 PM</div>
+                </div></div><div class="date-group"><div class="date-header">Sun Mar 22, 2026</div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Arctic Arsenals</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Knight Furies</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">5</span> – <span class="res-w">6</span> </div>
+                  <div class="game-time">10:00 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Thunder Blades</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Puckaneers</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">7</span> – <span class="res-l">3</span> </div>
+                  <div class="game-time">11:15 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">10S3</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Frozen Fury</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">5</span> – <span class="res-l">2</span> </div>
+                  <div class="game-time">11:15 AM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Mighty Canes</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Hawks (District 6)</span>
+                  </div>
+                  <div class="game-score"><span class="res-l">0</span> – <span class="res-w">12</span> </div>
+                  <div class="game-time">12:30 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Flying SAUCErs</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Snow Troopers</span>
+                  </div>
+                  <div class="game-score"><span class="res-t">5</span> – <span class="res-t">5</span> </div>
+                  <div class="game-time">1:45 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Lamp Lighters</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Ice Outlaws</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">7</span> – <span class="res-l">4</span> </div>
+                  <div class="game-time">2:15 PM</div>
+                </div>
+                <div class="game-row dp-game">
+                  <div class="game-teams">
+                    <span class="home-team">Disco Pickles</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">Carolina Havoc</span>
+                  </div>
+                  <div class="game-score"><span class="res-w">6</span> – <span class="res-l">2</span> <span class="outcome-badge win-badge">DP Win</span></div>
+                  <div class="game-time">3:30 PM</div>
+                </div>
+                <div class="game-row">
+                  <div class="game-teams">
+                    <span class="home-team">Polar Predators</span>
+                    <span class="vs-sep">vs</span>
+                    <span class="away-team">10W4</span>
+                  </div>
+                  <div class="game-score"><span class="score-pending">Score Pending</span> </div>
+                  <div class="game-time">4:45 PM</div>
+                </div></div></div>
   </div>
 
   <!-- Predictions -->
