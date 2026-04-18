@@ -9,10 +9,10 @@
     --navy:       #23282B;
     --blue:       #CD0000;
     --blue-light: #FFE8E8;
-    --pickle:     #22C55E;
-    --pickle-dark:#15803D;
-    --pickle-bg:  #F0FDF4;
-    --pickle-bdr: #86EFAC;
+    --pickle:     #CD0000;
+    --pickle-dark:#8B0000;
+    --pickle-bg:  #FEF2F2;
+    --pickle-bdr: #FECACA;
     --win-bg:     #DCFCE7;
     --win-fg:     #16A34A;
     --loss-bg:    #FEE2E2;
@@ -69,7 +69,7 @@
 
   /* ── Hero ────────────────────────────────────────────────────── */
   .hero {
-    background: linear-gradient(135deg, var(--pickle-dark) 0%, #166534 50%, #14532D 100%);
+    background: linear-gradient(135deg, #7a0000 0%, #CD0000 50%, #A00000 100%);
     color: white;
     padding: 2rem;
     margin: 1.5rem 1.5rem 0;
@@ -168,7 +168,7 @@
   .standings-table tbody tr:hover { background: #FDF5F5; }
   .standings-table tbody tr:last-child td { border-bottom: none; }
   .dp-row { background: var(--pickle-bg) !important; }
-  .dp-row td { color: var(--pickle-dark); }
+  .dp-row td { color: var(--pickle-dark); font-weight: 600; }
   .pts-cell { font-weight: 700; color: var(--navy); }
   .rank-cell { color: var(--text-muted); font-size: 0.8rem; }
   .pos-gd { color: var(--win-fg); font-weight: 600; }
@@ -206,7 +206,7 @@
   .game-row:last-child { border-bottom: none; }
   .game-row:hover { background: #FDF5F5; }
   .dp-game { background: var(--pickle-bg); }
-  .dp-game:hover { background: #DCFCE7; }
+  .dp-game:hover { background: #FEE2E2; }
   .game-teams { flex: 1; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
   .home-team { font-weight: 600; }
   .away-team { font-weight: 600; color: var(--text-muted); }
@@ -321,7 +321,7 @@
     box-shadow: var(--shadow);
   }
   .outlook-card.best    { background: var(--win-bg); color: var(--win-fg); }
-  .outlook-card.current { background: var(--pickle-bg); color: var(--pickle-dark); }
+  .outlook-card.current { background: var(--pickle-bg); color: var(--pickle-dark); font-weight: 700; }
   .outlook-card.worst   { background: var(--loss-bg); color: var(--loss-fg); }
   .outlook-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; opacity: .8; }
   .outlook-rec   { font-size: 1.6rem; font-weight: 800; margin: 0.25rem 0; }
@@ -472,7 +472,7 @@
 <!-- ── Disco Pickles Hero ───────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-left">
-    <div class="division-badge">⭐ Division Leaders</div>
+    <div class="division-badge">⭐ West Division Leaders</div>
     <div class="team-name">🥒 Disco Pickles</div>
     <div class="record-line">
       <span class="hero-stat">4-0-0</span>
