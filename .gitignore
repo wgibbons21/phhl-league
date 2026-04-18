@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Runtime state files (local only)
+data/.retry_pending
+data/.last_run_epoch
+data/update.log
+data/cron.log
+
+# Excel output (built on demand, not tracked in git)
+*.xlsx
