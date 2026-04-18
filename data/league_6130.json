@@ -6675,603 +6675,3339 @@
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_1",
+      "id": "624594",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624577,
+        "resource_id": 30,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T10:45:00",
+        "start_gmt": "2026-05-17T14:45:00",
+        "end": "2026-05-17T11:45:00",
+        "end_gmt": "2026-05-17T15:45:00",
+        "customer_id": 0,
+        "hteam_id": 14337,
+        "vteam_id": 14345,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T15:58:24",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T15:58:24",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "10:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624594"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_2",
+      "id": "624595",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624577,
+        "resource_id": 30,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T12:00:00",
+        "start_gmt": "2026-05-17T16:00:00",
+        "end": "2026-05-17T13:00:00",
+        "end_gmt": "2026-05-17T17:00:00",
+        "customer_id": 0,
+        "hteam_id": 14334,
+        "vteam_id": 14349,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T15:58:24",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T15:58:24",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "12:00:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624595"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_3",
+      "id": "624612",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624610,
+        "resource_id": 29,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T07:30:00",
+        "start_gmt": "2026-05-10T11:30:00",
+        "end": "2026-05-10T08:30:00",
+        "end_gmt": "2026-05-10T12:30:00",
+        "customer_id": 0,
+        "hteam_id": 14345,
+        "vteam_id": 14335,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:01:47",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:01:47",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "07:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624612"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_4",
+      "id": "624613",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624610,
+        "resource_id": 29,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T08:45:00",
+        "start_gmt": "2026-05-10T12:45:00",
+        "end": "2026-05-10T09:45:00",
+        "end_gmt": "2026-05-10T13:45:00",
+        "customer_id": 0,
+        "hteam_id": 14347,
+        "vteam_id": 14337,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:01:47",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:01:47",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "08:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624613"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_5",
+      "id": "624614",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624610,
+        "resource_id": 29,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T10:00:00",
+        "start_gmt": "2026-05-10T14:00:00",
+        "end": "2026-05-10T11:00:00",
+        "end_gmt": "2026-05-10T15:00:00",
+        "customer_id": 0,
+        "hteam_id": 14333,
+        "vteam_id": 14346,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:01:47",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:01:47",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "10:00:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624614"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_6",
+      "id": "624618",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624610,
+        "resource_id": 29,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T07:30:00",
+        "start_gmt": "2026-05-17T11:30:00",
+        "end": "2026-05-17T08:30:00",
+        "end_gmt": "2026-05-17T12:30:00",
+        "customer_id": 0,
+        "hteam_id": 14356,
+        "vteam_id": 14360,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:01:47",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:01:47",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "07:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624618"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_7",
+      "id": "624621",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624610,
+        "resource_id": 29,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T11:15:00",
+        "start_gmt": "2026-05-17T15:15:00",
+        "end": "2026-05-17T12:15:00",
+        "end_gmt": "2026-05-17T16:15:00",
+        "customer_id": 0,
+        "hteam_id": 14333,
+        "vteam_id": 14347,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:01:47",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:01:47",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "11:15:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624621"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-10_8",
+      "id": "624624",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624622,
+        "resource_id": 28,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-10T00:00:00",
-        "end": "2026-05-10T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T07:15:00",
+        "start_gmt": "2026-05-31T11:15:00",
+        "end": "2026-05-31T08:15:00",
+        "end_gmt": "2026-05-31T12:15:00",
+        "customer_id": 0,
+        "hteam_id": 14333,
+        "vteam_id": 14348,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:05:17",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:05:17",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 10 Weekend (Week 7) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 10 Weekend (Week 7)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "07:15:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624624"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_1",
+      "id": "624625",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624622,
+        "resource_id": 28,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T08:30:00",
+        "start_gmt": "2026-05-31T12:30:00",
+        "end": "2026-05-31T09:30:00",
+        "end_gmt": "2026-05-31T13:30:00",
+        "customer_id": 0,
+        "hteam_id": 14334,
+        "vteam_id": 14345,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:05:17",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:05:17",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "08:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624625"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_2",
+      "id": "624626",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624622,
+        "resource_id": 28,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T09:45:00",
+        "start_gmt": "2026-05-31T13:45:00",
+        "end": "2026-05-31T10:45:00",
+        "end_gmt": "2026-05-31T14:45:00",
+        "customer_id": 0,
+        "hteam_id": 14335,
+        "vteam_id": 14349,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:05:17",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:05:17",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "09:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624626"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_3",
+      "id": "624627",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624622,
+        "resource_id": 28,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T11:00:00",
+        "start_gmt": "2026-05-31T15:00:00",
+        "end": "2026-05-31T12:00:00",
+        "end_gmt": "2026-05-31T16:00:00",
+        "customer_id": 0,
+        "hteam_id": 14336,
+        "vteam_id": 14347,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:05:17",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:05:17",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "11:00:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624627"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_4",
+      "id": "624634",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624628,
+        "resource_id": 17,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T08:45:00",
+        "start_gmt": "2026-05-10T12:45:00",
+        "end": "2026-05-10T09:45:00",
+        "end_gmt": "2026-05-10T13:45:00",
+        "customer_id": 0,
+        "hteam_id": 14349,
+        "vteam_id": 14336,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:13:43",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:13:43",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "08:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624634"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_5",
+      "id": "624637",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624628,
+        "resource_id": 17,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T10:00:00",
+        "start_gmt": "2026-05-10T14:00:00",
+        "end": "2026-05-10T11:00:00",
+        "end_gmt": "2026-05-10T15:00:00",
+        "customer_id": 0,
+        "hteam_id": 14334,
+        "vteam_id": 14348,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:13:43",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:13:43",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "10:00:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624637"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_6",
+      "id": "624663",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624628,
+        "resource_id": 17,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T12:30:00",
+        "start_gmt": "2026-05-17T16:30:00",
+        "end": "2026-05-17T13:30:00",
+        "end_gmt": "2026-05-17T17:30:00",
+        "customer_id": 0,
+        "hteam_id": 14335,
+        "vteam_id": 14348,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:13:43",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:13:43",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "12:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624663"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_7",
+      "id": "624664",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624628,
+        "resource_id": 17,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T13:45:00",
+        "start_gmt": "2026-05-17T17:45:00",
+        "end": "2026-05-17T14:45:00",
+        "end_gmt": "2026-05-17T18:45:00",
+        "customer_id": 0,
+        "hteam_id": 14336,
+        "vteam_id": 14346,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:13:43",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:13:43",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "13:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624664"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-17_8",
+      "id": "624683",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624628,
+        "resource_id": 17,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-17T00:00:00",
-        "end": "2026-05-17T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T12:30:00",
+        "start_gmt": "2026-05-31T16:30:00",
+        "end": "2026-05-31T13:30:00",
+        "end_gmt": "2026-05-31T17:30:00",
+        "customer_id": 0,
+        "hteam_id": 14337,
+        "vteam_id": 14346,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:13:44",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:13:44",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 17 Weekend (Week 8) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 17 Weekend (Week 8)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "12:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624683"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_1",
+      "id": "624698",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T14:15:00",
+        "start_gmt": "2026-05-10T18:15:00",
+        "end": "2026-05-10T15:15:00",
+        "end_gmt": "2026-05-10T19:15:00",
+        "customer_id": 0,
+        "hteam_id": 14355,
+        "vteam_id": 14359,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "14:15:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624698"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_2",
+      "id": "624700",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T15:30:00",
+        "start_gmt": "2026-05-10T19:30:00",
+        "end": "2026-05-10T16:30:00",
+        "end_gmt": "2026-05-10T20:30:00",
+        "customer_id": 0,
+        "hteam_id": 14360,
+        "vteam_id": 14358,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "15:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624700"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_3",
+      "id": "624702",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-10T16:45:00",
+        "start_gmt": "2026-05-10T20:45:00",
+        "end": "2026-05-10T17:45:00",
+        "end_gmt": "2026-05-10T21:45:00",
+        "customer_id": 0,
+        "hteam_id": 14356,
+        "vteam_id": 14357,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-10T00:00:00",
+        "event_start_time": "16:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624702"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_4",
+      "id": "624714",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T15:30:00",
+        "start_gmt": "2026-05-17T19:30:00",
+        "end": "2026-05-17T16:30:00",
+        "end_gmt": "2026-05-17T20:30:00",
+        "customer_id": 0,
+        "hteam_id": 14355,
+        "vteam_id": 14358,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "15:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624714"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_5",
+      "id": "624716",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-17T16:45:00",
+        "start_gmt": "2026-05-17T20:45:00",
+        "end": "2026-05-17T17:45:00",
+        "end_gmt": "2026-05-17T21:45:00",
+        "customer_id": 0,
+        "hteam_id": 14357,
+        "vteam_id": 14359,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-17T00:00:00",
+        "event_start_time": "16:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624716"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_6",
+      "id": "624729",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T14:15:00",
+        "start_gmt": "2026-05-31T18:15:00",
+        "end": "2026-05-31T15:15:00",
+        "end_gmt": "2026-05-31T19:15:00",
+        "customer_id": 0,
+        "hteam_id": 14355,
+        "vteam_id": 14357,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "14:15:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624729"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_7",
+      "id": "624731",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T15:30:00",
+        "start_gmt": "2026-05-31T19:30:00",
+        "end": "2026-05-31T16:30:00",
+        "end_gmt": "2026-05-31T20:30:00",
+        "customer_id": 0,
+        "hteam_id": 14356,
+        "vteam_id": 14358,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "15:30:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624731"
+      }
     },
     {
       "type": "events",
-      "id": "placeholder_2026-05-31_8",
+      "id": "624733",
       "attributes": {
-        "repeat_id": null,
-        "resource_id": null,
+        "repeat_id": 624689,
+        "resource_id": 2,
+        "resource_area_id": 0,
         "desc": "10U ADV Game",
-        "event_type_id": "g",
+        "event_type_id": "27",
         "sub_type": "regular",
-        "start": "2026-05-31T00:00:00",
-        "end": "2026-05-31T01:00:00",
-        "hteam_id": null,
-        "vteam_id": null,
+        "start": "2026-05-31T16:45:00",
+        "start_gmt": "2026-05-31T20:45:00",
+        "end": "2026-05-31T17:45:00",
+        "end_gmt": "2026-05-31T21:45:00",
+        "customer_id": 0,
+        "hteam_id": 14359,
+        "vteam_id": 14360,
+        "league_id": null,
         "home_score": null,
         "visiting_score": null,
         "publish": true,
         "outcome": "",
+        "register_capacity": 0,
+        "create_u": "chetullrich",
+        "created_user_type": "SIT_Employee",
+        "create_d": "2026-04-17T16:29:20",
+        "mod_u": "chetullrich",
+        "last_modified_user_type": "SIT_Employee",
+        "mod_d": "2026-04-17T16:29:20",
         "is_overtime": false,
-        "best_description": "10U Advance League \u2014 May 31 Weekend (Week 9) \u2014 Matchup TBD",
-        "_placeholder": true,
-        "_weekend_label": "May 31 Weekend (Week 9)"
+        "booking_id": 0,
+        "description": null,
+        "notice": null,
+        "last_resource_id": null,
+        "parent_event_id": null,
+        "has_gender_locker_rooms": 0,
+        "locker_room_type": null,
+        "includes_setup_time": false,
+        "includes_takedown_time": false,
+        "start_date": "2026-05-31T00:00:00",
+        "event_start_time": "16:45:00",
+        "best_description": "10U Advance League"
       },
-      "relationships": {},
-      "links": {}
+      "relationships": {
+        "customer": {
+          "data": null
+        },
+        "registrants": {
+          "data": null
+        },
+        "registrations": {
+          "data": null
+        },
+        "eventType": {
+          "data": null
+        },
+        "subType": {
+          "data": null
+        },
+        "homeTeam": {
+          "data": null
+        },
+        "visitingTeam": {
+          "data": null
+        },
+        "summary": {
+          "data": null
+        },
+        "league": {
+          "data": null
+        },
+        "booking": {
+          "data": null
+        },
+        "parentEvent": {
+          "data": null
+        },
+        "lockers": {
+          "data": null
+        },
+        "lastResource": {
+          "data": null
+        },
+        "resource": {
+          "data": null
+        },
+        "resourceArea": {
+          "data": null
+        },
+        "tasks": {
+          "data": null
+        },
+        "teamGroups": {
+          "data": null
+        },
+        "eventSeries": {
+          "data": null
+        },
+        "statEvents": {
+          "data": null
+        },
+        "fees": {
+          "data": null
+        },
+        "invoices": {
+          "data": null
+        },
+        "seriesInvoices": {
+          "data": null
+        },
+        "invoiceItems": {
+          "data": null
+        },
+        "employees": {
+          "data": null
+        },
+        "eventEmployees": {
+          "data": null
+        },
+        "additionalResources": {
+          "data": null
+        },
+        "setupEvents": {
+          "data": null
+        },
+        "takedownEvents": {
+          "data": null
+        },
+        "comments": {
+          "data": null
+        },
+        "rsvpStates": {
+          "data": null
+        }
+      },
+      "links": {
+        "self": "http://api.daysmartrecreation.com/api/v1/events/624733"
+      }
     }
   ],
   "team_names": {
@@ -7288,7 +10024,7 @@
     "14355": "10W1 - Lamp Lighters",
     "14356": "10W2 - Disco Pickles",
     "14357": "10W3 - Polar Predators",
-    "14358": "10W4",
+    "14358": "10W4 - Brass Bonanza",
     "14359": "10W5 - Carolina Havoc",
     "14360": "10W6 - Ice Outlaws"
   },
@@ -7312,14 +10048,14 @@
       "week": 7,
       "label": "May 10 (Week 7)",
       "status": "scheduled",
-      "matchups_published": false
+      "matchups_published": true
     },
     {
       "date": "2026-05-17",
       "week": 8,
       "label": "May 17 (Week 8)",
       "status": "scheduled",
-      "matchups_published": false
+      "matchups_published": true
     },
     {
       "date": "2026-05-22",
@@ -7333,8 +10069,8 @@
       "week": 9,
       "label": "May 31 (Week 9)",
       "status": "scheduled",
-      "matchups_published": false
+      "matchups_published": true
     }
   ],
-  "last_updated": "2026-04-17 22:42:14"
+  "last_updated": "2026-04-18 14:20:54"
 }
