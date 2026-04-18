@@ -503,9 +503,9 @@ def build_spotlight_tab():
         </div>
       </div>
 
-      {'<h3 class="section-title">Completed Games</h3><table class="detail-table"><thead><tr><th>Date</th><th>H/A</th><th>Opponent</th><th>Score</th><th>Result</th></tr></thead><tbody>' + game_rows + '</tbody></table>' if game_rows else '<p class="no-data">No completed games yet.</p>'}
+      {'<h3 class="section-title">Completed Games</h3><div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Date</th><th>H/A</th><th>Opponent</th><th>Score</th><th>Result</th></tr></thead><tbody>' + game_rows + '</tbody></table></div>' if game_rows else '<p class="no-data">No completed games yet.</p>'}
 
-      {'<h3 class="section-title">Remaining Schedule</h3><table class="detail-table"><thead><tr><th>Date</th><th>H/A</th><th>Opponent</th><th>Prediction</th></tr></thead><tbody>' + sched_rows + '</tbody></table>' if sched_rows else '<p class="no-data">No remaining games.</p>'}
+      {'<h3 class="section-title">Remaining Schedule</h3><div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Date</th><th>H/A</th><th>Opponent</th><th>Prediction</th></tr></thead><tbody>' + sched_rows + '</tbody></table></div>' if sched_rows else '<p class="no-data">No remaining games.</p>'}
 
       <h3 class="section-title">Season Outlook</h3>
       <div class="outlook-cards">
@@ -1021,10 +1021,93 @@ HTML = f'''<!DOCTYPE html>
   }}
 
   /* ── Responsive ──────────────────────────────────────────────── */
+
+  /* Tablet (≤768px) */
+  @media (max-width: 768px) {{
+    .tabs-wrap {{ padding: 1rem; }}
+    .standings-grid {{ grid-template-columns: 1fr; }}
+    .predictions-grid {{ grid-template-columns: 1fr; }}
+    .stats-cards {{ gap: 0.75rem; }}
+    .outlook-cards {{ gap: 0.75rem; }}
+  }}
+
+  /* Mobile (≤600px) */
   @media (max-width: 600px) {{
-    .hero {{ grid-template-columns: 1fr; }}
+    /* Header: stack last-updated below title, hide season badge */
+    .site-header {{
+      flex-wrap: wrap;
+      padding: 0.9rem 1rem;
+      gap: 0.4rem;
+    }}
+    .site-header .logo {{ font-size: 1.8rem; }}
+    .site-header h1 {{ font-size: 1.25rem; }}
+    .site-header .subtitle {{ font-size: 0.78rem; }}
+    .site-header .season-badge {{ display: none; }}
+    .site-header .last-updated {{
+      width: 100%;
+      text-align: center;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.75rem;
+    }}
+
+    /* Hero */
+    .hero {{ grid-template-columns: 1fr; padding: 1rem; gap: 0; }}
     .hero-right {{ display: none; }}
-    .site-header {{ flex-wrap: wrap; }}
+    .hero-left .team-name {{ font-size: 1.5rem; }}
+    .hero-stat {{ font-size: 0.8rem; padding: 0.2rem 0.5rem; }}
+    .hero-game {{ min-width: 90px; padding: 0.5rem 0.75rem; }}
+
+    /* Tabs */
+    .tabs-wrap {{ padding: 0.75rem; }}
+    .tab-btn {{ padding: 0.45rem 0.7rem; font-size: 0.8rem; }}
+
+    /* Standings — hide GF & GA on small screens (GD summarises them) */
+    .standings-table {{ font-size: 0.8rem; }}
+    .standings-table th:nth-child(7),
+    .standings-table td:nth-child(7),
+    .standings-table th:nth-child(8),
+    .standings-table td:nth-child(8) {{ display: none; }}
+    .standings-table th,
+    .standings-table td {{ padding: 0.45rem 0.4rem; }}
+    .team-cell {{ max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+    .standings-grid {{ gap: 1rem; }}
+
+    /* Scrollable detail tables (Disco Pickles tab) */
+    .spotlight-container .section-title + * {{ overflow-x: auto; -webkit-overflow-scrolling: touch; }}
+    .detail-table {{ font-size: 0.82rem; }}
+    .detail-table th, .detail-table td {{ padding: 0.45rem 0.6rem; white-space: nowrap; }}
+    .detail-table-wrap {{ overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); box-shadow: var(--shadow); }}
+
+    /* Game rows */
+    .game-row {{ padding: 0.55rem 0.75rem; gap: 0.4rem; }}
+    .game-score {{ min-width: 56px; font-size: 0.88rem; }}
+    .game-time {{ font-size: 0.72rem; }}
+    .game-teams {{ font-size: 0.84rem; }}
+
+    /* Predictions grid */
+    .predictions-grid {{ grid-template-columns: 1fr; gap: 1rem; }}
+
+    /* Schedule */
+    .sched-week {{ flex-wrap: wrap; gap: 0.35rem; padding: 0.6rem 0.75rem; }}
+    .sched-week-num {{ min-width: auto; font-size: 0.9rem; }}
+    .sched-week-date {{ font-size: 0.9rem; }}
+    .sched-week-info {{ min-width: auto; width: 100%; font-size: 0.8rem; }}
+
+    /* Stat cards */
+    .stats-cards {{ gap: 0.5rem; }}
+    .stat-card {{ min-width: 75px; padding: 0.75rem 0.5rem; }}
+    .stat-val {{ font-size: 1.4rem; }}
+    .stat-lbl {{ font-size: 0.7rem; }}
+
+    /* Outlook cards */
+    .outlook-cards {{ gap: 0.5rem; }}
+    .outlook-card {{ min-width: 75px; padding: 0.75rem 0.5rem; }}
+    .outlook-rec {{ font-size: 1.2rem; }}
+    .outlook-pts {{ font-size: 0.8rem; }}
+
+    /* Misc */
+    .section-title {{ font-size: 0.95rem; }}
+    .tabs-wrap {{ padding: 0.75rem; }}
   }}
 </style>
 </head>
