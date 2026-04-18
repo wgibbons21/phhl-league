@@ -163,6 +163,7 @@
   .standings-table td {
     padding: 0.55rem 0.6rem; text-align: center;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }
   .standings-table td:nth-child(2) { text-align: left; font-weight: 600; }
   .standings-table tbody tr:hover { background: #FDF5F5; }
@@ -176,7 +177,13 @@
   .team-cell { max-width: 180px; }
 
   /* badges */
-  .badge { display: inline-block; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; }
+  .badge-row {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 3px;
+    align-items: center;
+  }
+  .badge { display: inline-block; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
   .badge-w { background: var(--win-bg); color: var(--win-fg); }
   .badge-l { background: var(--loss-bg); color: var(--loss-fg); }
   .badge-t { background: var(--tie-bg); color: var(--tie-fg); }
@@ -601,7 +608,7 @@
           <td class="pts-cell">8</td>
           <td>25</td><td>12</td>
           <td class="pos-gd">+13</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">2</td>
@@ -610,7 +617,7 @@
           <td class="pts-cell">6</td>
           <td>21</td><td>13</td>
           <td class="pos-gd">+8</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">3</td>
@@ -619,7 +626,7 @@
           <td class="pts-cell">4</td>
           <td>15</td><td>9</td>
           <td class="pos-gd">+6</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">4</td>
@@ -628,7 +635,7 @@
           <td class="pts-cell">2</td>
           <td>14</td><td>22</td>
           <td class="neg-gd">-8</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-w">W</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-w">W</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">5</td>
@@ -637,7 +644,7 @@
           <td class="pts-cell">2</td>
           <td>12</td><td>22</td>
           <td class="neg-gd">-10</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">6</td>
@@ -646,7 +653,7 @@
           <td class="pts-cell">0</td>
           <td>6</td><td>15</td>
           <td class="neg-gd">-9</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></span></td>
         </tr>
         </tbody>
       </table>
@@ -668,7 +675,7 @@
           <td class="pts-cell">8</td>
           <td>42</td><td>1</td>
           <td class="pos-gd">+41</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">2</td>
@@ -677,7 +684,7 @@
           <td class="pts-cell">7</td>
           <td>20</td><td>11</td>
           <td class="pos-gd">+9</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-t">T</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-t">T</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">3</td>
@@ -686,7 +693,7 @@
           <td class="pts-cell">4</td>
           <td>18</td><td>20</td>
           <td class="neg-gd">-2</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-l">L</span><span class="badge badge-t">T</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-l">L</span><span class="badge badge-t">T</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">4</td>
@@ -695,7 +702,7 @@
           <td class="pts-cell">2</td>
           <td>13</td><td>25</td>
           <td class="neg-gd">-12</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">5</td>
@@ -704,7 +711,7 @@
           <td class="pts-cell">0</td>
           <td>6</td><td>28</td>
           <td class="neg-gd">-22</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-l">L</span></span></td>
         </tr>
         </tbody>
       </table>
@@ -726,7 +733,7 @@
           <td class="pts-cell">5</td>
           <td>16</td><td>14</td>
           <td class="pos-gd">+2</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-t">T</span><span class="badge badge-t">T</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-t">T</span><span class="badge badge-t">T</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">2</td>
@@ -735,7 +742,7 @@
           <td class="pts-cell">4</td>
           <td>19</td><td>18</td>
           <td class="pos-gd">+1</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">3</td>
@@ -744,7 +751,7 @@
           <td class="pts-cell">4</td>
           <td>14</td><td>19</td>
           <td class="neg-gd">-5</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-w">W</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-l">L</span><span class="badge badge-w">W</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">4</td>
@@ -753,7 +760,7 @@
           <td class="pts-cell">3</td>
           <td>17</td><td>14</td>
           <td class="pos-gd">+3</td>
-          <td><span class="badge badge-w">W</span><span class="badge badge-l">L</span><span class="badge badge-t">T</span></td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-l">L</span><span class="badge badge-t">T</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">5</td>
@@ -762,7 +769,7 @@
           <td class="pts-cell">3</td>
           <td>10</td><td>25</td>
           <td class="neg-gd">-15</td>
-          <td><span class="badge badge-l">L</span><span class="badge badge-t">T</span><span class="badge badge-w">W</span></td>
+          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-t">T</span><span class="badge badge-w">W</span></span></td>
         </tr>
         </tbody>
       </table>
