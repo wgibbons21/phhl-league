@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏒 10U Advanced League – Spring 2026</title>
+<title>🏒 10U Advance League – Season 2026</title>
 <style>
   :root {
     --navy:       #23282B;
@@ -327,8 +327,15 @@
   .neg-rating { color: var(--loss-fg); font-weight: 700; font-variant-numeric: tabular-nums; }
   .text-muted { color: var(--text-muted); }
 
-  /* Massey leaderboard panel */
+  /* Massey leaderboard panels */
   .predictions-container { display: flex; flex-direction: column; gap: 1.5rem; }
+  .massey-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.25rem; }
+  .massey-isolation-note {
+    font-size: 0.8rem; color: var(--text-muted);
+    background: var(--tie-bg); border: 1px solid #FDE68A;
+    border-radius: 8px; padding: 0.6rem 1rem;
+    margin-top: -0.25rem;
+  }
   .massey-section {
     background: var(--surface);
     border-radius: var(--radius);
@@ -544,10 +551,10 @@
          alt="PHHL Hurricanes House League" title="Polar Hurricanes House League">
   </div>
   <div>
-    <h1>10U Advanced League</h1>
+    <h1>10U Advance League</h1>
     <div class="subtitle">Polar Hurricanes House League</div>
   </div>
-  <div class="season-badge">Spring 2026</div>
+  <div class="season-badge">Season 2026</div>
   <div class="last-updated">🔄 Last updated: 2:28 PM on Saturday, April 18, 2026</div>
 </header>
 
@@ -1163,7 +1170,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Knight Furies</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +0.2</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +0.3</span> </div>
                   <div class="game-time">12:45 PM</div>
                 </div></div><div class="date-group"><div class="date-header">Sun Apr 26, 2026</div>
                 <div class="game-row">
@@ -1459,158 +1466,173 @@
   <!-- Predictions -->
   <div id="tab-predictions" class="tab-panel">
     <div class="predictions-container">
-    <div class="massey-section">
-      <div class="massey-header">
-        <h3 class="massey-title">📊 Massey Power Rankings</h3>
-        <span class="massey-explainer">Rating = expected goal margin vs. league-average opponent&ensp;·&ensp;Based on 31 completed games</span>
-      </div>
-      <div class="massey-grid">
-        <div class="massey-row">
-          <span class="massey-rank">#1</span>
-          <span class="massey-team">Hawks (District 6)</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:100%;background:var(--win-fg)"></div>
+    <div class="massey-panels">
+      
+        <div class="massey-section">
+          <div class="massey-header">
+            <h3 class="massey-title">📊 Massey Rankings — North / South Divisions</h3>
+            <span class="massey-explainer">Rating = expected goal margin vs. pool average&ensp;·&ensp;10 teams</span>
           </div>
-          <span class="massey-rating pos-rating">+7.26</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#2</span>
-          <span class="massey-team">Polar Predators</span>
-          <span class="massey-gp">3&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:74%;background:var(--win-fg)"></div>
+          <div class="massey-grid">
+            <div class="massey-row">
+              <span class="massey-rank">#1</span>
+              <span class="massey-team">Hawks (District 6)</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:100%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+8.80</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#2</span>
+              <span class="massey-team">Flying SAUCErs</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:20%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+1.82</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#3</span>
+              <span class="massey-team">Thunder Blades</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:16%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+1.47</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#4</span>
+              <span class="massey-team">Arctic Arsenals</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:0%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+0.00</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#5</span>
+              <span class="massey-team">Snow Troopers</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:0%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-0.02</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#6</span>
+              <span class="massey-team">Puckaneers</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:11%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-0.97</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#7</span>
+              <span class="massey-team">Knight Furies</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:13%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-1.23</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#8</span>
+              <span class="massey-team">Frozen Fury</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:30%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-2.67</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#9</span>
+              <span class="massey-team">10S3</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:36%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-3.22</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#10</span>
+              <span class="massey-team">Mighty Canes</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:45%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-3.98</span>
+            </div>
           </div>
-          <span class="massey-rating pos-rating">+5.38</span>
         </div>
-        <div class="massey-row dp-massey-row">
-          <span class="massey-rank">#3</span>
-          <span class="massey-team">Disco Pickles 🥒</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:67%;background:var(--win-fg)"></div>
+        <div class="massey-section">
+          <div class="massey-header">
+            <h3 class="massey-title">📊 Massey Rankings — West Division</h3>
+            <span class="massey-explainer">Rating = expected goal margin vs. pool average&ensp;·&ensp;6 teams</span>
           </div>
-          <span class="massey-rating pos-rating">+4.94</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#4</span>
-          <span class="massey-team">Lamp Lighters</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:50%;background:var(--win-fg)"></div>
+          <div class="massey-grid">
+            <div class="massey-row">
+              <span class="massey-rank">#1</span>
+              <span class="massey-team">Polar Predators</span>
+              <span class="massey-gp">3&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:100%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+2.81</span>
+            </div>
+            <div class="massey-row dp-massey-row">
+              <span class="massey-rank">#2</span>
+              <span class="massey-team">Disco Pickles 🥒</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:84%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+2.38</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#3</span>
+              <span class="massey-team">Lamp Lighters</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:40%;background:var(--win-fg)"></div>
+              </div>
+              <span class="massey-rating pos-rating">+1.12</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#4</span>
+              <span class="massey-team">Carolina Havoc</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:37%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-1.06</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#5</span>
+              <span class="massey-team">Ice Outlaws</span>
+              <span class="massey-gp">4&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:91%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-2.56</span>
+            </div>
+            <div class="massey-row">
+              <span class="massey-rank">#6</span>
+              <span class="massey-team">Brass Bonanza</span>
+              <span class="massey-gp">3&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:95%;background:var(--loss-fg)"></div>
+              </div>
+              <span class="massey-rating neg-rating">-2.69</span>
+            </div>
           </div>
-          <span class="massey-rating pos-rating">+3.69</span>
         </div>
-        <div class="massey-row">
-          <span class="massey-rank">#5</span>
-          <span class="massey-team">Carolina Havoc</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:20%;background:var(--win-fg)"></div>
-          </div>
-          <span class="massey-rating pos-rating">+1.50</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#6</span>
-          <span class="massey-team">Flying SAUCErs</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:3%;background:var(--win-fg)"></div>
-          </div>
-          <span class="massey-rating pos-rating">+0.28</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#7</span>
-          <span class="massey-team">Ice Outlaws</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:0%;background:var(--win-fg)"></div>
-          </div>
-          <span class="massey-rating pos-rating">+0.00</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#8</span>
-          <span class="massey-team">Thunder Blades</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:0%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-0.07</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#9</span>
-          <span class="massey-team">Brass Bonanza</span>
-          <span class="massey-gp">3&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:1%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-0.12</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#10</span>
-          <span class="massey-team">Arctic Arsenals</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:21%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-1.54</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#11</span>
-          <span class="massey-team">Snow Troopers</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:21%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-1.56</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#12</span>
-          <span class="massey-team">Puckaneers</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:34%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-2.51</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#13</span>
-          <span class="massey-team">Knight Furies</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:38%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-2.76</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#14</span>
-          <span class="massey-team">Frozen Fury</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:57%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-4.20</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#15</span>
-          <span class="massey-team">10S3</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:65%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-4.76</span>
-        </div>
-        <div class="massey-row">
-          <span class="massey-rank">#16</span>
-          <span class="massey-team">Mighty Canes</span>
-          <span class="massey-gp">4&#8239;GP</span>
-          <div class="massey-bar-wrap">
-            <div class="massey-bar" style="width:76%;background:var(--loss-fg)"></div>
-          </div>
-          <span class="massey-rating neg-rating">-5.52</span>
-        </div>
-      </div>
-    </div><div class="predictions-grid">
+    </div>
+    <p class="massey-isolation-note">
+      ⚠️ West plays no games against North or South this season, so West ratings and
+      North/South ratings are on independent scales and cannot be directly compared.
+    </p><div class="predictions-grid">
         <div class="pred-card home-favored">
           <div class="pred-card-header">
             <div class="pred-date">Sun Mar 22, 2026 · 4:45 PM</div>
@@ -1627,12 +1649,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+5.38</span>
+                  <span class="pos-rating">+2.81</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.12</span>
+                  <span class="neg-rating">-2.69</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~5.5</div>
@@ -1660,12 +1682,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Lamp Lighters</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.69</span>
+                  <span class="pos-rating">+1.12</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+4.94</span>
+                  <span class="pos-rating">+2.38</span>
                 </div>
               </div>
               <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~1.2</div>
@@ -1693,16 +1715,16 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+5.38</span>
+                  <span class="pos-rating">+2.81</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.00</span>
+                  <span class="neg-rating">-2.56</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~5.4</div>
-              <div class="pred-gd-val">Expected margin: +5.37 goals</div>
+              <div class="pred-gd-val">Expected margin: +5.38 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
                 <div class="conf-bar"><div class="conf-fill" style="width:89%"></div></div>
@@ -1726,12 +1748,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Snow Troopers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.56</span>
+                  <span class="neg-rating">-0.02</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">10S3</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.76</span>
+                  <span class="neg-rating">-3.22</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Snow Troopers</strong> by ~3.2</div>
@@ -1759,12 +1781,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.12</span>
+                  <span class="neg-rating">-2.69</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+1.50</span>
+                  <span class="neg-rating">-1.06</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Carolina Havoc</strong> by ~1.6</div>
@@ -1792,12 +1814,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Flying SAUCErs</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.28</span>
+                  <span class="pos-rating">+1.82</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Mighty Canes</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-5.52</span>
+                  <span class="neg-rating">-3.98</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Flying SAUCErs</strong> by ~5.8</div>
@@ -1825,12 +1847,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Arctic Arsenals</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.54</span>
+                  <span class="pos-rating">+0.00</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Frozen Fury</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.20</span>
+                  <span class="neg-rating">-2.67</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Arctic Arsenals</strong> by ~2.7</div>
@@ -1858,12 +1880,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Thunder Blades</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.07</span>
+                  <span class="pos-rating">+1.47</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Hawks (District 6)</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+7.26</span>
+                  <span class="pos-rating">+8.80</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Hawks (District 6)</strong> by ~7.3</div>
@@ -1891,15 +1913,15 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Puckaneers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.51</span>
+                  <span class="neg-rating">-0.97</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Knight Furies</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.76</span>
+                  <span class="neg-rating">-1.23</span>
                 </div>
               </div>
-              <div class="pred-winner">Predicted: <strong>Toss-up</strong> (±0.2)</div>
+              <div class="pred-winner">Predicted: <strong>Toss-up</strong> (±0.3)</div>
               <div class="pred-gd-val">Expected margin: +0.25 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
@@ -1924,12 +1946,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Lamp Lighters</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.69</span>
+                  <span class="pos-rating">+1.12</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.00</span>
+                  <span class="neg-rating">-2.56</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Lamp Lighters</strong> by ~3.7</div>
@@ -1957,12 +1979,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+4.94</span>
+                  <span class="pos-rating">+2.38</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+1.50</span>
+                  <span class="neg-rating">-1.06</span>
                 </div>
               </div>
               <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~3.4</div>
@@ -1990,12 +2012,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Flying SAUCErs</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.28</span>
+                  <span class="pos-rating">+1.82</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Knight Furies</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.76</span>
+                  <span class="neg-rating">-1.23</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Flying SAUCErs</strong> by ~3.0</div>
@@ -2023,12 +2045,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Snow Troopers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.56</span>
+                  <span class="neg-rating">-0.02</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Hawks (District 6)</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+7.26</span>
+                  <span class="pos-rating">+8.80</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Hawks (District 6)</strong> by ~8.8</div>
@@ -2056,12 +2078,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Thunder Blades</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.07</span>
+                  <span class="pos-rating">+1.47</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">10S3</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.76</span>
+                  <span class="neg-rating">-3.22</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Thunder Blades</strong> by ~4.7</div>
@@ -2089,12 +2111,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Arctic Arsenals</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.54</span>
+                  <span class="pos-rating">+0.00</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Mighty Canes</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-5.52</span>
+                  <span class="neg-rating">-3.98</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Arctic Arsenals</strong> by ~4.0</div>
@@ -2122,12 +2144,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Puckaneers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.51</span>
+                  <span class="neg-rating">-0.97</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Frozen Fury</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.20</span>
+                  <span class="neg-rating">-2.67</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Puckaneers</strong> by ~1.7</div>
@@ -2155,12 +2177,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+5.38</span>
+                  <span class="pos-rating">+2.81</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.12</span>
+                  <span class="neg-rating">-2.69</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~5.5</div>
@@ -2188,12 +2210,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Snow Troopers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.56</span>
+                  <span class="neg-rating">-0.02</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Mighty Canes</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-5.52</span>
+                  <span class="neg-rating">-3.98</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Snow Troopers</strong> by ~4.0</div>
@@ -2221,12 +2243,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">10S3</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.76</span>
+                  <span class="neg-rating">-3.22</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Puckaneers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.51</span>
+                  <span class="neg-rating">-0.97</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Puckaneers</strong> by ~2.2</div>
@@ -2254,12 +2276,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Knight Furies</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.76</span>
+                  <span class="neg-rating">-1.23</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Hawks (District 6)</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+7.26</span>
+                  <span class="pos-rating">+8.80</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Hawks (District 6)</strong> by ~10.0</div>
@@ -2287,12 +2309,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Flying SAUCErs</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.28</span>
+                  <span class="pos-rating">+1.82</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Arctic Arsenals</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.54</span>
+                  <span class="pos-rating">+0.00</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Flying SAUCErs</strong> by ~1.8</div>
@@ -2320,12 +2342,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Thunder Blades</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.07</span>
+                  <span class="pos-rating">+1.47</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Frozen Fury</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.20</span>
+                  <span class="neg-rating">-2.67</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Thunder Blades</strong> by ~4.1</div>
@@ -2353,12 +2375,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Lamp Lighters</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.69</span>
+                  <span class="pos-rating">+1.12</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+1.50</span>
+                  <span class="neg-rating">-1.06</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Lamp Lighters</strong> by ~2.2</div>
@@ -2386,16 +2408,16 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.00</span>
+                  <span class="neg-rating">-2.56</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.12</span>
+                  <span class="neg-rating">-2.69</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Toss-up</strong> (±0.1)</div>
-              <div class="pred-gd-val">Expected margin: +0.13 goals</div>
+              <div class="pred-gd-val">Expected margin: +0.12 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
                 <div class="conf-bar"><div class="conf-fill" style="width:51%"></div></div>
@@ -2419,12 +2441,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+4.94</span>
+                  <span class="pos-rating">+2.38</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+5.38</span>
+                  <span class="pos-rating">+2.81</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Toss-up</strong> (±0.4)</div>
@@ -2452,12 +2474,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+4.94</span>
+                  <span class="pos-rating">+2.38</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.00</span>
+                  <span class="neg-rating">-2.56</span>
                 </div>
               </div>
               <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~4.9</div>
@@ -2485,12 +2507,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Puckaneers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.51</span>
+                  <span class="neg-rating">-0.97</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Snow Troopers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.56</span>
+                  <span class="neg-rating">-0.02</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Toss-up</strong> (±1.0)</div>
@@ -2518,12 +2540,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Flying SAUCErs</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.28</span>
+                  <span class="pos-rating">+1.82</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">10S3</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.76</span>
+                  <span class="neg-rating">-3.22</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Flying SAUCErs</strong> by ~5.0</div>
@@ -2551,12 +2573,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Thunder Blades</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.07</span>
+                  <span class="pos-rating">+1.47</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Knight Furies</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.76</span>
+                  <span class="neg-rating">-1.23</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Thunder Blades</strong> by ~2.7</div>
@@ -2584,12 +2606,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Mighty Canes</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-5.52</span>
+                  <span class="neg-rating">-3.98</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Frozen Fury</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.20</span>
+                  <span class="neg-rating">-2.67</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Frozen Fury</strong> by ~1.3</div>
@@ -2617,12 +2639,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Hawks (District 6)</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+7.26</span>
+                  <span class="pos-rating">+8.80</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Arctic Arsenals</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.54</span>
+                  <span class="pos-rating">+0.00</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Hawks (District 6)</strong> by ~8.8</div>
@@ -2650,12 +2672,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Lamp Lighters</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.69</span>
+                  <span class="pos-rating">+1.12</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.12</span>
+                  <span class="neg-rating">-2.69</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Lamp Lighters</strong> by ~3.8</div>
@@ -2683,12 +2705,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+5.38</span>
+                  <span class="pos-rating">+2.81</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+1.50</span>
+                  <span class="neg-rating">-1.06</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~3.9</div>
@@ -2716,12 +2738,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Flying SAUCErs</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.28</span>
+                  <span class="pos-rating">+1.82</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Frozen Fury</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.20</span>
+                  <span class="neg-rating">-2.67</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Flying SAUCErs</strong> by ~4.5</div>
@@ -2749,12 +2771,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Thunder Blades</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.07</span>
+                  <span class="pos-rating">+1.47</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Snow Troopers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.56</span>
+                  <span class="neg-rating">-0.02</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Thunder Blades</strong> by ~1.5</div>
@@ -2782,12 +2804,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Mighty Canes</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-5.52</span>
+                  <span class="neg-rating">-3.98</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Knight Furies</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.76</span>
+                  <span class="neg-rating">-1.23</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Knight Furies</strong> by ~2.8</div>
@@ -2815,12 +2837,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Hawks (District 6)</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+7.26</span>
+                  <span class="pos-rating">+8.80</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">10S3</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-4.76</span>
+                  <span class="neg-rating">-3.22</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Hawks (District 6)</strong> by ~12.0</div>
@@ -2848,12 +2870,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Puckaneers</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-2.51</span>
+                  <span class="neg-rating">-0.97</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Arctic Arsenals</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-1.54</span>
+                  <span class="pos-rating">+0.00</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Toss-up</strong> (±1.0)</div>
@@ -2881,12 +2903,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Lamp Lighters</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.69</span>
+                  <span class="pos-rating">+1.12</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+5.38</span>
+                  <span class="pos-rating">+2.81</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~1.7</div>
@@ -2914,12 +2936,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+4.94</span>
+                  <span class="pos-rating">+2.38</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.12</span>
+                  <span class="neg-rating">-2.69</span>
                 </div>
               </div>
               <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~5.1</div>
@@ -2947,12 +2969,12 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+1.50</span>
+                  <span class="neg-rating">-1.06</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+0.00</span>
+                  <span class="neg-rating">-2.56</span>
                 </div>
               </div>
               <div class="pred-winner">Predicted: <strong>Carolina Havoc</strong> by ~1.5</div>
@@ -3147,7 +3169,7 @@
 </main>
 
 <footer class="site-footer">
-  Generated April 18, 2026 · 10U Advanced League · Polar Ice Hockey League · 31 games completed · 41 upcoming · 0 TBD
+  Generated April 19, 2026 · 10U Advance League · Polar Ice Hockey League · 31 games completed · 41 upcoming · 0 TBD
 </footer>
 
 <script>
