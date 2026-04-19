@@ -4467,8 +4467,8 @@
         "hteam_id": 14355,
         "vteam_id": 14356,
         "league_id": null,
-        "home_score": null,
-        "visiting_score": null,
+        "home_score": 3,
+        "visiting_score": 8,
         "publish": true,
         "outcome": "",
         "register_capacity": 0,
@@ -4490,7 +4490,8 @@
         "includes_takedown_time": false,
         "start_date": "2026-04-19T00:00:00",
         "event_start_time": "07:30:00",
-        "best_description": "10U Advance League"
+        "best_description": "10U Advance League",
+        "_override": true
       },
       "relationships": {
         "customer": {
@@ -10072,5 +10073,5 @@
       "matchups_published": true
     }
   ],
-  "last_updated": "2026-04-18 14:28:45"
+  "last_updated": "2026-04-19 11:03:25"
 }
