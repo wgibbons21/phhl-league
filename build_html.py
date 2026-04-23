@@ -62,7 +62,7 @@ def parse_game(g):
     start_d   = start_dt.date()
     hs  = a['home_score']
     vs  = a['visiting_score']
-    completed = (hs is not None and vs is not None and start_d < TODAY)
+    completed = (hs is not None and vs is not None and start_d <= TODAY)
     is_placeholder = a.get('_placeholder', False)
     return {
         'id'          : g['id'],
@@ -124,63 +124,143 @@ def sort_key(tid):
 for div in divisions:
     divisions[div].sort(key=sort_key)
 
-# ── GD map for predictions ─────────────────────────────────────────────────────
-# Build average GD per matchup (home, visitor)
-raw_gd = defaultdict(list)
-for g in completed_games:
-    raw_gd[(g['hid'], g['vid'])].append(g['hs'] - g['vs'])
-
-gd_map = {k: sum(v)/len(v) for k, v in raw_gd.items()}
-
-# Map team IDs to short names for prediction descriptions
+# Map team IDs to short names
 def short_name(tid):
     n = team_names.get(tid, str(tid))
     parts = n.split(' - ')
     return parts[1] if len(parts) > 1 else n
 
-def predict(h_id, v_id, gd_map):
-    paths = []
-    h_opps = [b for (a,b) in gd_map if a==h_id] + [a for (a,b) in gd_map if b==h_id]
-    v_opps = [b for (a,b) in gd_map if a==v_id] + [a for (a,b) in gd_map if b==v_id]
+# ── Massey Ratings ─────────────────────────────────────────────────────────────
+# Massey method: find rating vector r such that r[i] - r[j] ≈ score_diff(i,j)
+# System: M·r = p  where
+#   M[i][i] = games played by team i
+#   M[i][j] = -(games between i and j)   (i≠j)
+# Last row replaced by Σr = 0 to anchor the solution (zero-sum constraint).
 
-    def get_gd(t1, t2):
-        if (t1,t2) in gd_map: return gd_map[(t1,t2)]
-        if (t2,t1) in gd_map: return -gd_map[(t2,t1)]
+def _gauss_solve(M_in, p_in):
+    """Solve M·x = p via Gaussian elimination with partial pivoting."""
+    n = len(p_in)
+    A = [M_in[i][:] + [p_in[i]] for i in range(n)]
+    for col in range(n):
+        pivot_row = max(range(col, n), key=lambda r: abs(A[r][col]))
+        A[col], A[pivot_row] = A[pivot_row], A[col]
+        if abs(A[col][col]) < 1e-12:
+            continue
+        piv = A[col][col]
+        A[col] = [v / piv for v in A[col]]
+        for row in range(n):
+            if row == col:
+                continue
+            f = A[row][col]
+            A[row] = [A[row][j] - f * A[col][j] for j in range(n + 1)]
+    return [A[i][n] for i in range(n)]
+
+
+def _find_components(completed_games):
+    """Return list of frozensets, each a connected component of teams
+    linked by at least one completed game."""
+    # Build adjacency from completed games
+    adj = defaultdict(set)
+    all_t = set()
+    for g in completed_games:
+        h, v = g['hid'], g['vid']
+        adj[h].add(v); adj[v].add(h)
+        all_t.add(h); all_t.add(v)
+    # BFS/DFS flood-fill
+    seen, components = set(), []
+    for start in sorted(all_t):
+        if start in seen:
+            continue
+        component, stack = set(), [start]
+        while stack:
+            node = stack.pop()
+            if node in component:
+                continue
+            component.add(node)
+            stack.extend(adj[node] - component)
+        seen |= component
+        components.append(frozenset(component))
+    return components
+
+
+def _solve_massey(teams, completed_games):
+    """Solve Massey for a single connected component; return {tid: rating}."""
+    n = len(teams)
+    if n < 2:
+        return {teams[0]: 0.0} if teams else {}
+    idx = {t: i for i, t in enumerate(teams)}
+    M   = [[0.0] * n for _ in range(n)]
+    p   = [0.0] * n
+    for g in completed_games:
+        h, v = g['hid'], g['vid']
+        if h not in idx or v not in idx:
+            continue
+        hi, vi = idx[h], idx[v]
+        diff = g['hs'] - g['vs']
+        M[hi][hi] += 1;  M[vi][vi] += 1
+        M[hi][vi] -= 1;  M[vi][hi] -= 1
+        p[hi] += diff;   p[vi] -= diff
+    # Replace last row with Σr = 0
+    M[n - 1] = [1.0] * n
+    p[n - 1] = 0.0
+    try:
+        import numpy as np
+        r = np.linalg.solve(np.array(M, dtype=float), np.array(p, dtype=float))
+        return {teams[i]: float(r[i]) for i in range(n)}
+    except Exception:
+        r = _gauss_solve(M, p)
+        return {teams[i]: r[i] for i in range(n)}
+
+
+def compute_massey_ratings(completed_games):
+    """Solve Massey per connected component.
+
+    Teams that never share a game chain are in separate components and
+    cannot be meaningfully compared — solving them together with a single
+    zero-sum anchor would produce a spurious cross-group scale.
+
+    Returns:
+        ratings   – {team_id: float}
+        components – list of sorted team-id lists, one per component
+    """
+    comps = _find_components(completed_games)
+    ratings = {}
+    component_list = []
+    for comp in comps:
+        teams = sorted(comp)
+        r = _solve_massey(teams, completed_games)
+        ratings.update(r)
+        component_list.append(teams)
+    return ratings, component_list
+
+
+massey, massey_components = compute_massey_ratings(completed_games)
+
+# Per-component ranked lists (best → worst within each component)
+massey_ranked_by_component = [
+    sorted([(tid, massey.get(tid, 0.0)) for tid in comp], key=lambda x: -x[1])
+    for comp in massey_components
+]
+
+# Flat ranked list kept for convenience (intra-component use only)
+massey_ranked = [pair for comp in massey_ranked_by_component for pair in comp]
+
+
+def massey_predict(h_id, v_id):
+    """Predicted margin (home − away) from Massey ratings, or None."""
+    hr = massey.get(h_id)
+    vr = massey.get(v_id)
+    if hr is None or vr is None:
         return None
+    return hr - vr
 
-    for x in set(h_opps) & set(v_opps):
-        if x in (h_id, v_id): continue
-        gh = get_gd(h_id, x)
-        gv = get_gd(v_id, x)
-        if gh is not None and gv is not None:
-            paths.append({'pred': gh - gv, 'weight': 1.0, 'hops': 1,
-                         'desc': f"via {short_name(x)}"})
 
-    for x in set(h_opps):
-        if x in (h_id, v_id): continue
-        for y in set(v_opps):
-            if y in (h_id, v_id, x): continue
-            if (x,y) not in gd_map and (y,x) not in gd_map: continue
-            gh  = get_gd(h_id, x)
-            gxy = get_gd(x, y)
-            gv  = get_gd(v_id, y)
-            if all(z is not None for z in [gh, gxy, gv]):
-                paths.append({'pred': gh + gxy - gv, 'weight': 0.5, 'hops': 2,
-                             'desc': f"via {short_name(x)}→{short_name(y)}"})
-
-    if not paths: return None, 0, []
-    tw   = sum(p['weight'] for p in paths)
-    avg  = sum(p['pred']*p['weight'] for p in paths) / tw
-    one_hop = sum(1 for p in paths if p['hops']==1)
-    conf = min(1.0, one_hop/3 + 0.1*sum(1 for p in paths if p['hops']==2)/3)
-    return avg, conf, paths
-
-# Pre-compute predictions for all upcoming games
+# Pre-compute Massey predictions for all upcoming games
 for g in upcoming_games:
-    pgd, conf, paths = predict(g['hid'], g['vid'], gd_map)
+    pgd            = massey_predict(g['hid'], g['vid'])
     g['pred_gd']   = pgd
-    g['pred_conf'] = conf
-    g['pred_paths']= paths
+    g['pred_conf'] = 1.0  # Massey always gives a single, fully-specified prediction
+    g['pred_paths']= []   # unused (kept for structural compatibility)
 
 # ── Disco Pickles specific ─────────────────────────────────────────────────────
 dp_completed = [g for g in completed_games if DISCO_ID in (g['hid'], g['vid'])]
@@ -193,12 +273,12 @@ dp_gf   = dp_stats['gf']
 dp_ga   = dp_stats['ga']
 dp_gd_v = dp_gf - dp_ga
 
-# Win probability from pred_gd (sigmoid-like)
-def win_prob(pgd, conf):
+# Win probability from Massey predicted margin (logistic curve).
+# Scale 0.4 ≈ 3-goal margin → ~77 % win probability.
+def win_prob(pgd, conf=1.0):   # conf kept for call-site compatibility
     if pgd is None: return 0.5
     import math
-    raw = 1 / (1 + math.exp(-pgd * 0.4))
-    return 0.5 + (raw - 0.5) * conf
+    return 1 / (1 + math.exp(-pgd * 0.4))
 
 # ── HTML helpers ──────────────────────────────────────────────────────────────
 def esc(s): return str(s).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
@@ -212,7 +292,8 @@ def last3_html(s):
     for r in l3:
         cls = {'W':'badge-w','L':'badge-l','T':'badge-t'}[r]
         spans.append(f'<span class="badge {cls}">{r}</span>')
-    return ''.join(spans) if spans else '<span class="badge badge-none">-</span>'
+    inner = ''.join(spans) if spans else '<span class="badge badge-none">-</span>'
+    return f'<span class="badge-row">{inner}</span>'
 
 def record_html(tid):
     s = stats[tid]
@@ -249,16 +330,18 @@ def build_standings_div(div_name, team_ids):
     return f'''
     <div class="standings-div">
       <h3 class="div-header">{div_name} Division</h3>
-      <table class="standings-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
-            <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
-          </tr>
-        </thead>
-        <tbody>{rows}
-        </tbody>
-      </table>
+      <div class="standings-table-wrap">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Team</th><th>W</th><th>L</th><th>T</th>
+              <th>Pts</th><th>GF</th><th>GA</th><th>GD</th><th>Last 3</th>
+            </tr>
+          </thead>
+          <tbody>{rows}
+          </tbody>
+        </table>
+      </div>
     </div>'''
 
 # ── Build game results ─────────────────────────────────────────────────────────
@@ -302,8 +385,9 @@ def build_results_tab():
                     outcome_label = ''
                 else:
                     pgd = g.get('pred_gd')
-                    pred_str = f'<span class="pred-score">~{pgd:+.1f} GD</span>' if pgd is not None \
-                               else '<span class="pred-score">No prediction</span>'
+                    pred_str = (f'<span class="pred-score">Massey: {pgd:+.1f}</span>'
+                                if pgd is not None
+                                else '<span class="pred-score">No prediction</span>')
                     score_html = f'<span class="upcoming-tbd">TBD</span> {pred_str}'
                     outcome_label = ''
 
@@ -321,6 +405,11 @@ def build_results_tab():
         return html
 
     html = '<div class="results-container">'
+
+    # ── COMPLETED (newest first) ──────────────────────────────────────────────
+    if completed_by_date:
+        html += '<div class="results-section-hdr">✅ Completed Games <span class="sort-indicator">↓ Newest First</span></div>'
+        html += game_rows_html(completed_by_date, sorted(completed_by_date.keys(), reverse=True))
 
     # ── UPCOMING (soonest first) ──────────────────────────────────────────────
     if upcoming_by_date:
@@ -341,33 +430,87 @@ def build_results_tab():
           </div>
         </div>'''
 
-    # ── COMPLETED (newest first) ──────────────────────────────────────────────
-    if completed_by_date:
-        html += '<div class="results-section-hdr">✅ Completed Games <span class="sort-indicator">↓ Newest First</span></div>'
-        html += game_rows_html(completed_by_date, sorted(completed_by_date.keys(), reverse=True))
-
     html += '</div>'
     return html
 
 # ── Build predictions tab ──────────────────────────────────────────────────────
 def build_predictions_tab():
-    html = '<div class="predictions-grid">'
+    html = '<div class="predictions-container">'
+
+    # ── Massey Power Rankings leaderboard (one panel per connected component) ────
+    # West never plays North/South, so they form separate rating pools.
+    # Ratings are only comparable within a component.
+
+    def _comp_label(comp_teams):
+        """Derive a human-readable label from the divisions represented."""
+        divs = set()
+        for tid in comp_teams:
+            divs.add(get_division(tid))
+        return ' / '.join(sorted(divs)) + ' Division' + ('s' if len(divs) > 1 else '')
+
+    comp_panels_html = ''
+    for comp_ranked in massey_ranked_by_component:
+        max_abs = max((abs(r) for _, r in comp_ranked), default=1.0) or 1.0
+        label   = _comp_label([tid for tid, _ in comp_ranked])
+        note    = ('Ratings within this group are not comparable to other groups — '
+                   'no cross-group games have been played.')
+        rows_html = ''
+        for rank, (tid, rating) in enumerate(comp_ranked, 1):
+            name      = short_name(tid)
+            is_dp     = (tid == DISCO_ID)
+            sign      = '+' if rating >= 0 else ''
+            bar_pct   = int(abs(rating) / max_abs * 100)
+            bar_color = 'var(--win-fg)' if rating >= 0 else 'var(--loss-fg)'
+            rat_cls   = 'pos-rating' if rating >= 0 else 'neg-rating'
+            row_cls   = 'massey-row dp-massey-row' if is_dp else 'massey-row'
+            gp        = sum(1 for g in completed_games if tid in (g['hid'], g['vid']))
+            rows_html += f'''
+            <div class="{row_cls}">
+              <span class="massey-rank">#{rank}</span>
+              <span class="massey-team">{esc(name)}{' 🥒' if is_dp else ''}</span>
+              <span class="massey-gp">{gp}&#8239;GP</span>
+              <div class="massey-bar-wrap">
+                <div class="massey-bar" style="width:{bar_pct}%;background:{bar_color}"></div>
+              </div>
+              <span class="massey-rating {rat_cls}">{sign}{rating:.2f}</span>
+            </div>'''
+        comp_panels_html += f'''
+        <div class="massey-section">
+          <div class="massey-header">
+            <h3 class="massey-title">📊 Massey Rankings — {esc(label)}</h3>
+            <span class="massey-explainer">Rating = expected goal margin vs. pool average&ensp;·&ensp;{len(comp_ranked)} teams</span>
+          </div>
+          <div class="massey-grid">{rows_html}
+          </div>
+        </div>'''
+
+    html += f'''
+    <div class="massey-panels">
+      {comp_panels_html}
+    </div>
+    <p class="massey-isolation-note">
+      ⚠️ West plays no games against North or South this season, so West ratings and
+      North/South ratings are on independent scales and cannot be directly compared.
+    </p>'''
+
+    # ── Per-game prediction cards ───────────────────────────────────────────────
     if not upcoming_games:
-        html += '<p class="no-data">No upcoming games found.</p>'
-        html += '</div>'
+        html += '<p class="no-data">No upcoming games found.</p></div>'
         return html
 
+    html += '<div class="predictions-grid">'
+
     for g in upcoming_games:
-        h_name = short_name(g['hid'])
-        v_name = short_name(g['vid'])
-        is_dp  = (DISCO_ID in (g['hid'], g['vid']))
-        pgd    = g.get('pred_gd')
-        conf   = g.get('pred_conf', 0)
-        paths  = g.get('pred_paths', [])
+        h_name   = short_name(g['hid'])
+        v_name   = short_name(g['vid'])
+        is_dp    = (DISCO_ID in (g['hid'], g['vid']))
+        pgd      = g.get('pred_gd')
+        h_rating = massey.get(g['hid'])
+        v_rating = massey.get(g['vid'])
 
         if pgd is None:
-            card_cls = 'pred-card no-pred'
-            prediction_html = '<div class="pred-result">No prediction data available</div>'
+            card_cls       = 'pred-card no-pred'
+            prediction_html = '<div class="pred-result"><p class="no-data">Insufficient game data.</p></div>'
         else:
             if pgd > 1:
                 card_cls = 'pred-card home-favored'
@@ -382,35 +525,44 @@ def build_predictions_tab():
             if is_dp:
                 card_cls += ' dp-pred-card'
 
-            conf_pct = int(conf * 100)
-            wp = win_prob(pgd, conf)
+            wp     = win_prob(pgd)
             wp_pct = int(wp * 100)
 
-            # Top paths
-            one_hop = [p for p in paths if p['hops']==1][:3]
-            two_hop = [p for p in paths if p['hops']==2][:2]
-            path_items = ''
-            for p in one_hop:
-                path_items += f'<li><span class="hop-badge h1">1-hop</span> {esc(p["desc"])} → {p["pred"]:+.1f}</li>'
-            for p in two_hop:
-                path_items += f'<li><span class="hop-badge h2">2-hop</span> {esc(p["desc"])} → {p["pred"]:+.1f}</li>'
-            paths_html = f'<ul class="pred-paths">{path_items}</ul>' if path_items else ''
+            dp_flag = (
+                is_dp and (
+                    (g['hid'] == DISCO_ID and pgd > 0) or
+                    (g['vid'] == DISCO_ID and pgd < 0)
+                )
+            )
+            margin_str = (f'by ~{margin:.1f}' if winner != 'Toss-up'
+                          else f'(±{margin:.1f})')
+
+            def rat_html(r):
+                if r is None: return '<span class="text-muted">—</span>'
+                cls = 'pos-rating' if r >= 0 else 'neg-rating'
+                return f'<span class="{cls}">{r:+.2f}</span>'
 
             prediction_html = f'''
             <div class="pred-result">
-              <div class="pred-winner">{'🏒 ' if is_dp and ((g["hid"]==DISCO_ID and pgd>0) or (g["vid"]==DISCO_ID and pgd<0)) else ''}Predicted: <strong>{esc(winner)}</strong> {f"by {margin:.1f}" if winner!="Toss-up" else "(±{:.1f})".format(margin)}</div>
-              <div class="pred-gd-val">GD: {pgd:+.2f}</div>
+              <div class="pred-ratings">
+                <div class="pred-rating-row">
+                  <span class="pred-rating-team">{esc(h_name)}</span>
+                  <span class="pred-rating-label">Massey</span>
+                  {rat_html(h_rating)}
+                </div>
+                <div class="pred-rating-row">
+                  <span class="pred-rating-team">{esc(v_name)}</span>
+                  <span class="pred-rating-label">Massey</span>
+                  {rat_html(v_rating)}
+                </div>
+              </div>
+              <div class="pred-winner">{'🏒 ' if dp_flag else ''}Predicted: <strong>{esc(winner)}</strong> {margin_str}</div>
+              <div class="pred-gd-val">Expected margin: {pgd:+.2f} goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
                 <div class="conf-bar"><div class="conf-fill" style="width:{wp_pct}%"></div></div>
                 <span class="conf-pct">{wp_pct}%</span>
               </div>
-              <div class="conf-bar-wrap">
-                <span class="conf-label">Confidence</span>
-                <div class="conf-bar"><div class="conf-fill conf-fill-blue" style="width:{conf_pct}%"></div></div>
-                <span class="conf-pct">{conf_pct}%</span>
-              </div>
-              {paths_html}
             </div>'''
 
         dp_badge = '<span class="dp-badge">🥒 DP Game</span>' if is_dp else ''
@@ -429,7 +581,8 @@ def build_predictions_tab():
           {prediction_html}
         </div>'''
 
-    html += '</div>'
+    html += '</div>'   # predictions-grid
+    html += '</div>'   # predictions-container
     return html
 
 # ── Build Team Spotlight (Disco Pickles) ──────────────────────────────────────
@@ -548,19 +701,19 @@ def build_hero_upcoming():
     if not dp_upcoming:
         return '<p style="color:rgba(255,255,255,0.8)">No upcoming games – season complete!</p>'
     items = ''
-    for g in dp_upcoming[:3]:
+    for g in dp_upcoming:                          # show ALL remaining games
         is_home = (g['hid'] == DISCO_ID)
         opp     = short_name(g['vid'] if is_home else g['hid'])
         ha      = 'vs' if is_home else '@'
         pgd     = g.get('pred_gd')
-        conf    = g.get('pred_conf', 0)
         if pgd is not None:
-            dp_pgd = pgd if is_home else -pgd
-            wp = win_prob(dp_pgd, conf)
+            dp_pgd   = pgd if is_home else -pgd
+            wp       = win_prob(dp_pgd)
             pred_str = f'{int(wp*100)}% win'
-            pred_cls = 'hero-pred-win' if dp_pgd > 1 else ('hero-pred-loss' if dp_pgd < -1 else 'hero-pred-toss')
+            pred_cls = ('hero-pred-win'  if dp_pgd > 1  else
+                        'hero-pred-loss' if dp_pgd < -1 else 'hero-pred-toss')
         else:
-            pred_str = 'No pred'; pred_cls='hero-pred-toss'
+            pred_str = 'No pred'; pred_cls = 'hero-pred-toss'
         items += f'''
         <div class="hero-game">
           <div class="hero-game-date">{g["start_dt"].strftime("%b %-d")}</div>
@@ -769,13 +922,13 @@ HTML = f'''<!DOCTYPE html>
     font-size: 0.8rem; font-weight: 700;
     margin-bottom: 1rem;
   }}
-  .hero-upcoming {{ display: flex; gap: 1rem; flex-wrap: wrap; }}
+  .hero-upcoming {{ display: flex; gap: 0.65rem; flex-wrap: wrap; }}
   .hero-game {{
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255,255,255,.2);
     border-radius: 8px;
-    padding: 0.6rem 1rem;
-    text-align: center; min-width: 110px;
+    padding: 0.5rem 0.75rem;
+    text-align: center; min-width: 95px; flex: 1;
   }}
   .hero-game-date {{ font-size: 0.75rem; opacity: 0.8; }}
   .hero-game-opp  {{ font-size: 0.9rem; font-weight: 600; margin: 0.2rem 0; }}
@@ -813,12 +966,20 @@ HTML = f'''<!DOCTYPE html>
   @keyframes fadeIn {{ from {{ opacity:0; transform:translateY(4px); }} to {{ opacity:1; transform:none; }} }}
 
   /* ── Standings ───────────────────────────────────────────────── */
-  .standings-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(340px,1fr)); gap: 1.5rem; }}
+  .standings-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 1.5rem; }}
   .standings-div {{
     background: var(--surface);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
+    /* Enable container queries so columns can respond to the card's own width */
+    container-type: inline-size;
+    container-name: standings;
+  }}
+  /* Scrollable wrapper — safety net if content still overflows */
+  .standings-table-wrap {{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }}
   .div-header {{
     background: var(--navy);
@@ -826,18 +987,20 @@ HTML = f'''<!DOCTYPE html>
     padding: 0.75rem 1rem;
     font-size: 1rem; font-weight: 700;
   }}
-  .standings-table {{ width: 100%; border-collapse: collapse; font-size: 0.875rem; }}
+  .standings-table {{ width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 340px; }}
   .standings-table thead tr {{ background: #F5F0F0; }}
   .standings-table th {{
-    padding: 0.5rem 0.6rem; text-align: center;
-    font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em;
+    padding: 0.5rem 0.5rem; text-align: center;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em;
     color: var(--text-muted); font-weight: 600;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }}
   .standings-table th:nth-child(2) {{ text-align: left; }}
   .standings-table td {{
-    padding: 0.55rem 0.6rem; text-align: center;
+    padding: 0.5rem 0.5rem; text-align: center;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }}
   .standings-table td:nth-child(2) {{ text-align: left; font-weight: 600; }}
   .standings-table tbody tr:hover {{ background: #FDF5F5; }}
@@ -850,8 +1013,29 @@ HTML = f'''<!DOCTYPE html>
   .neg-gd {{ color: var(--loss-fg); font-weight: 600; }}
   .team-cell {{ max-width: 180px; }}
 
+  /* Container queries — hide GF/GA when the card itself is narrower than 400px.
+     This fires at any layout (1-up, 2-up, 3-up) without needing a specific
+     viewport breakpoint, which is exactly what container queries are for. */
+  @container standings (max-width: 400px) {{
+    .standings-table th:nth-child(7),
+    .standings-table td:nth-child(7),
+    .standings-table th:nth-child(8),
+    .standings-table td:nth-child(8) {{ display: none; }}
+  }}
+  /* Very narrow cards (e.g. small phone) — also hide T column */
+  @container standings (max-width: 310px) {{
+    .standings-table th:nth-child(5),
+    .standings-table td:nth-child(5) {{ display: none; }}
+  }}
+
   /* badges */
-  .badge {{ display: inline-block; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; }}
+  .badge-row {{
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 3px;
+    align-items: center;
+  }}
+  .badge {{ display: inline-block; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; }}
   .badge-w {{ background: var(--win-bg); color: var(--win-fg); }}
   .badge-l {{ background: var(--loss-bg); color: var(--loss-fg); }}
   .badge-t {{ background: var(--tie-bg); color: var(--tie-fg); }}
@@ -952,17 +1136,63 @@ HTML = f'''<!DOCTYPE html>
 
   .pred-result {{ padding: 0.75rem 1rem 1rem; }}
   .pred-winner {{ font-size: 0.9rem; margin-bottom: 0.6rem; }}
-  .pred-gd-val {{ font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }}
+  .pred-gd-val {{ font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.6rem; }}
   .conf-bar-wrap {{ display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; font-size: 0.78rem; }}
   .conf-label {{ width: 80px; color: var(--text-muted); flex-shrink: 0; }}
-  .conf-bar {{ flex: 1; height: 6px; background: #E2E8F0; border-radius: 3px; overflow: hidden; }}
-  .conf-fill {{ height: 100%; background: var(--win-fg); border-radius: 3px; transition: width .3s; }}
-  .conf-fill-blue {{ background: var(--blue); }}
+  .conf-bar {{ flex: 1; height: 7px; background: #E2E8F0; border-radius: 4px; overflow: hidden; }}
+  .conf-fill {{ height: 100%; background: var(--win-fg); border-radius: 4px; transition: width .3s; }}
   .conf-pct {{ width: 32px; text-align: right; font-weight: 600; color: var(--text-muted); }}
-  .pred-paths {{ list-style: none; margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.2rem; }}
-  .hop-badge {{ display: inline-block; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.7rem; font-weight: 700; margin-right: 0.25rem; }}
-  .h1 {{ background: #FFE4E4; color: #9B0000; }}
-  .h2 {{ background: #EDE9FE; color: #6D28D9; }}
+
+  /* Per-game Massey rating rows inside prediction cards */
+  .pred-ratings {{ margin-bottom: 0.65rem; display: flex; flex-direction: column; gap: 0.3rem;
+                   border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.65rem;
+                   background: #FAFAFA; }}
+  .pred-rating-row {{ display: flex; align-items: center; font-size: 0.82rem; gap: 0.4rem; }}
+  .pred-rating-team {{ flex: 1; color: var(--text); font-weight: 500; }}
+  .pred-rating-label {{ font-size: 0.7rem; text-transform: uppercase; letter-spacing:.04em;
+                        color: var(--text-muted); flex-shrink: 0; }}
+  .pos-rating {{ color: var(--win-fg); font-weight: 700; font-variant-numeric: tabular-nums; }}
+  .neg-rating {{ color: var(--loss-fg); font-weight: 700; font-variant-numeric: tabular-nums; }}
+  .text-muted {{ color: var(--text-muted); }}
+
+  /* Massey leaderboard panels */
+  .predictions-container {{ display: flex; flex-direction: column; gap: 1.5rem; }}
+  .massey-panels {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.25rem; }}
+  .massey-isolation-note {{
+    font-size: 0.8rem; color: var(--text-muted);
+    background: var(--tie-bg); border: 1px solid #FDE68A;
+    border-radius: 8px; padding: 0.6rem 1rem;
+    margin-top: -0.25rem;
+  }}
+  .massey-section {{
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }}
+  .massey-header {{
+    background: var(--navy);
+    color: white;
+    padding: 0.8rem 1.25rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem;
+  }}
+  .massey-title {{ font-size: 1rem; font-weight: 700; margin: 0; }}
+  .massey-explainer {{ font-size: 0.75rem; opacity: 0.75; font-weight: 400; }}
+  .massey-grid {{ padding: 0.5rem 0.75rem 0.75rem; display: flex; flex-direction: column; gap: 0.3rem; }}
+  .massey-row {{
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.35rem 0.5rem; border-radius: 6px;
+    font-size: 0.85rem;
+  }}
+  .massey-row:hover {{ background: #F5F0F0; }}
+  .dp-massey-row {{ background: var(--pickle-bg) !important; font-weight: 600; }}
+  .massey-rank {{ min-width: 28px; color: var(--text-muted); font-weight: 700; font-size: 0.78rem; text-align: right; }}
+  .massey-team {{ flex: 1; }}
+  .massey-gp {{ font-size: 0.73rem; color: var(--text-muted); flex-shrink: 0; min-width: 30px; text-align: right; }}
+  .massey-bar-wrap {{ width: 80px; height: 7px; background: #E2E0DC; border-radius: 4px; overflow: hidden; flex-shrink: 0; }}
+  .massey-bar {{ height: 100%; border-radius: 4px; }}
+  .massey-rating {{ min-width: 46px; text-align: right; font-weight: 700;
+                    font-variant-numeric: tabular-nums; font-size: 0.85rem; }}
 
   /* ── Spotlight ───────────────────────────────────────────────── */
   .spotlight-container {{ display: flex; flex-direction: column; gap: 1.5rem; }}
@@ -1094,14 +1324,10 @@ HTML = f'''<!DOCTYPE html>
     .tabs-wrap {{ padding: 0.75rem; }}
     .tab-btn {{ padding: 0.45rem 0.7rem; font-size: 0.8rem; }}
 
-    /* Standings — hide GF & GA on small screens (GD summarises them) */
+    /* Standings — tighten padding; GF/GA already hidden via container query */
     .standings-table {{ font-size: 0.8rem; }}
-    .standings-table th:nth-child(7),
-    .standings-table td:nth-child(7),
-    .standings-table th:nth-child(8),
-    .standings-table td:nth-child(8) {{ display: none; }}
     .standings-table th,
-    .standings-table td {{ padding: 0.45rem 0.4rem; }}
+    .standings-table td {{ padding: 0.4rem 0.35rem; }}
     .team-cell {{ max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
     .standings-grid {{ gap: 1rem; }}
 
