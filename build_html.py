@@ -19,6 +19,18 @@ games_raw  = data['games']
 future_weekends = data.get('future_weekends', [])
 season_info     = data.get('season_info', {})
 
+# ── Apply score overrides ──────────────────────────────────────────────────────
+_OVERRIDES_FILE = _os.path.join(_SCRIPT_DIR, 'data', 'overrides.json')
+if _os.path.exists(_OVERRIDES_FILE):
+    with open(_OVERRIDES_FILE) as _f:
+        _overrides = json.load(_f)
+    for _g in games_raw:
+        if _g['id'] in _overrides:
+            _ov = _overrides[_g['id']]
+            if 'home_score'     in _ov: _g['attributes']['home_score']     = _ov['home_score']
+            if 'visiting_score' in _ov: _g['attributes']['visiting_score'] = _ov['visiting_score']
+            _g['attributes']['_override'] = True
+
 # Last updated timestamp (written by update_league.py)
 _raw_ts = data.get('last_updated', '')
 if _raw_ts:
@@ -433,6 +445,162 @@ def build_results_tab():
     html += '</div>'
     return html
 
+# ── Rolling prediction accuracy ───────────────────────────────────────────────
+def build_prediction_accuracy():
+    """For each completed week (starting week 2), compute rolling Massey from
+    all prior weeks and score its predictions against actual outcomes."""
+    from collections import defaultdict
+
+    # Group completed games by date
+    games_by_date = defaultdict(list)
+    for g in completed_games:
+        games_by_date[g['start_d']].append(g)
+    weeks = sorted(games_by_date.keys())
+
+    if len(weeks) < 2:
+        return ''   # need at least 2 weeks to show anything
+
+    overall_correct = overall_total = 0
+    overall_mae = 0.0
+
+    week_sections = ''
+    prior_games = []
+
+    for week_idx, week_date in enumerate(weeks):
+        week_games = games_by_date[week_date]
+
+        if week_idx == 0:
+            # Week 1: no prior data — nothing to show, just accumulate
+            prior_games.extend(week_games)
+            continue
+
+        # Compute Massey from all games before this week
+        rolling_ratings, _ = compute_massey_ratings(prior_games)
+
+        week_correct = week_total = 0
+        week_mae = 0.0
+        rows_html = ''
+
+        for g in sorted(week_games, key=lambda x: x['start_dt']):
+            h_name = short_name(g['hid'])
+            v_name = short_name(g['vid'])
+            hs, vs = g['hs'], g['vs']
+            actual_gd = hs - vs
+
+            hr = rolling_ratings.get(g['hid'])
+            vr = rolling_ratings.get(g['vid'])
+
+            if hr is not None and vr is not None:
+                pred_gd = hr - vr
+                error   = abs(pred_gd - actual_gd)
+                week_mae += error
+                week_total += 1
+
+                pred_winner_home = pred_gd > 0
+                actual_winner_home = hs > vs
+                is_tossup = abs(pred_gd) <= 1.0
+
+                if hs == vs:
+                    correct = abs(pred_gd) <= 1.0
+                elif is_tossup:
+                    correct = True   # toss-up is never "wrong"
+                else:
+                    correct = (pred_winner_home == actual_winner_home)
+
+                if hs == vs:
+                    result_icon = '🟡'
+                elif correct and not is_tossup:
+                    result_icon = '✅'
+                elif is_tossup:
+                    result_icon = '🟡'
+                else:
+                    result_icon = '❌'
+
+                if hs == vs:
+                    actual_str = f'Tie {hs}–{vs}'
+                elif hs > vs:
+                    actual_str = f'{hs}–{vs} {h_name}'
+                else:
+                    actual_str = f'{vs}–{hs} {v_name}'
+
+                pred_str = f'{pred_gd:+.1f}'
+                err_str  = f'±{error:.1f}'
+
+                if correct and not is_tossup:
+                    week_correct += 1
+                    row_cls = 'acc-row acc-correct'
+                elif is_tossup:
+                    row_cls = 'acc-row acc-tossup'
+                else:
+                    row_cls = 'acc-row acc-wrong'
+            else:
+                pred_str   = '—'
+                err_str    = '—'
+                result_icon= '⬜'
+                actual_str = f'{hs}–{vs}'
+                row_cls    = 'acc-row acc-nodata'
+
+            is_dp = DISCO_ID in (g['hid'], g['vid'])
+            dp_cls = ' acc-dp' if is_dp else ''
+
+            rows_html += f'''
+            <tr class="{row_cls}{dp_cls}">
+              <td class="acc-matchup"><span class="acc-home">{esc(h_name)}</span><span class="acc-vs">vs</span><span class="acc-away">{esc(v_name)}</span></td>
+              <td class="acc-pred">{pred_str}</td>
+              <td class="acc-actual">{esc(actual_str)}</td>
+              <td class="acc-err">{err_str}</td>
+              <td class="acc-icon">{result_icon}</td>
+            </tr>'''
+
+        overall_correct += week_correct
+        overall_total   += week_total
+        if week_total:
+            overall_mae += week_mae
+            avg_mae = week_mae / week_total
+            pct = int(week_correct / week_total * 100)
+            summary_str = f'{week_correct}/{week_total} correct ({pct}%) · avg margin error {avg_mae:.1f}'
+            summary_cls = 'acc-good' if pct >= 70 else ('acc-mid' if pct >= 50 else 'acc-poor')
+        else:
+            summary_str = 'No predictions available'
+            summary_cls = 'acc-mid'
+
+        week_label = week_date.strftime('Week of %b %-d')
+        week_sections += f'''
+        <div class="acc-week">
+          <div class="acc-week-header">
+            <span class="acc-week-label">{week_label}</span>
+            <span class="acc-summary {summary_cls}">{summary_str}</span>
+          </div>
+          <div class="acc-table-wrap">
+            <table class="acc-table">
+              <thead><tr>
+                <th>Matchup</th><th>Predicted GD</th><th>Actual Result</th><th>Margin Err</th><th></th>
+              </tr></thead>
+              <tbody>{rows_html}</tbody>
+            </table>
+          </div>
+        </div>'''
+
+        prior_games.extend(week_games)
+
+    if overall_total == 0:
+        return ''
+
+    overall_pct = int(overall_correct / overall_total * 100)
+    overall_avg_mae = overall_mae / overall_total
+    overall_cls = 'acc-good' if overall_pct >= 70 else ('acc-mid' if overall_pct >= 50 else 'acc-poor')
+
+    return f'''
+    <div class="acc-container">
+      <div class="acc-header">
+        <h3 class="acc-title">📈 Prediction Accuracy — Season to Date</h3>
+        <span class="acc-summary {overall_cls}">{overall_correct}/{overall_total} correct ({overall_pct}%) · avg margin error {overall_avg_mae:.1f} goals</span>
+      </div>
+      <p class="acc-explainer">Each week's predictions were generated using Massey ratings built from all <em>prior</em> weeks only — no future data.</p>
+      {week_sections}
+    </div>'''
+
+
 # ── Build predictions tab ──────────────────────────────────────────────────────
 def build_predictions_tab():
     html = '<div class="predictions-container">'
@@ -492,6 +660,8 @@ def build_predictions_tab():
       ⚠️ West plays no games against North or South this season, so West ratings and
       North/South ratings are on independent scales and cannot be directly compared.
     </p>'''
+
+    html += build_prediction_accuracy()
 
     # ── Per-game prediction cards ───────────────────────────────────────────────
     if not upcoming_games:
@@ -831,7 +1001,7 @@ HTML = f'''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏒 10U Advance League – Season 2026</title>
+<title>🏒 10U Advance League – Spring 2026</title>
 <style>
   :root {{
     --navy:       #23282B;
@@ -1194,6 +1364,62 @@ HTML = f'''<!DOCTYPE html>
   .massey-rating {{ min-width: 46px; text-align: right; font-weight: 700;
                     font-variant-numeric: tabular-nums; font-size: 0.85rem; }}
 
+  /* ── Prediction Accuracy ────────────────────────────────────── */
+  .acc-container {{
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden;
+  }}
+  .acc-header {{
+    background: var(--navy); color: white;
+    padding: 0.8rem 1.25rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem;
+  }}
+  .acc-title {{ font-size: 1rem; font-weight: 700; margin: 0; }}
+  .acc-explainer {{
+    font-size: 0.78rem; color: var(--text-muted);
+    padding: 0.6rem 1.25rem 0; margin: 0;
+  }}
+  .acc-week {{
+    border-top: 1px solid var(--border);
+  }}
+  .acc-week:first-of-type {{ border-top: none; }}
+  .acc-week-header {{
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+    padding: 0.6rem 1.25rem;
+    background: #F7F5F3;
+    border-bottom: 1px solid var(--border);
+  }}
+  .acc-week-label {{ font-weight: 700; font-size: 0.9rem; color: var(--navy); }}
+  .acc-summary {{ font-size: 0.8rem; }}
+  .acc-good {{ color: var(--win-fg); font-weight: 600; }}
+  .acc-mid  {{ color: #B45309; font-weight: 600; }}
+  .acc-poor {{ color: var(--loss-fg); font-weight: 600; }}
+  .acc-table-wrap {{ overflow-x: auto; -webkit-overflow-scrolling: touch; }}
+  .acc-table {{
+    width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 480px;
+  }}
+  .acc-table thead th {{
+    background: #F0EDE8; color: var(--text-muted);
+    padding: 0.4rem 0.75rem; text-align: left;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em;
+    white-space: nowrap;
+  }}
+  .acc-row td {{ padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }}
+  .acc-row:last-child td {{ border-bottom: none; }}
+  .acc-correct {{ background: var(--win-bg); }}
+  .acc-wrong   {{ background: var(--loss-bg); }}
+  .acc-tossup  {{ background: var(--tie-bg); }}
+  .acc-nodata  {{ opacity: 0.55; }}
+  .acc-dp      {{ font-weight: 600; }}
+  .acc-matchup {{ display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; }}
+  .acc-home    {{ font-weight: 600; }}
+  .acc-vs      {{ color: var(--text-muted); font-size: 0.75rem; }}
+  .acc-away    {{ color: var(--text-muted); }}
+  .acc-pred    {{ text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }}
+  .acc-actual  {{ white-space: nowrap; font-weight: 500; }}
+  .acc-err     {{ text-align: right; font-variant-numeric: tabular-nums; color: var(--text-muted); white-space: nowrap; }}
+  .acc-icon    {{ text-align: center; font-size: 1rem; width: 2rem; }}
+
   /* ── Spotlight ───────────────────────────────────────────────── */
   .spotlight-container {{ display: flex; flex-direction: column; gap: 1.5rem; }}
   .stats-cards {{ display: flex; flex-wrap: wrap; gap: 1rem; }}
@@ -1382,7 +1608,7 @@ HTML = f'''<!DOCTYPE html>
     <h1>10U Advance League</h1>
     <div class="subtitle">Polar Hurricanes House League</div>
   </div>
-  <div class="season-badge">Season 2026</div>
+  <div class="season-badge">Spring 2026</div>
   <div class="last-updated">🔄 Last updated: {LAST_UPDATED}</div>
 </header>
 
