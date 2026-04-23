@@ -270,6 +270,19 @@
   .loss-badge { background: var(--loss-bg); color: var(--loss-fg); }
   .tie-badge  { background: var(--tie-bg);  color: var(--tie-fg);  }
 
+  /* ── Pickle Fact Bar ─────────────────────────────────────────── */
+  .pickle-fact-bar {
+    background: var(--pickle-bg);
+    border-top: 2px solid var(--pickle-bdr);
+    border-bottom: 2px solid var(--pickle-bdr);
+    padding: 0.65rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 0.65rem;
+    font-size: 0.85rem; color: var(--text); line-height: 1.5;
+  }
+  .pickle-fact-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .pickle-fact-text { flex: 1; }
+  .pickle-fact-text strong { color: var(--pickle); }
+
   /* ── Predictions ─────────────────────────────────────────────── */
   .predictions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
   .pred-card {
@@ -654,6 +667,12 @@
     <div class="hero-rank-lbl">West Division</div>
   </div>
 </section>
+
+<!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
+<div class="pickle-fact-bar">
+  <span class="pickle-fact-icon">🥒</span>
+  <span class="pickle-fact-text"><strong>Did you know?</strong> At Studio 54 in 1977, a jar of pickles was found on the VIP dance floor every single Saturday night. Historians believe it was left by the same person each week, never identified, and never explained. Investigators concluded the brine kept the floor from warping. Studio 54's owner called it "the most important security deposit we never returned."</span>
+</div>
 
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
 <main class="tabs-wrap">
