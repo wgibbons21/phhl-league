@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏒 10U Advance League – Spring 2026</title>
+<title>🏒 10U Advance League – Season 2026</title>
 <style>
   :root {
     --navy:       #23282B;
@@ -270,19 +270,6 @@
   .loss-badge { background: var(--loss-bg); color: var(--loss-fg); }
   .tie-badge  { background: var(--tie-bg);  color: var(--tie-fg);  }
 
-  /* ── Pickle Fact Bar ─────────────────────────────────────────── */
-  .pickle-fact-bar {
-    background: var(--pickle-bg);
-    border-top: 2px solid var(--pickle-bdr);
-    border-bottom: 2px solid var(--pickle-bdr);
-    padding: 0.65rem 1.5rem;
-    display: flex; align-items: flex-start; gap: 0.65rem;
-    font-size: 0.85rem; color: var(--text); line-height: 1.5;
-  }
-  .pickle-fact-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }
-  .pickle-fact-text { flex: 1; }
-  .pickle-fact-text strong { color: var(--pickle); }
-
   /* ── Predictions ─────────────────────────────────────────────── */
   .predictions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
   .pred-card {
@@ -378,62 +365,6 @@
   .massey-bar { height: 100%; border-radius: 4px; }
   .massey-rating { min-width: 46px; text-align: right; font-weight: 700;
                     font-variant-numeric: tabular-nums; font-size: 0.85rem; }
-
-  /* ── Prediction Accuracy ────────────────────────────────────── */
-  .acc-container {
-    background: var(--surface); border-radius: var(--radius);
-    box-shadow: var(--shadow); overflow: hidden;
-  }
-  .acc-header {
-    background: var(--navy); color: white;
-    padding: 0.8rem 1.25rem;
-    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem;
-  }
-  .acc-title { font-size: 1rem; font-weight: 700; margin: 0; }
-  .acc-explainer {
-    font-size: 0.78rem; color: var(--text-muted);
-    padding: 0.6rem 1.25rem 0; margin: 0;
-  }
-  .acc-week {
-    border-top: 1px solid var(--border);
-  }
-  .acc-week:first-of-type { border-top: none; }
-  .acc-week-header {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
-    padding: 0.6rem 1.25rem;
-    background: #F7F5F3;
-    border-bottom: 1px solid var(--border);
-  }
-  .acc-week-label { font-weight: 700; font-size: 0.9rem; color: var(--navy); }
-  .acc-summary { font-size: 0.8rem; }
-  .acc-good { color: var(--win-fg); font-weight: 600; }
-  .acc-mid  { color: #B45309; font-weight: 600; }
-  .acc-poor { color: var(--loss-fg); font-weight: 600; }
-  .acc-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .acc-table {
-    width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 480px;
-  }
-  .acc-table thead th {
-    background: #F0EDE8; color: var(--text-muted);
-    padding: 0.4rem 0.75rem; text-align: left;
-    font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em;
-    white-space: nowrap;
-  }
-  .acc-row td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  .acc-row:last-child td { border-bottom: none; }
-  .acc-correct { background: var(--win-bg); }
-  .acc-wrong   { background: var(--loss-bg); }
-  .acc-tossup  { background: var(--tie-bg); }
-  .acc-nodata  { opacity: 0.55; }
-  .acc-dp      { font-weight: 600; }
-  .acc-matchup { display: flex; align-items: center; gap: 0.4rem; white-space: nowrap; }
-  .acc-home    { font-weight: 600; }
-  .acc-vs      { color: var(--text-muted); font-size: 0.75rem; }
-  .acc-away    { color: var(--text-muted); }
-  .acc-pred    { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
-  .acc-actual  { white-space: nowrap; font-weight: 500; }
-  .acc-err     { text-align: right; font-variant-numeric: tabular-nums; color: var(--text-muted); white-space: nowrap; }
-  .acc-icon    { text-align: center; font-size: 1rem; width: 2rem; }
 
   /* ── Spotlight ───────────────────────────────────────────────── */
   .spotlight-container { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -623,8 +554,8 @@
     <h1>10U Advance League</h1>
     <div class="subtitle">Polar Hurricanes House League</div>
   </div>
-  <div class="season-badge">Spring 2026</div>
-  <div class="last-updated">🔄 Last updated: 8:00 AM on Thursday, April 23, 2026</div>
+  <div class="season-badge">Season 2026</div>
+  <div class="last-updated">🔄 Last updated: 11:18 AM on Sunday, April 26, 2026</div>
 </header>
 
 <!-- ── Disco Pickles Hero ───────────────────────────────────────────────────── -->
@@ -633,33 +564,28 @@
     <div class="division-badge">⭐ West Division Leaders</div>
     <div class="team-name">🥒 Disco Pickles</div>
     <div class="record-line">
-      <span class="hero-stat">5-0-0</span>
-      <span class="hero-stat">10 pts</span>
-      <span class="hero-stat">GF: 33</span>
-      <span class="hero-stat">GA: 15</span>
-      <span class="hero-stat">GD: +18</span>
+      <span class="hero-stat">6-0-0</span>
+      <span class="hero-stat">12 pts</span>
+      <span class="hero-stat">GF: 39</span>
+      <span class="hero-stat">GA: 16</span>
+      <span class="hero-stat">GD: +23</span>
     </div>
     <div class="hero-upcoming-title">Upcoming Games</div>
     <div class="hero-upcoming">
         <div class="hero-game">
-          <div class="hero-game-date">Apr 26</div>
-          <div class="hero-game-opp">vs Carolina Havoc</div>
-          <div class="hero-game-pred hero-pred-win">82% win</div>
-        </div>
-        <div class="hero-game">
           <div class="hero-game-date">May 10</div>
           <div class="hero-game-opp">vs Polar Predators</div>
-          <div class="hero-game-pred hero-pred-toss">53% win</div>
+          <div class="hero-game-pred hero-pred-toss">54% win</div>
         </div>
         <div class="hero-game">
           <div class="hero-game-date">May 17</div>
           <div class="hero-game-opp">vs Ice Outlaws</div>
-          <div class="hero-game-pred hero-pred-win">90% win</div>
+          <div class="hero-game-pred hero-pred-win">91% win</div>
         </div>
         <div class="hero-game">
           <div class="hero-game-date">May 31</div>
           <div class="hero-game-opp">vs Brass Bonanza</div>
-          <div class="hero-game-pred hero-pred-win">90% win</div>
+          <div class="hero-game-pred hero-pred-win">91% win</div>
         </div></div>
   </div>
   <div class="hero-right">
@@ -667,12 +593,6 @@
     <div class="hero-rank-lbl">West Division</div>
   </div>
 </section>
-
-<!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
-<div class="pickle-fact-bar">
-  <span class="pickle-fact-icon">🥒</span>
-  <span class="pickle-fact-text"><strong>Did you know?</strong> On September 3, 2000, the Philadelphia Eagles crushed the Dallas Cowboys 41–14 in 109°F heat — and their secret weapon was pickle juice. Players chugged it on the sideline to stop leg cramps, it worked, and the game is now literally known as <em>"The Pickle Juice Game"</em> in NFL history. Scientists later confirmed that pickle brine stops muscle cramps in about 85 seconds, faster than water or any sports drink. So if a Disco Pickle ever gets a cramp on the ice, you know exactly what to reach for.</span>
-</div>
 
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
 <main class="tabs-wrap">
@@ -702,10 +622,10 @@
         <tr class="dp-row">
           <td class="rank-cell">1</td>
           <td class="team-cell">Disco Pickles 🥇</td>
-          <td>5</td><td>0</td><td>0</td>
-          <td class="pts-cell">10</td>
-          <td>33</td><td>15</td>
-          <td class="pos-gd">+18</td>
+          <td>6</td><td>0</td><td>0</td>
+          <td class="pts-cell">12</td>
+          <td>39</td><td>16</td>
+          <td class="pos-gd">+23</td>
           <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></span></td>
         </tr>
         <tr class="">
@@ -729,11 +649,11 @@
         <tr class="">
           <td class="rank-cell">4</td>
           <td class="team-cell">Carolina Havoc</td>
-          <td>2</td><td>3</td><td>0</td>
+          <td>2</td><td>4</td><td>0</td>
           <td class="pts-cell">4</td>
-          <td>17</td><td>22</td>
-          <td class="neg-gd">-5</td>
-          <td><span class="badge-row"><span class="badge badge-l">L</span><span class="badge badge-w">W</span><span class="badge badge-w">W</span></span></td>
+          <td>18</td><td>28</td>
+          <td class="neg-gd">-10</td>
+          <td><span class="badge-row"><span class="badge badge-w">W</span><span class="badge badge-w">W</span><span class="badge badge-l">L</span></span></td>
         </tr>
         <tr class="">
           <td class="rank-cell">5</td>
@@ -1258,7 +1178,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Carolina Havoc</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +3.8</span> </div>
+                  <div class="game-score"><span class="res-w">6</span> – <span class="res-l">1</span> <span class="outcome-badge win-badge">DP Win</span></div>
                   <div class="game-time">8:45 AM</div>
                 </div>
                 <div class="game-row">
@@ -1366,7 +1286,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Carolina Havoc</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +1.3</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +1.5</span> </div>
                   <div class="game-time">2:15 PM</div>
                 </div>
                 <div class="game-row">
@@ -1384,7 +1304,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Polar Predators</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +0.3</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +0.5</span> </div>
                   <div class="game-time">4:45 PM</div>
                 </div></div><div class="date-group"><div class="date-header">Sun May 17, 2026</div>
                 <div class="game-row dp-game">
@@ -1393,7 +1313,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Ice Outlaws</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +5.7</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +5.8</span> </div>
                   <div class="game-time">7:30 AM</div>
                 </div>
                 <div class="game-row">
@@ -1456,7 +1376,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Carolina Havoc</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +3.5</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +3.6</span> </div>
                   <div class="game-time">4:45 PM</div>
                 </div></div><div class="date-group"><div class="date-header">Sun May 31, 2026</div>
                 <div class="game-row">
@@ -1519,7 +1439,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Brass Bonanza</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +5.7</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +5.8</span> </div>
                   <div class="game-time">3:30 PM</div>
                 </div>
                 <div class="game-row">
@@ -1528,7 +1448,7 @@
                     <span class="vs-sep">vs</span>
                     <span class="away-team">Ice Outlaws</span>
                   </div>
-                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +1.8</span> </div>
+                  <div class="game-score"><span class="upcoming-tbd">TBD</span> <span class="pred-score">Massey: +1.7</span> </div>
                   <div class="game-time">4:45 PM</div>
                 </div></div></div>
   </div>
@@ -1645,18 +1565,18 @@
             <div class="massey-row dp-massey-row">
               <span class="massey-rank">#1</span>
               <span class="massey-team">Disco Pickles 🥒</span>
-              <span class="massey-gp">5&#8239;GP</span>
+              <span class="massey-gp">6&#8239;GP</span>
               <div class="massey-bar-wrap">
                 <div class="massey-bar" style="width:100%;background:var(--win-fg)"></div>
               </div>
-              <span class="massey-rating pos-rating">+3.00</span>
+              <span class="massey-rating pos-rating">+3.15</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#2</span>
               <span class="massey-team">Polar Predators</span>
               <span class="massey-gp">5&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:88%;background:var(--win-fg)"></div>
+                <div class="massey-bar" style="width:84%;background:var(--win-fg)"></div>
               </div>
               <span class="massey-rating pos-rating">+2.67</span>
             </div>
@@ -1665,25 +1585,25 @@
               <span class="massey-team">Lamp Lighters</span>
               <span class="massey-gp">5&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:16%;background:var(--win-fg)"></div>
+                <div class="massey-bar" style="width:15%;background:var(--win-fg)"></div>
               </div>
               <span class="massey-rating pos-rating">+0.50</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#4</span>
               <span class="massey-team">Carolina Havoc</span>
-              <span class="massey-gp">5&#8239;GP</span>
+              <span class="massey-gp">6&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:27%;background:var(--loss-fg)"></div>
+                <div class="massey-bar" style="width:31%;background:var(--loss-fg)"></div>
               </div>
-              <span class="massey-rating neg-rating">-0.83</span>
+              <span class="massey-rating neg-rating">-0.98</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#5</span>
               <span class="massey-team">Brass Bonanza</span>
               <span class="massey-gp">5&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:88%;background:var(--loss-fg)"></div>
+                <div class="massey-bar" style="width:84%;background:var(--loss-fg)"></div>
               </div>
               <span class="massey-rating neg-rating">-2.67</span>
             </div>
@@ -1692,7 +1612,7 @@
               <span class="massey-team">Ice Outlaws</span>
               <span class="massey-gp">5&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:88%;background:var(--loss-fg)"></div>
+                <div class="massey-bar" style="width:84%;background:var(--loss-fg)"></div>
               </div>
               <span class="massey-rating neg-rating">-2.67</span>
             </div>
@@ -1702,295 +1622,7 @@
     <p class="massey-isolation-note">
       ⚠️ West plays no games against North or South this season, so West ratings and
       North/South ratings are on independent scales and cannot be directly compared.
-    </p>
-    <div class="acc-container">
-      <div class="acc-header">
-        <h3 class="acc-title">📈 Prediction Accuracy — Season to Date</h3>
-        <span class="acc-summary acc-mid">19/32 correct (59%) · avg margin error 3.1 goals</span>
-      </div>
-      <p class="acc-explainer">Each week's predictions were generated using Massey ratings built from all <em>prior</em> weeks only — no future data.</p>
-      
-        <div class="acc-week">
-          <div class="acc-week-header">
-            <span class="acc-week-label">Week of Mar 29</span>
-            <span class="acc-summary acc-mid">4/8 correct (50%) · avg margin error 3.6</span>
-          </div>
-          <div class="acc-table-wrap">
-            <table class="acc-table">
-              <thead><tr>
-                <th>Matchup</th><th>Predicted GD</th><th>Actual Result</th><th>Margin Err</th><th></th>
-              </tr></thead>
-              <tbody>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Snow Troopers</span><span class="acc-vs">vs</span><span class="acc-away">Knight Furies</span></td>
-              <td class="acc-pred">-0.5</td>
-              <td class="acc-actual">6–4 Snow Troopers</td>
-              <td class="acc-err">±2.5</td>
-              <td class="acc-icon">🟡</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Flying SAUCErs</span><span class="acc-vs">vs</span><span class="acc-away">Puckaneers</span></td>
-              <td class="acc-pred">+2.0</td>
-              <td class="acc-actual">9–3 Flying SAUCErs</td>
-              <td class="acc-err">±4.0</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-wrong">
-              <td class="acc-matchup"><span class="acc-home">Arctic Arsenals</span><span class="acc-vs">vs</span><span class="acc-away">10S3</span></td>
-              <td class="acc-pred">-2.0</td>
-              <td class="acc-actual">8–2 Arctic Arsenals</td>
-              <td class="acc-err">±8.0</td>
-              <td class="acc-icon">❌</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Thunder Blades</span><span class="acc-vs">vs</span><span class="acc-away">Mighty Canes</span></td>
-              <td class="acc-pred">+8.0</td>
-              <td class="acc-actual">5–2 Thunder Blades</td>
-              <td class="acc-err">±5.0</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Lamp Lighters</span><span class="acc-vs">vs</span><span class="acc-away">Carolina Havoc</span></td>
-              <td class="acc-pred">+3.5</td>
-              <td class="acc-actual">5–4 Lamp Lighters</td>
-              <td class="acc-err">±2.5</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Ice Outlaws</span><span class="acc-vs">vs</span><span class="acc-away">Brass Bonanza</span></td>
-              <td class="acc-pred">+0.5</td>
-              <td class="acc-actual">2–1 Ice Outlaws</td>
-              <td class="acc-err">±0.5</td>
-              <td class="acc-icon">🟡</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Hawks (District 6)</span><span class="acc-vs">vs</span><span class="acc-away">Frozen Fury</span></td>
-              <td class="acc-pred">+7.5</td>
-              <td class="acc-actual">13–0 Hawks (District 6)</td>
-              <td class="acc-err">±5.5</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-tossup acc-dp">
-              <td class="acc-matchup"><span class="acc-home">Disco Pickles</span><span class="acc-vs">vs</span><span class="acc-away">Polar Predators</span></td>
-              <td class="acc-pred">+0.0</td>
-              <td class="acc-actual">6–5 Disco Pickles</td>
-              <td class="acc-err">±1.0</td>
-              <td class="acc-icon">🟡</td>
-            </tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="acc-week">
-          <div class="acc-week-header">
-            <span class="acc-week-label">Week of Apr 4</span>
-            <span class="acc-summary acc-mid">5/8 correct (62%) · avg margin error 3.9</span>
-          </div>
-          <div class="acc-table-wrap">
-            <table class="acc-table">
-              <thead><tr>
-                <th>Matchup</th><th>Predicted GD</th><th>Actual Result</th><th>Margin Err</th><th></th>
-              </tr></thead>
-              <tbody>
-            <tr class="acc-row acc-wrong">
-              <td class="acc-matchup"><span class="acc-home">Thunder Blades</span><span class="acc-vs">vs</span><span class="acc-away">Arctic Arsenals</span></td>
-              <td class="acc-pred">-2.0</td>
-              <td class="acc-actual">5–3 Thunder Blades</td>
-              <td class="acc-err">±4.0</td>
-              <td class="acc-icon">❌</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">10S3</span><span class="acc-vs">vs</span><span class="acc-away">Knight Furies</span></td>
-              <td class="acc-pred">-5.8</td>
-              <td class="acc-actual">6–3 Knight Furies</td>
-              <td class="acc-err">±2.8</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Polar Predators</span><span class="acc-vs">vs</span><span class="acc-away">Carolina Havoc</span></td>
-              <td class="acc-pred">+2.3</td>
-              <td class="acc-actual">7–1 Polar Predators</td>
-              <td class="acc-err">±3.7</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct acc-dp">
-              <td class="acc-matchup"><span class="acc-home">Disco Pickles</span><span class="acc-vs">vs</span><span class="acc-away">Ice Outlaws</span></td>
-              <td class="acc-pred">+5.0</td>
-              <td class="acc-actual">7–2 Disco Pickles</td>
-              <td class="acc-err">±0.0</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-wrong">
-              <td class="acc-matchup"><span class="acc-home">Snow Troopers</span><span class="acc-vs">vs</span><span class="acc-away">Frozen Fury</span></td>
-              <td class="acc-pred">+9.6</td>
-              <td class="acc-actual">Tie 4–4</td>
-              <td class="acc-err">±9.6</td>
-              <td class="acc-icon">🟡</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Lamp Lighters</span><span class="acc-vs">vs</span><span class="acc-away">Brass Bonanza</span></td>
-              <td class="acc-pred">+3.3</td>
-              <td class="acc-actual">7–2 Lamp Lighters</td>
-              <td class="acc-err">±1.7</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Flying SAUCErs</span><span class="acc-vs">vs</span><span class="acc-away">Hawks (District 6)</span></td>
-              <td class="acc-pred">-4.6</td>
-              <td class="acc-actual">9–1 Hawks (District 6)</td>
-              <td class="acc-err">±3.4</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Mighty Canes</span><span class="acc-vs">vs</span><span class="acc-away">Puckaneers</span></td>
-              <td class="acc-pred">-0.2</td>
-              <td class="acc-actual">7–1 Puckaneers</td>
-              <td class="acc-err">±5.8</td>
-              <td class="acc-icon">🟡</td>
-            </tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="acc-week">
-          <div class="acc-week-header">
-            <span class="acc-week-label">Week of Apr 12</span>
-            <span class="acc-summary acc-mid">4/8 correct (50%) · avg margin error 1.7</span>
-          </div>
-          <div class="acc-table-wrap">
-            <table class="acc-table">
-              <thead><tr>
-                <th>Matchup</th><th>Predicted GD</th><th>Actual Result</th><th>Margin Err</th><th></th>
-              </tr></thead>
-              <tbody>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Hawks (District 6)</span><span class="acc-vs">vs</span><span class="acc-away">Puckaneers</span></td>
-              <td class="acc-pred">+10.9</td>
-              <td class="acc-actual">8–0 Hawks (District 6)</td>
-              <td class="acc-err">±2.9</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Snow Troopers</span><span class="acc-vs">vs</span><span class="acc-away">Arctic Arsenals</span></td>
-              <td class="acc-pred">-0.2</td>
-              <td class="acc-actual">Tie 1–1</td>
-              <td class="acc-err">±0.2</td>
-              <td class="acc-icon">🟡</td>
-            </tr>
-            <tr class="acc-row acc-wrong">
-              <td class="acc-matchup"><span class="acc-home">Frozen Fury</span><span class="acc-vs">vs</span><span class="acc-away">Knight Furies</span></td>
-              <td class="acc-pred">-3.0</td>
-              <td class="acc-actual">4–3 Frozen Fury</td>
-              <td class="acc-err">±4.0</td>
-              <td class="acc-icon">❌</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Mighty Canes</span><span class="acc-vs">vs</span><span class="acc-away">10S3</span></td>
-              <td class="acc-pred">-1.1</td>
-              <td class="acc-actual">4–3 10S3</td>
-              <td class="acc-err">±0.1</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Flying SAUCErs</span><span class="acc-vs">vs</span><span class="acc-away">Thunder Blades</span></td>
-              <td class="acc-pred">+0.7</td>
-              <td class="acc-actual">Tie 3–3</td>
-              <td class="acc-err">±0.7</td>
-              <td class="acc-icon">🟡</td>
-            </tr>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Carolina Havoc</span><span class="acc-vs">vs</span><span class="acc-away">Ice Outlaws</span></td>
-              <td class="acc-pred">+0.5</td>
-              <td class="acc-actual">7–4 Carolina Havoc</td>
-              <td class="acc-err">±2.5</td>
-              <td class="acc-icon">🟡</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Lamp Lighters</span><span class="acc-vs">vs</span><span class="acc-away">Polar Predators</span></td>
-              <td class="acc-pred">-1.7</td>
-              <td class="acc-actual">3–2 Polar Predators</td>
-              <td class="acc-err">±0.7</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct acc-dp">
-              <td class="acc-matchup"><span class="acc-home">Disco Pickles</span><span class="acc-vs">vs</span><span class="acc-away">Brass Bonanza</span></td>
-              <td class="acc-pred">+5.9</td>
-              <td class="acc-actual">6–3 Disco Pickles</td>
-              <td class="acc-err">±2.9</td>
-              <td class="acc-icon">✅</td>
-            </tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="acc-week">
-          <div class="acc-week-header">
-            <span class="acc-week-label">Week of Apr 19</span>
-            <span class="acc-summary acc-good">6/8 correct (75%) · avg margin error 3.1</span>
-          </div>
-          <div class="acc-table-wrap">
-            <table class="acc-table">
-              <thead><tr>
-                <th>Matchup</th><th>Predicted GD</th><th>Actual Result</th><th>Margin Err</th><th></th>
-              </tr></thead>
-              <tbody>
-            <tr class="acc-row acc-correct acc-dp">
-              <td class="acc-matchup"><span class="acc-home">Lamp Lighters</span><span class="acc-vs">vs</span><span class="acc-away">Disco Pickles</span></td>
-              <td class="acc-pred">-1.2</td>
-              <td class="acc-actual">8–3 Disco Pickles</td>
-              <td class="acc-err">±3.8</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Polar Predators</span><span class="acc-vs">vs</span><span class="acc-away">Ice Outlaws</span></td>
-              <td class="acc-pred">+5.0</td>
-              <td class="acc-actual">8–2 Polar Predators</td>
-              <td class="acc-err">±1.0</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Snow Troopers</span><span class="acc-vs">vs</span><span class="acc-away">10S3</span></td>
-              <td class="acc-pred">+3.2</td>
-              <td class="acc-actual">3–1 Snow Troopers</td>
-              <td class="acc-err">±1.2</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Brass Bonanza</span><span class="acc-vs">vs</span><span class="acc-away">Carolina Havoc</span></td>
-              <td class="acc-pred">-1.2</td>
-              <td class="acc-actual">3–0 Carolina Havoc</td>
-              <td class="acc-err">±1.8</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Flying SAUCErs</span><span class="acc-vs">vs</span><span class="acc-away">Mighty Canes</span></td>
-              <td class="acc-pred">+5.8</td>
-              <td class="acc-actual">7–3 Flying SAUCErs</td>
-              <td class="acc-err">±1.8</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-correct">
-              <td class="acc-matchup"><span class="acc-home">Arctic Arsenals</span><span class="acc-vs">vs</span><span class="acc-away">Frozen Fury</span></td>
-              <td class="acc-pred">+2.7</td>
-              <td class="acc-actual">8–1 Arctic Arsenals</td>
-              <td class="acc-err">±4.3</td>
-              <td class="acc-icon">✅</td>
-            </tr>
-            <tr class="acc-row acc-wrong">
-              <td class="acc-matchup"><span class="acc-home">Thunder Blades</span><span class="acc-vs">vs</span><span class="acc-away">Hawks (District 6)</span></td>
-              <td class="acc-pred">-7.3</td>
-              <td class="acc-actual">4–2 Thunder Blades</td>
-              <td class="acc-err">±9.3</td>
-              <td class="acc-icon">❌</td>
-            </tr>
-            <tr class="acc-row acc-tossup">
-              <td class="acc-matchup"><span class="acc-home">Puckaneers</span><span class="acc-vs">vs</span><span class="acc-away">Knight Furies</span></td>
-              <td class="acc-pred">+0.3</td>
-              <td class="acc-actual">5–4 Knight Furies</td>
-              <td class="acc-err">±1.3</td>
-              <td class="acc-icon">🟡</td>
-            </tr></tbody>
-            </table>
-          </div>
-        </div>
-    </div><div class="predictions-grid">
+    </p><div class="predictions-grid">
         <div class="pred-card home-favored">
           <div class="pred-card-header">
             <div class="pred-date">Sun Apr 26, 2026 · 7:30 AM</div>
@@ -2021,39 +1653,6 @@
                 <span class="conf-label">Home Win %</span>
                 <div class="conf-bar"><div class="conf-fill" style="width:78%"></div></div>
                 <span class="conf-pct">78%</span>
-              </div>
-            </div>
-        </div>
-        <div class="pred-card home-favored dp-pred-card">
-          <div class="pred-card-header">
-            <div class="pred-date">Sun Apr 26, 2026 · 8:45 AM</div>
-            <span class="dp-badge">🥒 DP Game</span>
-          </div>
-          <div class="pred-matchup">
-            <span class="pred-home">Disco Pickles</span>
-            <span class="pred-vs">vs</span>
-            <span class="pred-away">Carolina Havoc</span>
-          </div>
-          
-            <div class="pred-result">
-              <div class="pred-ratings">
-                <div class="pred-rating-row">
-                  <span class="pred-rating-team">Disco Pickles</span>
-                  <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.00</span>
-                </div>
-                <div class="pred-rating-row">
-                  <span class="pred-rating-team">Carolina Havoc</span>
-                  <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.83</span>
-                </div>
-              </div>
-              <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~3.8</div>
-              <div class="pred-gd-val">Expected margin: +3.83 goals</div>
-              <div class="conf-bar-wrap">
-                <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:82%"></div></div>
-                <span class="conf-pct">82%</span>
               </div>
             </div>
         </div>
@@ -2441,15 +2040,15 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.83</span>
+                  <span class="neg-rating">-0.98</span>
                 </div>
               </div>
-              <div class="pred-winner">Predicted: <strong>Lamp Lighters</strong> by ~1.3</div>
-              <div class="pred-gd-val">Expected margin: +1.33 goals</div>
+              <div class="pred-winner">Predicted: <strong>Lamp Lighters</strong> by ~1.5</div>
+              <div class="pred-gd-val">Expected margin: +1.48 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:63%"></div></div>
-                <span class="conf-pct">63%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:64%"></div></div>
+                <span class="conf-pct">64%</span>
               </div>
             </div>
         </div>
@@ -2481,8 +2080,8 @@
               <div class="pred-gd-val">Expected margin: -0.00 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:50%"></div></div>
-                <span class="conf-pct">50%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:49%"></div></div>
+                <span class="conf-pct">49%</span>
               </div>
             </div>
         </div>
@@ -2502,7 +2101,7 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.00</span>
+                  <span class="pos-rating">+3.15</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Polar Predators</span>
@@ -2510,12 +2109,12 @@
                   <span class="pos-rating">+2.67</span>
                 </div>
               </div>
-              <div class="pred-winner">🏒 Predicted: <strong>Toss-up</strong> (±0.3)</div>
-              <div class="pred-gd-val">Expected margin: +0.33 goals</div>
+              <div class="pred-winner">🏒 Predicted: <strong>Toss-up</strong> (±0.5)</div>
+              <div class="pred-gd-val">Expected margin: +0.48 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:53%"></div></div>
-                <span class="conf-pct">53%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:54%"></div></div>
+                <span class="conf-pct">54%</span>
               </div>
             </div>
         </div>
@@ -2535,7 +2134,7 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.00</span>
+                  <span class="pos-rating">+3.15</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
@@ -2543,12 +2142,12 @@
                   <span class="neg-rating">-2.67</span>
                 </div>
               </div>
-              <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~5.7</div>
-              <div class="pred-gd-val">Expected margin: +5.67 goals</div>
+              <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~5.8</div>
+              <div class="pred-gd-val">Expected margin: +5.81 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:90%"></div></div>
-                <span class="conf-pct">90%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:91%"></div></div>
+                <span class="conf-pct">91%</span>
               </div>
             </div>
         </div>
@@ -2771,15 +2370,15 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.83</span>
+                  <span class="neg-rating">-0.98</span>
                 </div>
               </div>
-              <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~3.5</div>
-              <div class="pred-gd-val">Expected margin: +3.50 goals</div>
+              <div class="pred-winner">Predicted: <strong>Polar Predators</strong> by ~3.6</div>
+              <div class="pred-gd-val">Expected margin: +3.65 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:80%"></div></div>
-                <span class="conf-pct">80%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:81%"></div></div>
+                <span class="conf-pct">81%</span>
               </div>
             </div>
         </div>
@@ -2997,7 +2596,7 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Disco Pickles</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="pos-rating">+3.00</span>
+                  <span class="pos-rating">+3.15</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Brass Bonanza</span>
@@ -3005,12 +2604,12 @@
                   <span class="neg-rating">-2.67</span>
                 </div>
               </div>
-              <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~5.7</div>
-              <div class="pred-gd-val">Expected margin: +5.67 goals</div>
+              <div class="pred-winner">🏒 Predicted: <strong>Disco Pickles</strong> by ~5.8</div>
+              <div class="pred-gd-val">Expected margin: +5.81 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:90%"></div></div>
-                <span class="conf-pct">90%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:91%"></div></div>
+                <span class="conf-pct">91%</span>
               </div>
             </div>
         </div>
@@ -3030,7 +2629,7 @@
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Carolina Havoc</span>
                   <span class="pred-rating-label">Massey</span>
-                  <span class="neg-rating">-0.83</span>
+                  <span class="neg-rating">-0.98</span>
                 </div>
                 <div class="pred-rating-row">
                   <span class="pred-rating-team">Ice Outlaws</span>
@@ -3038,12 +2637,12 @@
                   <span class="neg-rating">-2.67</span>
                 </div>
               </div>
-              <div class="pred-winner">Predicted: <strong>Carolina Havoc</strong> by ~1.8</div>
-              <div class="pred-gd-val">Expected margin: +1.83 goals</div>
+              <div class="pred-winner">Predicted: <strong>Carolina Havoc</strong> by ~1.7</div>
+              <div class="pred-gd-val">Expected margin: +1.69 goals</div>
               <div class="conf-bar-wrap">
                 <span class="conf-label">Home Win %</span>
-                <div class="conf-bar"><div class="conf-fill" style="width:67%"></div></div>
-                <span class="conf-pct">67%</span>
+                <div class="conf-bar"><div class="conf-fill" style="width:66%"></div></div>
+                <span class="conf-pct">66%</span>
               </div>
             </div>
         </div></div></div>
@@ -3086,7 +2685,7 @@
           <div class="sched-week-num">Week 6</div>
           <div class="sched-week-date">Sun Apr 26, 2026</div>
           <div class="sched-week-info">8 games</div>
-          <span class="sched-status sched-upcoming">Upcoming</span>
+          <span class="sched-status sched-upcoming">In Progress</span>
         </div>
         <div class="sched-week">
           <div class="sched-week-num">Week 7</div>
@@ -3120,27 +2719,27 @@
     <div class="spotlight-container">
       <div class="stats-cards">
         <div class="stat-card">
-          <div class="stat-val">5-0-0</div>
+          <div class="stat-val">6-0-0</div>
           <div class="stat-lbl">Record</div>
         </div>
         <div class="stat-card accent">
-          <div class="stat-val">10</div>
+          <div class="stat-val">12</div>
           <div class="stat-lbl">Points</div>
         </div>
         <div class="stat-card">
-          <div class="stat-val">33</div>
+          <div class="stat-val">39</div>
           <div class="stat-lbl">Goals For</div>
         </div>
         <div class="stat-card">
-          <div class="stat-val">15</div>
+          <div class="stat-val">16</div>
           <div class="stat-lbl">Goals Against</div>
         </div>
         <div class="stat-card pos-card">
-          <div class="stat-val">+18</div>
+          <div class="stat-val">+23</div>
           <div class="stat-lbl">Goal Differential</div>
         </div>
         <div class="stat-card">
-          <div class="stat-val">4</div>
+          <div class="stat-val">3</div>
           <div class="stat-lbl">Games Remaining</div>
         </div>
       </div>
@@ -3180,32 +2779,33 @@
           <td>Lamp Lighters</td>
           <td class="score-cell">8 – 3</td>
           <td><span class="res-chip win-chip">W</span></td>
+        </tr>
+        <tr class="win-row">
+          <td>Sun Apr 26, 2026</td>
+          <td>Home</td>
+          <td>Carolina Havoc</td>
+          <td class="score-cell">6 – 1</td>
+          <td><span class="res-chip win-chip">W</span></td>
         </tr></tbody></table></div>
 
       <h3 class="section-title">Remaining Schedule</h3><div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Date</th><th>H/A</th><th>Opponent</th><th>Prediction</th></tr></thead><tbody>
         <tr>
-          <td>Sun Apr 26, 2026</td>
-          <td>Home</td>
-          <td>Carolina Havoc</td>
-          <td><span class="pred-win">+3.8 GD · 82% win prob</span></td>
-        </tr>
-        <tr>
           <td>Sun May 10, 2026</td>
           <td>Home</td>
           <td>Polar Predators</td>
-          <td><span class="pred-toss">+0.3 GD · 53% win prob</span></td>
+          <td><span class="pred-toss">+0.5 GD · 54% win prob</span></td>
         </tr>
         <tr>
           <td>Sun May 17, 2026</td>
           <td>Home</td>
           <td>Ice Outlaws</td>
-          <td><span class="pred-win">+5.7 GD · 90% win prob</span></td>
+          <td><span class="pred-win">+5.8 GD · 91% win prob</span></td>
         </tr>
         <tr>
           <td>Sun May 31, 2026</td>
           <td>Home</td>
           <td>Brass Bonanza</td>
-          <td><span class="pred-win">+5.7 GD · 90% win prob</span></td>
+          <td><span class="pred-win">+5.8 GD · 91% win prob</span></td>
         </tr></tbody></table></div>
 
       <h3 class="section-title">Season Outlook</h3>
@@ -3217,13 +2817,13 @@
         </div>
         <div class="outlook-card current">
           <div class="outlook-label">Current</div>
-          <div class="outlook-rec">5-0-0</div>
-          <div class="outlook-pts">10 pts</div>
+          <div class="outlook-rec">6-0-0</div>
+          <div class="outlook-pts">12 pts</div>
         </div>
         <div class="outlook-card worst">
           <div class="outlook-label">Worst Case</div>
-          <div class="outlook-rec">5-4-0</div>
-          <div class="outlook-pts">10 pts</div>
+          <div class="outlook-rec">6-3-0</div>
+          <div class="outlook-pts">12 pts</div>
         </div>
       </div>
     </div>
@@ -3231,7 +2831,7 @@
 </main>
 
 <footer class="site-footer">
-  Generated April 23, 2026 · 10U Advance League · Polar Ice Hockey League · 40 games completed · 32 upcoming · 0 TBD
+  Generated April 26, 2026 · 10U Advance League · Polar Ice Hockey League · 41 games completed · 31 upcoming · 0 TBD
 </footer>
 
 <script>
