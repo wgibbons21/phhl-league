@@ -10047,6 +10047,13 @@
       "matchups_published": true
     },
     {
+      "date": "2026-05-03",
+      "week": null,
+      "label": "May 3 \u2014 Tier II Tryouts",
+      "status": "off",
+      "matchups_published": false
+    },
+    {
       "date": "2026-05-10",
       "week": 7,
       "label": "May 10 (Week 7)",
@@ -10075,5 +10082,5 @@
       "matchups_published": true
     }
   ],
-  "last_updated": "2026-04-26 11:18:17"
+  "last_updated": "2026-04-26 11:44:08"
 }
