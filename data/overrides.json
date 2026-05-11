@@ -1,17 +1,29 @@
 {
+  "621599": {
+    "home_score": 3,
+    "visiting_score": 8,
+    "note": "DP won 8-3 @ Lamp Lighters on Apr 19, 2026. Override until API syncs."
+  },
+  "622456": {
+    "home_score": 6,
+    "visiting_score": 1,
+    "note": "DP won 6-1 vs Carolina Havoc on Apr 26, 2026. Override until API syncs."
+  },
   "615005": {
     "home_score": 6,
     "visiting_score": 2,
-    "note": "Polar Predators 6-2 Brass Bonanza on Mar 22, 2026. Score missing from API."
-  },
-  "621600": {
-    "home_score": 6,
-    "visiting_score": 3,
-    "note": "DP won 6-3 on Apr 12, 2026. Manually entered pending API update."
+    "note": "Polar Predators beat Brass Bonanza 6-2 on Mar 22, 2026. Missing score — override until league corrects."
   },
   "624702": {
     "home_score": 4,
     "visiting_score": 2,
     "note": "Disco Pickles 4-2 Polar Predators on May 10, 2026. Manually entered pending API update."
+  },
+  "_retired": {
+    "621600": {
+      "home_score": 6,
+      "visiting_score": 3,
+      "note": "DP won 6-3 on Apr 12, 2026. Retired 2026-04-18 — API now shows correct score."
+    }
   }
 }
