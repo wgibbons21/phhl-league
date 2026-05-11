@@ -983,6 +983,29 @@ def build_schedule_tab():
     html += '</div></div>'
     return html
 
+# ── Weekly rotating pickle fact (advances each ISO week) ─────────────────────
+_PICKLE_FACTS = [
+    # 0 — Pickle Juice Game (Eagles 41-14 Cowboys, Sep 3 2000)
+    'On September 3, 2000, the Philadelphia Eagles crushed the Dallas Cowboys 41–14 in 109°F heat — and their secret weapon was pickle juice. Players chugged it on the sideline to stop leg cramps, it worked, and the game is now literally known as <em>"The Pickle Juice Game"</em> in NFL history. Scientists later confirmed that pickle brine stops muscle cramps in about 85 seconds, faster than water or any sports drink. So if a Disco Pickle ever gets a cramp on the ice, you know exactly what to reach for.',
+    # 1 — Disco Demolition Night (Jul 12 1979)
+    'On July 12, 1979, the Chicago White Sox held <em>"Disco Demolition Night"</em> at Comiskey Park. Fans paid 98¢ admission if they brought a disco record to blow up on the field between doubleheader games. Over 50,000 people showed up to a stadium that held 44,000. The explosion destroyed the field, fans stormed the diamond, and the White Sox had to forfeit Game 2. It\'s widely credited as the night disco died — one exploded record at a time.',
+    # 2 — Columbus and pickles
+    'Christopher Columbus packed barrels of pickles on his 1492 voyage to the New World, specifically to prevent scurvy among his sailors. He also reportedly grew cucumbers on Caribbean islands mid-voyage to keep the supply stocked. Pickles are older than America — and apparently helped discover it.',
+    # 3 — "Disco" etymology
+    'The word <em>"disco"</em> comes from the French <em>"discothèque"</em> — which literally meant a library of phonograph records (<em>disques</em>). The first discothèques were just clubs that played recorded music instead of hiring live bands. So disco started as basically a playlist app, about 70 years before Spotify.',
+    # 4 — Ancient pickles (Tigris Valley, ~2030 BC)
+    'Humans have been pickling cucumbers for over 4,000 years. Some of the earliest evidence dates to around 2030 BC in the Tigris Valley of ancient Mesopotamia. Aristotle praised pickles for their healing properties, and Cleopatra reportedly credited them as a beauty secret. When archaeologists dig up snacks older than most civilizations, it really puts your pre-game nutrition into perspective.',
+    # 5 — American pickle consumption stats
+    'Americans eat roughly 9 pounds of pickles per person per year, adding up to about 2.5 billion pounds nationally. The United States also observes <em>National Pickle Day</em> every November 14th — which is absolutely a real holiday. Presumably not a federal one, but it should be.',
+    # 6 — Word "pickle" etymology
+    'The word <em>"pickle"</em> comes from the Dutch or Low German word <em>"pekel,"</em> meaning brine or salt water. Dutch and German traders brought both the word and the technique to England in the Middle Ages. Before that, English speakers just called them salted cucumbers — which is accurate, but considerably less fun to say.',
+    # 7 — Saturday Night Fever soundtrack
+    'The <em>Saturday Night Fever</em> soundtrack sold over 40 million copies and held the record as the best-selling movie soundtrack of all time for decades. The Bee Gees contributed seven songs — including "Stayin\' Alive" and "Night Fever" — after being approached just months before the film\'s 1977 release. John Travolta practiced his disco moves for months, reportedly dancing up to six hours a day. The white polyester suit he wore in the film later sold at auction for $145,000.',
+]
+# Week 19 of 2026 is when this rotation started (Pickle Juice Game = index 0)
+_FACT_BASE_WEEK = 19
+_pickle_fact = _PICKLE_FACTS[(date.today().isocalendar()[1] - _FACT_BASE_WEEK) % len(_PICKLE_FACTS)]
+
 # ── Assemble full HTML ─────────────────────────────────────────────────────────
 standings_html = ''
 for div_name in ['West','North','South']:
@@ -1649,7 +1672,7 @@ HTML = f'''<!DOCTYPE html>
 <!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
 <div class="pickle-fact-bar">
   <span class="pickle-fact-icon">🥒</span>
-  <span class="pickle-fact-text"><strong>Did you know?</strong> On September 3, 2000, the Philadelphia Eagles crushed the Dallas Cowboys 41–14 in 109°F heat — and their secret weapon was pickle juice. Players chugged it on the sideline to stop leg cramps, it worked, and the game is now literally known as <em>"The Pickle Juice Game"</em> in NFL history. Scientists later confirmed that pickle brine stops muscle cramps in about 85 seconds, faster than water or any sports drink. So if a Disco Pickle ever gets a cramp on the ice, you know exactly what to reach for.</span>
+  <span class="pickle-fact-text"><strong>Did you know?</strong> {_pickle_fact}</span>
 </div>
 
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
