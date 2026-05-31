@@ -283,6 +283,64 @@
   .pickle-fact-text { flex: 1; }
   .pickle-fact-text strong { color: var(--pickle); }
 
+  /* ── Playoffs ────────────────────────────────────────────────── */
+  .po-container { display: flex; flex-direction: column; gap: 1.5rem; }
+  .po-head { text-align: center; }
+  .po-title { font-size: 1.5rem; font-weight: 800; margin-bottom: .35rem; }
+  .po-sub { color: var(--text-muted); font-size: .9rem; max-width: 640px; margin: 0 auto; line-height: 1.5; }
+  .po-hero { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 1rem; }
+  .po-hero-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1rem; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: .25rem;
+  }
+  .po-hero-main { background: linear-gradient(135deg, var(--pickle-bg), var(--surface)); border-color: var(--pickle-bdr); }
+  .po-hero-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); font-weight: 700; }
+  .po-hero-big { font-size: 3rem; font-weight: 800; color: var(--pickle-dark); line-height: 1; }
+  .po-hero-mid { font-size: 2rem; font-weight: 800; color: var(--blue); line-height: 1; }
+  .po-hero-note { font-size: .76rem; color: var(--text-muted); }
+  .po-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .po-panel {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.2rem;
+  }
+  .po-panel-title { font-size: 1rem; font-weight: 700; margin-bottom: .2rem; }
+  .po-panel-sub { font-size: .78rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.45; }
+  .po-odds { display: flex; flex-direction: column; gap: .55rem; }
+  .po-odds-row { display: grid; grid-template-columns: 7.5rem 1fr 2.6rem; align-items: center; gap: .6rem; }
+  .po-odds-team { font-size: .85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .po-odds-dp .po-odds-team { color: var(--pickle-dark); font-weight: 800; }
+  .po-odds-track { background: var(--bg); border-radius: 6px; height: 16px; overflow: hidden; }
+  .po-odds-fill { height: 100%; border-radius: 6px; transition: width .3s; }
+  .po-odds-pct { font-size: .82rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .po-path { display: flex; flex-direction: column; gap: .5rem; }
+  .po-path-step {
+    display: flex; justify-content: space-between; align-items: center; gap: .75rem;
+    padding: .6rem .8rem; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--border);
+  }
+  .po-path-final { border-left-color: var(--pickle-dark); background: var(--pickle-bg); }
+  .po-path-round { font-size: .8rem; font-weight: 700; color: var(--text-muted); }
+  .po-path-detail { font-size: .85rem; text-align: right; }
+  .po-wp { color: var(--win-fg); font-weight: 700; white-space: nowrap; }
+  .po-bracket { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .po-round { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: .8rem; }
+  .po-round-champ { background: var(--pickle-bg); border-color: var(--pickle-bdr); }
+  .po-round-hdr { display: flex; flex-direction: column; gap: .1rem; margin-bottom: .65rem; }
+  .po-round-name { font-size: .95rem; font-weight: 800; }
+  .po-round-sub { font-size: .72rem; color: var(--text-muted); }
+  .po-game { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .55rem .65rem; margin-bottom: .5rem; }
+  .po-game:last-child { margin-bottom: 0; }
+  .po-game-top { display: flex; align-items: baseline; gap: .4rem; margin-bottom: .3rem; }
+  .po-slot { font-size: .68rem; font-weight: 800; color: var(--blue); background: var(--blue-light); padding: .05rem .35rem; border-radius: 4px; }
+  .po-match { font-size: .82rem; font-weight: 600; line-height: 1.3; }
+  .po-game-meta { display: flex; flex-direction: column; gap: .15rem; }
+  .po-when, .po-loc { font-size: .74rem; color: var(--text-muted); }
+  .po-caveat { font-size: .78rem; color: var(--text-muted); text-align: center; font-style: italic; line-height: 1.5; }
+  @media (max-width: 720px) {
+    .po-hero { grid-template-columns: 1fr; }
+    .po-panels { grid-template-columns: 1fr; }
+  }
+
   /* ── Predictions ─────────────────────────────────────────────── */
   .predictions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
   .pred-card {
@@ -656,7 +714,7 @@
 <!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
 <div class="pickle-fact-bar">
   <span class="pickle-fact-icon">🥒</span>
-  <span class="pickle-fact-text"><strong>Did you know?</strong> Christopher Columbus packed barrels of pickles on his 1492 voyage to the New World, specifically to prevent scurvy among his sailors. He also reportedly grew cucumbers on Caribbean islands mid-voyage to keep the supply stocked. Pickles are older than America — and apparently helped discover it.</span>
+  <span class="pickle-fact-text"><strong>Did you know?</strong> The word <em>"disco"</em> comes from the French <em>"discothèque"</em> — which literally meant a library of phonograph records (<em>disques</em>). The first discothèques were just clubs that played recorded music instead of hiring live bands. So disco started as basically a playlist app, about 70 years before Spotify.</span>
 </div>
 
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
@@ -665,6 +723,7 @@
     <button class="tab-btn active" onclick="showTab('standings',this)">Standings</button>
     <button class="tab-btn" onclick="showTab('results',this)">Game Results</button>
     <button class="tab-btn" onclick="showTab('predictions',this)">Predictions</button>
+    <button class="tab-btn" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
     <button class="tab-btn" onclick="showTab('schedule',this)">Season Schedule</button>
     <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
   </nav>
@@ -2452,6 +2511,130 @@
         </div></div></div>
   </div>
 
+  <!-- Playoffs -->
+  <div id="tab-playoffs" class="tab-panel">
+    
+    <div class="po-container">
+      <div class="po-head">
+        <h2 class="po-title">🏆 West Division Playoffs</h2>
+        <p class="po-sub">6 teams · single elimination · two-game guarantee. Top 2 seeds get a bye into the semifinals; seeds 3–6 play a Wild Card round first. June 4–7, 2026.</p>
+      </div>
+
+      <div class="po-hero">
+        <div class="po-hero-card po-hero-main">
+          <span class="po-hero-label">🥒 Disco Pickles — Championship odds</span>
+          <span class="po-hero-big">70%</span>
+          <span class="po-hero-note">to win the West title</span>
+        </div>
+        <div class="po-hero-card">
+          <span class="po-hero-label">Reach the final</span>
+          <span class="po-hero-mid">96%</span>
+        </div>
+        <div class="po-hero-card">
+          <span class="po-hero-label">Projected seed</span>
+          <span class="po-hero-mid">#1</span>
+          <span class="po-hero-note">100% to lock #1</span>
+        </div>
+      </div>
+
+      <div class="po-panels">
+        <div class="po-panel">
+          <h3 class="po-panel-title">Championship Odds — every West team</h3>
+          <p class="po-panel-sub">From 20,000 Monte-Carlo simulations using current Massey ratings.</p>
+          <div class="po-odds">
+          <div class="po-odds-row po-odds-dp">
+            <span class="po-odds-team">Disco Pickles 🥒</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:100%;background:var(--pickle-dark)"></div></div>
+            <span class="po-odds-pct">70%</span>
+          </div>
+          <div class="po-odds-row">
+            <span class="po-odds-team">Polar Predators</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:30%;background:var(--blue)"></div></div>
+            <span class="po-odds-pct">21%</span>
+          </div>
+          <div class="po-odds-row">
+            <span class="po-odds-team">Lamp Lighters</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:12%;background:var(--blue)"></div></div>
+            <span class="po-odds-pct">8%</span>
+          </div>
+          <div class="po-odds-row">
+            <span class="po-odds-team">Carolina Havoc</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:2%;background:var(--blue)"></div></div>
+            <span class="po-odds-pct">1%</span>
+          </div>
+          <div class="po-odds-row">
+            <span class="po-odds-team">Ice Outlaws</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:2%;background:var(--blue)"></div></div>
+            <span class="po-odds-pct">0%</span>
+          </div>
+          <div class="po-odds-row">
+            <span class="po-odds-team">Brass Bonanza</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:2%;background:var(--blue)"></div></div>
+            <span class="po-odds-pct">0%</span>
+          </div></div>
+        </div>
+
+        <div class="po-panel">
+          <h3 class="po-panel-title">🥒 Disco Pickles — projected path</h3>
+          <div class="po-path">
+            <div class="po-path-step"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE (top-2 seed)</span></div>
+            <div class="po-path-step"><span class="po-path-round">Semifinal · Sat Jun 6</span><span class="po-path-detail">likely vs <strong>Carolina Havoc</strong> · <span class="po-wp">86% win</span></span></div>
+            <div class="po-path-step po-path-final"><span class="po-path-round">Championship · Sun Jun 7</span><span class="po-path-detail">likely vs <strong>Polar Predators</strong> · <span class="po-wp">63% win</span></span></div>
+          </div>
+          <p class="po-panel-sub">Win probabilities use the same logistic curve as the Predictions tab. The final is the real test — most likely against Polar Predators.</p>
+        </div>
+      </div>
+
+      <div class="po-panel">
+        <h3 class="po-panel-title">Bracket &amp; Schedule</h3>
+        <p class="po-panel-sub">Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.</p>
+        <div class="po-bracket">
+          <div class="po-round">
+            <div class="po-round-hdr"><span class="po-round-name">Wild Card</span><span class="po-round-sub">Seeds 3–6 · winners advance</span></div>
+            
+              <div class="po-game">
+                <div class="po-game-top"><span class="po-slot">WC1</span><span class="po-match">Seed 3 (Polar Predators) vs Seed 6 (Brass Bonanza)</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Thu Jun 4 · 5:15 PM</span><span class="po-loc">📍 Invisalign Arena</span></div>
+              </div>
+              <div class="po-game">
+                <div class="po-game-top"><span class="po-slot">WC2</span><span class="po-match">Seed 4 (Carolina Havoc) vs Seed 5 (Ice Outlaws)</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Thu Jun 4 · 5:30 PM</span><span class="po-loc">📍 Invisalign Arena</span></div>
+              </div>
+          </div>
+          <div class="po-round">
+            <div class="po-round-hdr"><span class="po-round-name">Semifinals</span><span class="po-round-sub">Seeds 1 &amp; 2 (bye) vs Wild Card winners</span></div>
+            
+              <div class="po-game">
+                <div class="po-game-top"><span class="po-slot">SF1</span><span class="po-match">Seed 1 (Disco Pickles) vs lowest WC winner</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Sat Jun 6 · 6:15 PM</span><span class="po-loc">📍 Polar Ice Wake Forest</span></div>
+              </div>
+              <div class="po-game">
+                <div class="po-game-top"><span class="po-slot">SF2</span><span class="po-match">Seed 2 (Lamp Lighters) vs other WC winner</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Sat Jun 6 · 4:00 PM</span><span class="po-loc">📍 Invisalign Arena</span></div>
+              </div>
+          </div>
+          <div class="po-round">
+            <div class="po-round-hdr"><span class="po-round-name">Consolation</span><span class="po-round-sub">Ensures every team's 2-game guarantee</span></div>
+            
+              <div class="po-game">
+                <div class="po-game-top"><span class="po-match">Non-advancing teams</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Sun Jun 7 · 1:30 PM</span><span class="po-loc">📍 Polar Ice Wake Forest</span></div>
+              </div>
+          </div>
+          <div class="po-round po-round-champ">
+            <div class="po-round-hdr"><span class="po-round-name">🏆 Championship</span><span class="po-round-sub">Semifinal winners</span></div>
+            
+              <div class="po-game">
+                <div class="po-game-top"><span class="po-match">SF1 winner vs SF2 winner</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Sun Jun 7 · 11:15 AM</span><span class="po-loc">📍 Invisalign Arena</span></div>
+              </div>
+          </div></div>
+      </div>
+
+      <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Odds recompute automatically each time new scores are added.</p>
+    </div>
+  </div>
+
   <!-- Season Schedule -->
   <div id="tab-schedule" class="tab-panel">
     <div class="schedule-container"><div class="schedule-weeks">
@@ -2643,7 +2826,7 @@
 </main>
 
 <footer class="site-footer">
-  Generated May 19, 2026 · 10U Advance League · Polar Ice Hockey League · 64 games completed · 8 upcoming · 0 TBD
+  Generated May 31, 2026 · 10U Advance League · Polar Ice Hockey League · 64 games completed · 8 upcoming · 0 TBD
 </footer>
 
 <script>

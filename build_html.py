@@ -1006,6 +1006,204 @@ _PICKLE_FACTS = [
 _FACT_BASE_WEEK = 19
 _pickle_fact = _PICKLE_FACTS[(date.today().isocalendar()[1] - _FACT_BASE_WEEK) % len(_PICKLE_FACTS)]
 
+# ── Playoffs (10U West ADV bracket) ────────────────────────────────────────────
+# Fixed playoff schedule (from phhl.org/spring26playoffs — external facts).
+WEST_PLAYOFF_SCHEDULE = [
+    {'round': 'Wild Card', 'sub': 'Seeds 3–6 · winners advance', 'games': [
+        {'slot': 'WC1', 'match': 'Seed 3 vs Seed 6', 'when': 'Thu Jun 4 · 5:15 PM', 'loc': 'Invisalign Arena'},
+        {'slot': 'WC2', 'match': 'Seed 4 vs Seed 5', 'when': 'Thu Jun 4 · 5:30 PM', 'loc': 'Invisalign Arena'},
+    ]},
+    {'round': 'Semifinals', 'sub': 'Seeds 1 & 2 (bye) vs Wild Card winners', 'games': [
+        {'slot': 'SF1', 'match': 'Seed 1 vs lowest WC winner', 'when': 'Sat Jun 6 · 6:15 PM', 'loc': 'Polar Ice Wake Forest'},
+        {'slot': 'SF2', 'match': 'Seed 2 vs other WC winner', 'when': 'Sat Jun 6 · 4:00 PM', 'loc': 'Invisalign Arena'},
+    ]},
+    {'round': 'Consolation', 'sub': "Ensures every team's 2-game guarantee", 'games': [
+        {'slot': '', 'match': 'Non-advancing teams', 'when': 'Sun Jun 7 · 1:30 PM', 'loc': 'Polar Ice Wake Forest'},
+    ]},
+    {'round': '🏆 Championship', 'sub': 'Semifinal winners', 'games': [
+        {'slot': '', 'match': 'SF1 winner vs SF2 winner', 'when': 'Sun Jun 7 · 11:15 AM', 'loc': 'Invisalign Arena'},
+    ]},
+]
+
+def simulate_west_playoffs(n_sims=20000):
+    """Monte-Carlo the West bracket from current Massey ratings + standings.
+    Simulates any remaining regular-season games to set seeds, then runs
+    Wild Card → Semifinals → Championship. Returns odds for every West team."""
+    import random, math
+    from collections import Counter
+    rng = random.Random(42)
+
+    west = [t for t in ALL_TEAM_IDS if get_division(t) == 'West']
+    R = {t: massey.get(t, 0.0) for t in west}
+    # base standings carried into the sim: [points, goal-diff, goals-for]
+    base = {t: [pts(stats[t]), gd(stats[t]), stats[t]['gf']] for t in west}
+    remaining = [(g['hid'], g['vid']) for g in upcoming_games
+                 if g['hid'] in R and g['vid'] in R]
+    SD = 3.0   # margin noise (season MAE ≈ 2.7 → sd ≈ 3)
+
+    def margin(a, b):
+        return round(rng.gauss(R[a] - R[b], SD))
+    def play(a, b):                       # knockout: no ties
+        m = margin(a, b)
+        if m == 0:
+            m = 1 if rng.random() < 1 / (1 + math.exp(-0.4 * (R[a] - R[b]))) else -1
+        return (a, b) if m > 0 else (b, a)   # (winner, loser)
+
+    title = Counter(); disco = Counter(); seedc = Counter()
+    semi_opp = Counter(); final_opp = Counter(); reg = Counter()
+
+    for _ in range(n_sims):
+        s = {t: base[t][:] for t in west}
+        for h, a in remaining:
+            m = margin(h, a)
+            s[h][1] += m; s[a][1] -= m
+            if m > 0:   s[h][0] += 2
+            elif m < 0: s[a][0] += 2
+            else:       s[h][0] += 1; s[a][0] += 1
+            if DISCO_ID in (h, a):
+                d = m if h == DISCO_ID else -m
+                reg['W' if d > 0 else ('L' if d < 0 else 'T')] += 1
+        order = sorted(west, key=lambda t: (-s[t][0], -s[t][1], -s[t][2]))
+        seed = {t: i + 1 for i, t in enumerate(order)}
+        seedc[seed[DISCO_ID]] += 1
+        s1, s2, s3, s4, s5, s6 = order
+        wA, _ = play(s3, s6); wB, _ = play(s4, s5)
+        winners = sorted([wA, wB], key=lambda t: seed[t])   # better seed first
+        better, worse = winners[0], winners[1]
+        if   DISCO_ID == s1: semi_opp[worse] += 1
+        elif DISCO_ID == s2: semi_opp[better] += 1
+        f1, _ = play(s1, worse); f2, _ = play(s2, better)
+        champ, runner = play(f1, f2)
+        title[champ] += 1
+        if champ == DISCO_ID:
+            disco['CHAMP'] += 1; final_opp[runner] += 1
+        elif runner == DISCO_ID:
+            disco['RUNNER'] += 1; final_opp[champ] += 1
+        else:
+            disco['OUT'] += 1
+
+    n = float(n_sims)
+    return {
+        'west': west, 'R': R, 'n': n_sims,
+        'remaining': remaining,
+        'title':     {t: title[t] / n for t in west},
+        'disco':     {k: disco[k] / n for k in ('CHAMP', 'RUNNER', 'OUT')},
+        'seed':      {k: seedc[k] / n for k in seedc},
+        'reg':       {k: reg[k] / max(sum(reg.values()), 1) for k in reg},
+        'semi_opp':  semi_opp,
+        'final_opp': final_opp,
+    }
+
+def build_playoffs_tab():
+    sim = simulate_west_playoffs()
+    west = sim['west']
+    # current projected seed order (already standings-sorted in divisions['West'])
+    proj = [t for t in divisions['West'] if t in west]
+    seed_name = {i + 1: short_name(t) for i, t in enumerate(proj)}
+    disco_seed = (proj.index(DISCO_ID) + 1) if DISCO_ID in proj else '?'
+
+    champ_pct  = sim['disco']['CHAMP']
+    final_pct  = sim['disco']['CHAMP'] + sim['disco']['RUNNER']
+    seed1_pct  = sim['seed'].get(1, 0.0)
+
+    semi_opp  = sim['semi_opp'].most_common(1)
+    final_opp = sim['final_opp'].most_common(1)
+    semi_opp_name  = short_name(semi_opp[0][0])  if semi_opp  else 'TBD'
+    final_opp_name = short_name(final_opp[0][0]) if final_opp else 'TBD'
+    semi_wp  = win_prob(massey.get(DISCO_ID, 0) - massey.get(semi_opp[0][0], 0))  if semi_opp  else 0.5
+    final_wp = win_prob(massey.get(DISCO_ID, 0) - massey.get(final_opp[0][0], 0)) if final_opp else 0.5
+
+    # ── Title-odds bars (all 6 West teams) ──────────────────────────────────────
+    ranked = sorted(west, key=lambda t: -sim['title'][t])
+    top = max((sim['title'][t] for t in west), default=1) or 1
+    bars = ''
+    for t in ranked:
+        p = sim['title'][t]
+        is_dp = (t == DISCO_ID)
+        bar_w = max(p / top * 100, 2)
+        color = 'var(--pickle-dark)' if is_dp else 'var(--blue)'
+        bars += f'''
+          <div class="po-odds-row{' po-odds-dp' if is_dp else ''}">
+            <span class="po-odds-team">{esc(short_name(t))}{' 🥒' if is_dp else ''}</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:{bar_w:.0f}%;background:{color}"></div></div>
+            <span class="po-odds-pct">{p*100:.0f}%</span>
+          </div>'''
+
+    # ── Bracket rounds with schedule ────────────────────────────────────────────
+    def matchup_names(match):
+        out = match
+        for sd in range(1, 7):
+            out = out.replace(f'Seed {sd}', f'Seed {sd} ({seed_name.get(sd, "TBD")})')
+        return out
+    rounds = ''
+    for rnd in WEST_PLAYOFF_SCHEDULE:
+        gcards = ''
+        for g in rnd['games']:
+            slot = f'<span class="po-slot">{g["slot"]}</span>' if g['slot'] else ''
+            gcards += f'''
+              <div class="po-game">
+                <div class="po-game-top">{slot}<span class="po-match">{esc(matchup_names(g["match"]))}</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 {esc(g["when"])}</span><span class="po-loc">📍 {esc(g["loc"])}</span></div>
+              </div>'''
+        is_champ = 'Championship' in rnd['round']
+        rounds += f'''
+          <div class="po-round{' po-round-champ' if is_champ else ''}">
+            <div class="po-round-hdr"><span class="po-round-name">{esc(rnd["round"])}</span><span class="po-round-sub">{esc(rnd["sub"])}</span></div>
+            {gcards}
+          </div>'''
+
+    return f'''
+    <div class="po-container">
+      <div class="po-head">
+        <h2 class="po-title">🏆 West Division Playoffs</h2>
+        <p class="po-sub">6 teams · single elimination · two-game guarantee. Top 2 seeds get a bye into the semifinals; seeds 3–6 play a Wild Card round first. June 4–7, 2026.</p>
+      </div>
+
+      <div class="po-hero">
+        <div class="po-hero-card po-hero-main">
+          <span class="po-hero-label">🥒 Disco Pickles — Championship odds</span>
+          <span class="po-hero-big">{champ_pct*100:.0f}%</span>
+          <span class="po-hero-note">to win the West title</span>
+        </div>
+        <div class="po-hero-card">
+          <span class="po-hero-label">Reach the final</span>
+          <span class="po-hero-mid">{final_pct*100:.0f}%</span>
+        </div>
+        <div class="po-hero-card">
+          <span class="po-hero-label">Projected seed</span>
+          <span class="po-hero-mid">#{disco_seed}</span>
+          <span class="po-hero-note">{seed1_pct*100:.0f}% to lock #1</span>
+        </div>
+      </div>
+
+      <div class="po-panels">
+        <div class="po-panel">
+          <h3 class="po-panel-title">Championship Odds — every West team</h3>
+          <p class="po-panel-sub">From {sim['n']:,} Monte-Carlo simulations using current Massey ratings.</p>
+          <div class="po-odds">{bars}</div>
+        </div>
+
+        <div class="po-panel">
+          <h3 class="po-panel-title">🥒 Disco Pickles — projected path</h3>
+          <div class="po-path">
+            <div class="po-path-step"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE (top-2 seed)</span></div>
+            <div class="po-path-step"><span class="po-path-round">Semifinal · Sat Jun 6</span><span class="po-path-detail">likely vs <strong>{esc(semi_opp_name)}</strong> · <span class="po-wp">{semi_wp*100:.0f}% win</span></span></div>
+            <div class="po-path-step po-path-final"><span class="po-path-round">Championship · Sun Jun 7</span><span class="po-path-detail">likely vs <strong>{esc(final_opp_name)}</strong> · <span class="po-wp">{final_wp*100:.0f}% win</span></span></div>
+          </div>
+          <p class="po-panel-sub">Win probabilities use the same logistic curve as the Predictions tab. The final is the real test — most likely against {esc(final_opp_name)}.</p>
+        </div>
+      </div>
+
+      <div class="po-panel">
+        <h3 class="po-panel-title">Bracket &amp; Schedule</h3>
+        <p class="po-panel-sub">Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.</p>
+        <div class="po-bracket">{rounds}</div>
+      </div>
+
+      <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Odds recompute automatically each time new scores are added.</p>
+    </div>'''
+
+
 # ── Assemble full HTML ─────────────────────────────────────────────────────────
 standings_html = ''
 for div_name in ['West','North','South']:
@@ -1013,6 +1211,7 @@ for div_name in ['West','North','South']:
 
 results_html    = build_results_tab()
 predictions_html= build_predictions_tab()
+playoffs_html   = build_playoffs_tab()
 spotlight_html  = build_spotlight_tab()
 schedule_html   = build_schedule_tab()
 hero_upcoming   = build_hero_upcoming()
@@ -1303,6 +1502,64 @@ HTML = f'''<!DOCTYPE html>
   .pickle-fact-icon {{ font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }}
   .pickle-fact-text {{ flex: 1; }}
   .pickle-fact-text strong {{ color: var(--pickle); }}
+
+  /* ── Playoffs ────────────────────────────────────────────────── */
+  .po-container {{ display: flex; flex-direction: column; gap: 1.5rem; }}
+  .po-head {{ text-align: center; }}
+  .po-title {{ font-size: 1.5rem; font-weight: 800; margin-bottom: .35rem; }}
+  .po-sub {{ color: var(--text-muted); font-size: .9rem; max-width: 640px; margin: 0 auto; line-height: 1.5; }}
+  .po-hero {{ display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 1rem; }}
+  .po-hero-card {{
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1rem; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: .25rem;
+  }}
+  .po-hero-main {{ background: linear-gradient(135deg, var(--pickle-bg), var(--surface)); border-color: var(--pickle-bdr); }}
+  .po-hero-label {{ font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); font-weight: 700; }}
+  .po-hero-big {{ font-size: 3rem; font-weight: 800; color: var(--pickle-dark); line-height: 1; }}
+  .po-hero-mid {{ font-size: 2rem; font-weight: 800; color: var(--blue); line-height: 1; }}
+  .po-hero-note {{ font-size: .76rem; color: var(--text-muted); }}
+  .po-panels {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }}
+  .po-panel {{
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.2rem;
+  }}
+  .po-panel-title {{ font-size: 1rem; font-weight: 700; margin-bottom: .2rem; }}
+  .po-panel-sub {{ font-size: .78rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.45; }}
+  .po-odds {{ display: flex; flex-direction: column; gap: .55rem; }}
+  .po-odds-row {{ display: grid; grid-template-columns: 7.5rem 1fr 2.6rem; align-items: center; gap: .6rem; }}
+  .po-odds-team {{ font-size: .85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+  .po-odds-dp .po-odds-team {{ color: var(--pickle-dark); font-weight: 800; }}
+  .po-odds-track {{ background: var(--bg); border-radius: 6px; height: 16px; overflow: hidden; }}
+  .po-odds-fill {{ height: 100%; border-radius: 6px; transition: width .3s; }}
+  .po-odds-pct {{ font-size: .82rem; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }}
+  .po-path {{ display: flex; flex-direction: column; gap: .5rem; }}
+  .po-path-step {{
+    display: flex; justify-content: space-between; align-items: center; gap: .75rem;
+    padding: .6rem .8rem; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--border);
+  }}
+  .po-path-final {{ border-left-color: var(--pickle-dark); background: var(--pickle-bg); }}
+  .po-path-round {{ font-size: .8rem; font-weight: 700; color: var(--text-muted); }}
+  .po-path-detail {{ font-size: .85rem; text-align: right; }}
+  .po-wp {{ color: var(--win-fg); font-weight: 700; white-space: nowrap; }}
+  .po-bracket {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }}
+  .po-round {{ background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: .8rem; }}
+  .po-round-champ {{ background: var(--pickle-bg); border-color: var(--pickle-bdr); }}
+  .po-round-hdr {{ display: flex; flex-direction: column; gap: .1rem; margin-bottom: .65rem; }}
+  .po-round-name {{ font-size: .95rem; font-weight: 800; }}
+  .po-round-sub {{ font-size: .72rem; color: var(--text-muted); }}
+  .po-game {{ background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .55rem .65rem; margin-bottom: .5rem; }}
+  .po-game:last-child {{ margin-bottom: 0; }}
+  .po-game-top {{ display: flex; align-items: baseline; gap: .4rem; margin-bottom: .3rem; }}
+  .po-slot {{ font-size: .68rem; font-weight: 800; color: var(--blue); background: var(--blue-light); padding: .05rem .35rem; border-radius: 4px; }}
+  .po-match {{ font-size: .82rem; font-weight: 600; line-height: 1.3; }}
+  .po-game-meta {{ display: flex; flex-direction: column; gap: .15rem; }}
+  .po-when, .po-loc {{ font-size: .74rem; color: var(--text-muted); }}
+  .po-caveat {{ font-size: .78rem; color: var(--text-muted); text-align: center; font-style: italic; line-height: 1.5; }}
+  @media (max-width: 720px) {{
+    .po-hero {{ grid-template-columns: 1fr; }}
+    .po-panels {{ grid-template-columns: 1fr; }}
+  }}
 
   /* ── Predictions ─────────────────────────────────────────────── */
   .predictions-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }}
@@ -1681,6 +1938,7 @@ HTML = f'''<!DOCTYPE html>
     <button class="tab-btn active" onclick="showTab('standings',this)">Standings</button>
     <button class="tab-btn" onclick="showTab('results',this)">Game Results</button>
     <button class="tab-btn" onclick="showTab('predictions',this)">Predictions</button>
+    <button class="tab-btn" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
     <button class="tab-btn" onclick="showTab('schedule',this)">Season Schedule</button>
     <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
   </nav>
@@ -1700,6 +1958,11 @@ HTML = f'''<!DOCTYPE html>
   <!-- Predictions -->
   <div id="tab-predictions" class="tab-panel">
     {predictions_html}
+  </div>
+
+  <!-- Playoffs -->
+  <div id="tab-playoffs" class="tab-panel">
+    {playoffs_html}
   </div>
 
   <!-- Season Schedule -->
