@@ -1009,13 +1009,13 @@ _pickle_fact = _PICKLE_FACTS[(date.today().isocalendar()[1] - _FACT_BASE_WEEK) %
 # ── Playoffs (10U West ADV bracket) ────────────────────────────────────────────
 # Fixed playoff schedule (from phhl.org/spring26playoffs — external facts).
 WEST_PLAYOFF_SCHEDULE = [
-    {'round': 'Wild Card', 'sub': 'Seeds 3–6 · winners advance', 'games': [
+    {'round': 'Wild Card', 'sub': 'Seeds 3–6 · winners advance (pairings not yet posted; standard 3v6 / 4v5 assumed)', 'games': [
         {'slot': 'WC1', 'match': 'Seed 3 vs Seed 6', 'when': 'Thu Jun 4 · 5:15 PM', 'loc': 'Invisalign Arena'},
         {'slot': 'WC2', 'match': 'Seed 4 vs Seed 5', 'when': 'Thu Jun 4 · 5:30 PM', 'loc': 'Invisalign Arena'},
     ]},
-    {'round': 'Semifinals', 'sub': 'Seeds 1 & 2 (bye) vs Wild Card winners', 'games': [
-        {'slot': 'SF1', 'match': 'Seed 1 vs lowest WC winner', 'when': 'Sat Jun 6 · 6:15 PM', 'loc': 'Polar Ice Wake Forest'},
-        {'slot': 'SF2', 'match': 'Seed 2 vs other WC winner', 'when': 'Sat Jun 6 · 4:00 PM', 'loc': 'Invisalign Arena'},
+    {'round': 'Semifinals', 'sub': 'Seeds 1 & 2 (byes) each face a Wild Card winner · seed-to-slot TBD', 'games': [
+        {'slot': '', 'match': 'Bye seed vs Wild Card winner', 'when': 'Sat Jun 6 · 4:00 PM', 'loc': 'Invisalign Arena'},
+        {'slot': '', 'match': 'Bye seed vs Wild Card winner', 'when': 'Sat Jun 6 · 6:15 PM', 'loc': 'Polar Ice Wake Forest'},
     ]},
     {'round': 'Consolation', 'sub': "Ensures every team's 2-game guarantee", 'games': [
         {'slot': '', 'match': 'Non-advancing teams', 'when': 'Sun Jun 7 · 1:30 PM', 'loc': 'Polar Ice Wake Forest'},
@@ -1094,8 +1094,31 @@ def simulate_west_playoffs(n_sims=20000):
         'final_opp': final_opp,
     }
 
-def build_playoffs_tab():
-    sim = simulate_west_playoffs()
+def build_playoff_strip(sim):
+    """Compact playoff banner shown below the hero (links into the Playoffs tab)."""
+    champ_pct = sim['disco']['CHAMP']
+    proj = [t for t in divisions['West'] if t in sim['west']]
+    disco_seed = (proj.index(DISCO_ID) + 1) if DISCO_ID in proj else '?'
+    season_done = not sim['remaining']
+    # Disco (#1 seed) plays a semifinal on Sat Jun 6 — the league hasn't posted
+    # which of the two slots (4:00 PM Invisalign / 6:15 PM Wake Forest) is the #1 seed's.
+    seed_txt = (f'#{disco_seed} seed &middot; bye to the semifinals' if season_done
+                else f'projected #{disco_seed} seed')
+    return f'''
+    <section class="playoff-strip" onclick="goPlayoffs()" role="button" tabindex="0">
+      <div class="ps-main">
+        <span class="ps-tag">🏆 PLAYOFF BOUND</span>
+        <span class="ps-headline">{seed_txt}</span>
+      </div>
+      <div class="ps-stats">
+        <div class="ps-stat"><span class="ps-stat-num">{champ_pct*100:.0f}%</span><span class="ps-stat-lbl">to win the title</span></div>
+        <div class="ps-stat"><span class="ps-stat-num">Semifinal</span><span class="ps-stat-lbl">Sat Jun 6 &middot; time TBD</span></div>
+      </div>
+      <span class="ps-cta">View Bracket &amp; Odds →</span>
+    </section>'''
+
+
+def build_playoffs_tab(sim):
     west = sim['west']
     # current projected seed order (already standings-sorted in divisions['West'])
     proj = [t for t in divisions['West'] if t in west]
@@ -1197,7 +1220,7 @@ def build_playoffs_tab():
 
       <div class="po-panel">
         <h3 class="po-panel-title">Bracket &amp; Schedule</h3>
-        <p class="po-panel-sub">{'Regular season complete — <strong>seeds are final</strong>. Disco Pickles are the #1 seed and earn a bye into the semifinals.' if season_done else 'Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.'}</p>
+        <p class="po-panel-sub">{'Regular season complete — <strong>seeds are final</strong>. Disco Pickles are the #1 seed and earn a bye into the semifinals.' if season_done else 'Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.'} Wild Card pairings and which semifinal slot each bye seed plays are set by the league and may differ from the standard bracket shown here.</p>
         <div class="po-bracket">{rounds}</div>
       </div>
 
@@ -1212,7 +1235,9 @@ for div_name in ['West','North','South']:
 
 results_html    = build_results_tab()
 predictions_html= build_predictions_tab()
-playoffs_html   = build_playoffs_tab()
+playoff_sim     = simulate_west_playoffs()
+playoffs_html   = build_playoffs_tab(playoff_sim)
+playoff_strip   = build_playoff_strip(playoff_sim)
 spotlight_html  = build_spotlight_tab()
 schedule_html   = build_schedule_tab()
 hero_upcoming   = build_hero_upcoming()
@@ -1333,6 +1358,49 @@ HTML = f'''<!DOCTYPE html>
   .hero-rank {{ font-size: 3.5rem; font-weight: 900; line-height:1; }}
   .hero-rank-lbl {{ font-size: 0.8rem; opacity: 0.8; margin-top: 4px; }}
   .hero-upcoming-title {{ font-size: 0.8rem; opacity: 0.75; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: .05em; }}
+  /* Hero badges + undefeated emphasis */
+  .hero-badges {{ display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }}
+  .hero-badges .division-badge {{ margin-bottom: 0; }}
+  .undefeated-badge {{
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: linear-gradient(135deg, #F59E0B, #DC2626);
+    color: #fff; border-radius: 20px; padding: 0.25rem 0.9rem;
+    font-size: 0.8rem; font-weight: 800; letter-spacing: .03em;
+    box-shadow: 0 2px 8px rgba(220,38,38,.45);
+  }}
+  .hero-record {{ background: #FCD34D !important; color: #92400E !important; font-weight: 800 !important; }}
+  .hero-undefeated {{ font-size: 0.85rem; opacity: 0.92; font-weight: 600; }}
+
+  /* ── Playoff Strip ───────────────────────────────────────────── */
+  .playoff-strip {{
+    margin: 1rem 1.5rem 0;
+    background: linear-gradient(135deg, #1A1A1A 0%, #3a0000 100%);
+    border-left: 5px solid #FCD34D;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    cursor: pointer; color: #fff;
+    transition: transform .15s, box-shadow .15s;
+  }}
+  .playoff-strip:hover {{ transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,.28); }}
+  .ps-main {{ display: flex; flex-direction: column; gap: 0.2rem; }}
+  .ps-tag {{ font-size: 0.8rem; font-weight: 800; color: #FCD34D; letter-spacing: .04em; }}
+  .ps-headline {{ font-size: 1.05rem; font-weight: 700; }}
+  .ps-stats {{ display: flex; gap: 1.75rem; margin-left: auto; }}
+  .ps-stat {{ display: flex; flex-direction: column; text-align: center; }}
+  .ps-stat-num {{ font-size: 1.5rem; font-weight: 800; line-height: 1; }}
+  .ps-stat-lbl {{ font-size: 0.72rem; opacity: 0.82; margin-top: 0.2rem; white-space: nowrap; }}
+  .ps-cta {{
+    background: #FCD34D; color: #3a0000; font-weight: 800;
+    border-radius: 20px; padding: 0.5rem 1.1rem; font-size: 0.85rem; white-space: nowrap;
+  }}
+  .playoff-strip:hover .ps-cta {{ background: #fde68a; }}
+  @media (max-width: 768px) {{
+    .playoff-strip {{ gap: 1rem; }}
+    .ps-stats {{ margin-left: 0; width: 100%; justify-content: space-between; gap: 1rem; }}
+    .ps-cta {{ width: 100%; text-align: center; }}
+  }}
 
   /* ── Tabs ────────────────────────────────────────────────────── */
   .tabs-wrap {{ padding: 1.5rem; }}
@@ -1909,23 +1977,28 @@ HTML = f'''<!DOCTYPE html>
 <!-- ── Disco Pickles Hero ───────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-left">
-    <div class="division-badge">⭐ West Division Leaders</div>
+    <div class="hero-badges">
+      <div class="division-badge">⭐ West Division Leaders</div>
+      {'<div class="undefeated-badge">🔥 UNDEFEATED</div>' if dp_l == 0 else ''}
+    </div>
     <div class="team-name">🥒 Disco Pickles</div>
     <div class="record-line">
-      <span class="hero-stat">{dp_w}-{dp_l}-{dp_t}</span>
+      <span class="hero-stat hero-record">{dp_w}-{dp_l}-{dp_t}</span>
       <span class="hero-stat">{dp_pts} pts</span>
       <span class="hero-stat">GF: {dp_gf}</span>
       <span class="hero-stat">GA: {dp_ga}</span>
       <span class="hero-stat">GD: {gd_sign(dp_gd_v)}</span>
     </div>
-    <div class="hero-upcoming-title">Upcoming Games</div>
-    {hero_upcoming}
+    {f'<div class="hero-undefeated">{dp_w} win{"s" if dp_w != 1 else ""} &middot; {dp_t} tie{"s" if dp_t != 1 else ""} &middot; {dp_l} loss{"es" if dp_l != 1 else ""} — perfect season, never beaten</div>' if dp_l == 0 else ''}
   </div>
   <div class="hero-right">
     <div class="hero-rank">#{dp_div_rank}</div>
     <div class="hero-rank-lbl">West Division</div>
   </div>
 </section>
+
+<!-- ── Playoff Strip ────────────────────────────────────────────────────────── -->
+{playoff_strip}
 
 <!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
 <div class="pickle-fact-bar">
@@ -1936,16 +2009,16 @@ HTML = f'''<!DOCTYPE html>
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
 <main class="tabs-wrap">
   <nav class="tab-nav">
-    <button class="tab-btn active" onclick="showTab('standings',this)">Standings</button>
+    <button class="tab-btn" onclick="showTab('standings',this)">Standings</button>
     <button class="tab-btn" onclick="showTab('results',this)">Game Results</button>
     <button class="tab-btn" onclick="showTab('predictions',this)">Predictions</button>
-    <button class="tab-btn" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
+    <button class="tab-btn active" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
     <button class="tab-btn" onclick="showTab('schedule',this)">Season Schedule</button>
     <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
   </nav>
 
   <!-- Standings -->
-  <div id="tab-standings" class="tab-panel active">
+  <div id="tab-standings" class="tab-panel">
     <div class="standings-grid">
       {standings_html}
     </div>
@@ -1962,7 +2035,7 @@ HTML = f'''<!DOCTYPE html>
   </div>
 
   <!-- Playoffs -->
-  <div id="tab-playoffs" class="tab-panel">
+  <div id="tab-playoffs" class="tab-panel active">
     {playoffs_html}
   </div>
 
@@ -1987,6 +2060,11 @@ HTML = f'''<!DOCTYPE html>
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
+  }}
+  function goPlayoffs() {{
+    const btn = [...document.querySelectorAll('.tab-btn')].find(b => /Playoffs/.test(b.textContent));
+    if (btn) showTab('playoffs', btn);
+    document.querySelector('.tabs-wrap').scrollIntoView({{ behavior: 'smooth' }});
   }}
 </script>
 </body>

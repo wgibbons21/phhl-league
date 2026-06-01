@@ -112,6 +112,49 @@
   .hero-rank { font-size: 3.5rem; font-weight: 900; line-height:1; }
   .hero-rank-lbl { font-size: 0.8rem; opacity: 0.8; margin-top: 4px; }
   .hero-upcoming-title { font-size: 0.8rem; opacity: 0.75; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: .05em; }
+  /* Hero badges + undefeated emphasis */
+  .hero-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+  .hero-badges .division-badge { margin-bottom: 0; }
+  .undefeated-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: linear-gradient(135deg, #F59E0B, #DC2626);
+    color: #fff; border-radius: 20px; padding: 0.25rem 0.9rem;
+    font-size: 0.8rem; font-weight: 800; letter-spacing: .03em;
+    box-shadow: 0 2px 8px rgba(220,38,38,.45);
+  }
+  .hero-record { background: #FCD34D !important; color: #92400E !important; font-weight: 800 !important; }
+  .hero-undefeated { font-size: 0.85rem; opacity: 0.92; font-weight: 600; }
+
+  /* ── Playoff Strip ───────────────────────────────────────────── */
+  .playoff-strip {
+    margin: 1rem 1.5rem 0;
+    background: linear-gradient(135deg, #1A1A1A 0%, #3a0000 100%);
+    border-left: 5px solid #FCD34D;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    cursor: pointer; color: #fff;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .playoff-strip:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,.28); }
+  .ps-main { display: flex; flex-direction: column; gap: 0.2rem; }
+  .ps-tag { font-size: 0.8rem; font-weight: 800; color: #FCD34D; letter-spacing: .04em; }
+  .ps-headline { font-size: 1.05rem; font-weight: 700; }
+  .ps-stats { display: flex; gap: 1.75rem; margin-left: auto; }
+  .ps-stat { display: flex; flex-direction: column; text-align: center; }
+  .ps-stat-num { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+  .ps-stat-lbl { font-size: 0.72rem; opacity: 0.82; margin-top: 0.2rem; white-space: nowrap; }
+  .ps-cta {
+    background: #FCD34D; color: #3a0000; font-weight: 800;
+    border-radius: 20px; padding: 0.5rem 1.1rem; font-size: 0.85rem; white-space: nowrap;
+  }
+  .playoff-strip:hover .ps-cta { background: #fde68a; }
+  @media (max-width: 768px) {
+    .playoff-strip { gap: 1rem; }
+    .ps-stats { margin-left: 0; width: 100%; justify-content: space-between; gap: 1rem; }
+    .ps-cta { width: 100%; text-align: center; }
+  }
 
   /* ── Tabs ────────────────────────────────────────────────────── */
   .tabs-wrap { padding: 1.5rem; }
@@ -688,23 +731,39 @@
 <!-- ── Disco Pickles Hero ───────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-left">
-    <div class="division-badge">⭐ West Division Leaders</div>
+    <div class="hero-badges">
+      <div class="division-badge">⭐ West Division Leaders</div>
+      <div class="undefeated-badge">🔥 UNDEFEATED</div>
+    </div>
     <div class="team-name">🥒 Disco Pickles</div>
     <div class="record-line">
-      <span class="hero-stat">8-0-1</span>
+      <span class="hero-stat hero-record">8-0-1</span>
       <span class="hero-stat">17 pts</span>
       <span class="hero-stat">GF: 53</span>
       <span class="hero-stat">GA: 22</span>
       <span class="hero-stat">GD: +31</span>
     </div>
-    <div class="hero-upcoming-title">Upcoming Games</div>
-    <p style="color:rgba(255,255,255,0.8)">No upcoming games – season complete!</p>
+    <div class="hero-undefeated">8 wins &middot; 1 tie &middot; 0 losses — perfect season, never beaten</div>
   </div>
   <div class="hero-right">
     <div class="hero-rank">#1</div>
     <div class="hero-rank-lbl">West Division</div>
   </div>
 </section>
+
+<!-- ── Playoff Strip ────────────────────────────────────────────────────────── -->
+
+    <section class="playoff-strip" onclick="goPlayoffs()" role="button" tabindex="0">
+      <div class="ps-main">
+        <span class="ps-tag">🏆 PLAYOFF BOUND</span>
+        <span class="ps-headline">#1 seed &middot; bye to the semifinals</span>
+      </div>
+      <div class="ps-stats">
+        <div class="ps-stat"><span class="ps-stat-num">60%</span><span class="ps-stat-lbl">to win the title</span></div>
+        <div class="ps-stat"><span class="ps-stat-num">Semifinal</span><span class="ps-stat-lbl">Sat Jun 6 &middot; time TBD</span></div>
+      </div>
+      <span class="ps-cta">View Bracket &amp; Odds →</span>
+    </section>
 
 <!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
 <div class="pickle-fact-bar">
@@ -715,16 +774,16 @@
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
 <main class="tabs-wrap">
   <nav class="tab-nav">
-    <button class="tab-btn active" onclick="showTab('standings',this)">Standings</button>
+    <button class="tab-btn" onclick="showTab('standings',this)">Standings</button>
     <button class="tab-btn" onclick="showTab('results',this)">Game Results</button>
     <button class="tab-btn" onclick="showTab('predictions',this)">Predictions</button>
-    <button class="tab-btn" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
+    <button class="tab-btn active" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
     <button class="tab-btn" onclick="showTab('schedule',this)">Season Schedule</button>
     <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
   </nav>
 
   <!-- Standings -->
-  <div id="tab-standings" class="tab-panel active">
+  <div id="tab-standings" class="tab-panel">
     <div class="standings-grid">
       
     <div class="standings-div">
@@ -2313,7 +2372,7 @@
   </div>
 
   <!-- Playoffs -->
-  <div id="tab-playoffs" class="tab-panel">
+  <div id="tab-playoffs" class="tab-panel active">
     
     <div class="po-container">
       <div class="po-head">
@@ -2388,10 +2447,10 @@
 
       <div class="po-panel">
         <h3 class="po-panel-title">Bracket &amp; Schedule</h3>
-        <p class="po-panel-sub">Regular season complete — <strong>seeds are final</strong>. Disco Pickles are the #1 seed and earn a bye into the semifinals.</p>
+        <p class="po-panel-sub">Regular season complete — <strong>seeds are final</strong>. Disco Pickles are the #1 seed and earn a bye into the semifinals. Wild Card pairings and which semifinal slot each bye seed plays are set by the league and may differ from the standard bracket shown here.</p>
         <div class="po-bracket">
           <div class="po-round">
-            <div class="po-round-hdr"><span class="po-round-name">Wild Card</span><span class="po-round-sub">Seeds 3–6 · winners advance</span></div>
+            <div class="po-round-hdr"><span class="po-round-name">Wild Card</span><span class="po-round-sub">Seeds 3–6 · winners advance (pairings not yet posted; standard 3v6 / 4v5 assumed)</span></div>
             
               <div class="po-game">
                 <div class="po-game-top"><span class="po-slot">WC1</span><span class="po-match">Seed 3 (Lamp Lighters) vs Seed 6 (Brass Bonanza)</span></div>
@@ -2403,15 +2462,15 @@
               </div>
           </div>
           <div class="po-round">
-            <div class="po-round-hdr"><span class="po-round-name">Semifinals</span><span class="po-round-sub">Seeds 1 &amp; 2 (bye) vs Wild Card winners</span></div>
+            <div class="po-round-hdr"><span class="po-round-name">Semifinals</span><span class="po-round-sub">Seeds 1 &amp; 2 (byes) each face a Wild Card winner · seed-to-slot TBD</span></div>
             
               <div class="po-game">
-                <div class="po-game-top"><span class="po-slot">SF1</span><span class="po-match">Seed 1 (Disco Pickles) vs lowest WC winner</span></div>
-                <div class="po-game-meta"><span class="po-when">🕑 Sat Jun 6 · 6:15 PM</span><span class="po-loc">📍 Polar Ice Wake Forest</span></div>
+                <div class="po-game-top"><span class="po-match">Bye seed vs Wild Card winner</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Sat Jun 6 · 4:00 PM</span><span class="po-loc">📍 Invisalign Arena</span></div>
               </div>
               <div class="po-game">
-                <div class="po-game-top"><span class="po-slot">SF2</span><span class="po-match">Seed 2 (Polar Predators) vs other WC winner</span></div>
-                <div class="po-game-meta"><span class="po-when">🕑 Sat Jun 6 · 4:00 PM</span><span class="po-loc">📍 Invisalign Arena</span></div>
+                <div class="po-game-top"><span class="po-match">Bye seed vs Wild Card winner</span></div>
+                <div class="po-game-meta"><span class="po-when">🕑 Sat Jun 6 · 6:15 PM</span><span class="po-loc">📍 Polar Ice Wake Forest</span></div>
               </div>
           </div>
           <div class="po-round">
@@ -2637,6 +2696,11 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
+  }
+  function goPlayoffs() {
+    const btn = [...document.querySelectorAll('.tab-btn')].find(b => /Playoffs/.test(b.textContent));
+    if (btn) showTab('playoffs', btn);
+    document.querySelector('.tabs-wrap').scrollIntoView({ behavior: 'smooth' });
   }
 </script>
 </body>
