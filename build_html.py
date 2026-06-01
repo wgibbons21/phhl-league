@@ -1105,6 +1105,7 @@ def build_playoffs_tab():
     champ_pct  = sim['disco']['CHAMP']
     final_pct  = sim['disco']['CHAMP'] + sim['disco']['RUNNER']
     seed1_pct  = sim['seed'].get(1, 0.0)
+    season_done = not sim['remaining']   # no West regular-season games left → seeds final
 
     semi_opp  = sim['semi_opp'].most_common(1)
     final_opp = sim['final_opp'].most_common(1)
@@ -1170,9 +1171,9 @@ def build_playoffs_tab():
           <span class="po-hero-mid">{final_pct*100:.0f}%</span>
         </div>
         <div class="po-hero-card">
-          <span class="po-hero-label">Projected seed</span>
+          <span class="po-hero-label">{'Final seed' if season_done else 'Projected seed'}</span>
           <span class="po-hero-mid">#{disco_seed}</span>
-          <span class="po-hero-note">{seed1_pct*100:.0f}% to lock #1</span>
+          <span class="po-hero-note">{'clinched — bye to semis' if season_done else f'{seed1_pct*100:.0f}% to lock #1'}</span>
         </div>
       </div>
 
@@ -1196,7 +1197,7 @@ def build_playoffs_tab():
 
       <div class="po-panel">
         <h3 class="po-panel-title">Bracket &amp; Schedule</h3>
-        <p class="po-panel-sub">Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.</p>
+        <p class="po-panel-sub">{'Regular season complete — <strong>seeds are final</strong>. Disco Pickles are the #1 seed and earn a bye into the semifinals.' if season_done else 'Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.'}</p>
         <div class="po-bracket">{rounds}</div>
       </div>
 
