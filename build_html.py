@@ -1007,225 +1007,272 @@ _FACT_BASE_WEEK = 19
 _pickle_fact = _PICKLE_FACTS[(date.today().isocalendar()[1] - _FACT_BASE_WEEK) % len(_PICKLE_FACTS)]
 
 # ── Playoffs (10U West ADV bracket) ────────────────────────────────────────────
-# Fixed playoff schedule (from phhl.org/spring26playoffs — external facts).
-WEST_PLAYOFF_SCHEDULE = [
-    {'round': 'Wild Card', 'sub': 'Seeds 3–6 · winners advance (pairings not yet posted; standard 3v6 / 4v5 assumed)', 'games': [
-        {'slot': 'WC1', 'match': 'Seed 3 vs Seed 6', 'when': 'Thu Jun 4 · 5:15 PM', 'loc': 'Invisalign Arena'},
-        {'slot': 'WC2', 'match': 'Seed 4 vs Seed 5', 'when': 'Thu Jun 4 · 5:30 PM', 'loc': 'Invisalign Arena'},
+# Bracket facts hardcoded from phhl.org/spring26playoffs (not in the DaySmart feed).
+# Each team gets a custom emoji "medallion" + signature color.
+WEST_TEAMS = {
+    14356: {'seed': 1, 'emoji': '🥒',   'color': '#4D7C0F'},   # Disco Pickles
+    14357: {'seed': 2, 'emoji': '🐻‍❄️', 'color': '#0EA5E9'},   # Polar Predators
+    14355: {'seed': 3, 'emoji': '💡',   'color': '#F59E0B'},   # Lamp Lighters
+    14360: {'seed': 4, 'emoji': '🤠',   'color': '#475569'},   # Ice Outlaws
+    14359: {'seed': 5, 'emoji': '🌀',   'color': '#7C3AED'},   # Carolina Havoc
+    14358: {'seed': 6, 'emoji': '🎺',   'color': '#B45309'},   # Brass Bonanza
+}
+# Bracket rounds. 'winner' = team id once known (None = TBD). a/b are seeds' team ids;
+# a_label/b_label are placeholders when the participant isn't decided yet.
+WEST_BRACKET = [
+    {'round': 'Wild Card',    'date': 'Thu Jun 4', 'games': [
+        {'a': 14360, 'b': 14359, 'when': '5:15 PM', 'loc': 'Invisalign Arena',      'winner': 14359},
+        {'a': 14355, 'b': 14358, 'when': '5:30 PM', 'loc': 'Invisalign Arena',      'winner': 14355},
     ]},
-    {'round': 'Semifinals', 'sub': 'Seeds 1 & 2 (byes) each face a Wild Card winner · seed-to-slot TBD', 'games': [
-        {'slot': '', 'match': 'Bye seed vs Wild Card winner', 'when': 'Sat Jun 6 · 4:00 PM', 'loc': 'Invisalign Arena'},
-        {'slot': '', 'match': 'Bye seed vs Wild Card winner', 'when': 'Sat Jun 6 · 6:15 PM', 'loc': 'Polar Ice Wake Forest'},
+    {'round': 'Semifinals',   'date': 'Sat Jun 6', 'games': [
+        {'a': 14356, 'b': 14359, 'when': '4:00 PM', 'loc': 'Invisalign Arena',       'winner': None, 'feature': True},
+        {'a': 14357, 'b': 14355, 'when': '6:15 PM', 'loc': 'Polar Ice Wake Forest',  'winner': None},
     ]},
-    {'round': 'Consolation', 'sub': "Ensures every team's 2-game guarantee", 'games': [
-        {'slot': '', 'match': 'Non-advancing teams', 'when': 'Sun Jun 7 · 1:30 PM', 'loc': 'Polar Ice Wake Forest'},
-    ]},
-    {'round': '🏆 Championship', 'sub': 'Semifinal winners', 'games': [
-        {'slot': '', 'match': 'SF1 winner vs SF2 winner', 'when': 'Sun Jun 7 · 11:15 AM', 'loc': 'Invisalign Arena'},
+    {'round': 'Championship', 'date': 'Sun Jun 7', 'games': [
+        {'a': None, 'b': None, 'a_label': 'Semifinal 1 winner', 'b_label': 'Semifinal 2 winner',
+         'when': '11:15 AM', 'loc': 'Invisalign Arena', 'winner': None},
     ]},
 ]
+WEST_CONSOLATION = {'round': 'Consolation', 'date': 'Sun Jun 7',
+    'game': {'a': 14360, 'b': 14358, 'when': '1:30 PM', 'loc': 'Polar Ice Wake Forest', 'winner': None}}
+SEMI_DATE = date(2026, 6, 6)
+
+
+def team_medal(tid, size='md'):
+    """Colored emoji medallion for a team."""
+    m = WEST_TEAMS[tid]
+    return (f'<span class="po-medal po-medal-{size}" style="background:{m["color"]}" '
+            f'title="{esc(short_name(tid))}">{m["emoji"]}</span>')
+
+
+def disco_h2h(opp):
+    """Disco Pickles' season head-to-head vs opp: (w, l, t, [(date, ds, os)…])."""
+    games = []
+    for g in completed_games:
+        if DISCO_ID in (g['hid'], g['vid']) and opp in (g['hid'], g['vid']) and g['hid'] != g['vid']:
+            ds  = g['hs'] if g['hid'] == DISCO_ID else g['vs']
+            oss = g['vs'] if g['hid'] == DISCO_ID else g['hs']
+            games.append((g['start_d'], ds, oss))
+    games.sort()
+    w = sum(1 for _, a, b in games if a > b)
+    l = sum(1 for _, a, b in games if a < b)
+    t = sum(1 for _, a, b in games if a == b)
+    return w, l, t, games
+
 
 def simulate_west_playoffs(n_sims=20000):
-    """Monte-Carlo the West bracket from current Massey ratings + standings.
-    Simulates any remaining regular-season games to set seeds, then runs
-    Wild Card → Semifinals → Championship. Returns odds for every West team."""
+    """Monte-Carlo the *actual* remaining bracket (Wild Card already decided):
+    run both semifinals + the final from current Massey ratings."""
     import random, math
     from collections import Counter
     rng = random.Random(42)
+    teams = list(WEST_TEAMS)
+    R = {t: massey.get(t, 0.0) for t in teams}
+    semi_games = next(r['games'] for r in WEST_BRACKET if r['round'] == 'Semifinals')
+    semis = [(g['a'], g['b']) for g in semi_games]
 
-    west = [t for t in ALL_TEAM_IDS if get_division(t) == 'West']
-    R = {t: massey.get(t, 0.0) for t in west}
-    # base standings carried into the sim: [points, goal-diff, goals-for]
-    base = {t: [pts(stats[t]), gd(stats[t]), stats[t]['gf']] for t in west}
-    remaining = [(g['hid'], g['vid']) for g in upcoming_games
-                 if g['hid'] in R and g['vid'] in R]
-    SD = 3.0   # margin noise (season MAE ≈ 2.7 → sd ≈ 3)
+    def play(a, b):
+        pa = 1 / (1 + math.exp(-0.4 * (R[a] - R[b])))
+        return a if rng.random() < pa else b
 
-    def margin(a, b):
-        return round(rng.gauss(R[a] - R[b], SD))
-    def play(a, b):                       # knockout: no ties
-        m = margin(a, b)
-        if m == 0:
-            m = 1 if rng.random() < 1 / (1 + math.exp(-0.4 * (R[a] - R[b]))) else -1
-        return (a, b) if m > 0 else (b, a)   # (winner, loser)
-
-    title = Counter(); disco = Counter(); seedc = Counter()
-    semi_opp = Counter(); final_opp = Counter(); reg = Counter()
-
+    title = Counter(); disco = Counter(); final_opp = Counter()
     for _ in range(n_sims):
-        s = {t: base[t][:] for t in west}
-        for h, a in remaining:
-            m = margin(h, a)
-            s[h][1] += m; s[a][1] -= m
-            if m > 0:   s[h][0] += 2
-            elif m < 0: s[a][0] += 2
-            else:       s[h][0] += 1; s[a][0] += 1
-            if DISCO_ID in (h, a):
-                d = m if h == DISCO_ID else -m
-                reg['W' if d > 0 else ('L' if d < 0 else 'T')] += 1
-        order = sorted(west, key=lambda t: (-s[t][0], -s[t][1], -s[t][2]))
-        seed = {t: i + 1 for i, t in enumerate(order)}
-        seedc[seed[DISCO_ID]] += 1
-        s1, s2, s3, s4, s5, s6 = order
-        wA, _ = play(s3, s6); wB, _ = play(s4, s5)
-        winners = sorted([wA, wB], key=lambda t: seed[t])   # better seed first
-        better, worse = winners[0], winners[1]
-        if   DISCO_ID == s1: semi_opp[worse] += 1
-        elif DISCO_ID == s2: semi_opp[better] += 1
-        f1, _ = play(s1, worse); f2, _ = play(s2, better)
-        champ, runner = play(f1, f2)
+        w = [play(a, b) for a, b in semis]      # semifinal winners
+        champ = play(w[0], w[1])
         title[champ] += 1
         if champ == DISCO_ID:
-            disco['CHAMP'] += 1; final_opp[runner] += 1
-        elif runner == DISCO_ID:
-            disco['RUNNER'] += 1; final_opp[champ] += 1
+            disco['CHAMP'] += 1
+            final_opp[w[1] if w[0] == DISCO_ID else w[0]] += 1
+        elif DISCO_ID in w:                      # reached final, lost
+            disco['RUNNER'] += 1
+            final_opp[champ] += 1
         else:
             disco['OUT'] += 1
-
     n = float(n_sims)
     return {
-        'west': west, 'R': R, 'n': n_sims,
-        'remaining': remaining,
-        'title':     {t: title[t] / n for t in west},
+        'teams': teams, 'R': R, 'n': n_sims,
+        'title':     {t: title[t] / n for t in teams},
         'disco':     {k: disco[k] / n for k in ('CHAMP', 'RUNNER', 'OUT')},
-        'seed':      {k: seedc[k] / n for k in seedc},
-        'reg':       {k: reg[k] / max(sum(reg.values()), 1) for k in reg},
-        'semi_opp':  semi_opp,
         'final_opp': final_opp,
     }
 
+
 def build_playoff_strip(sim):
-    """Compact playoff banner shown below the hero (links into the Playoffs tab)."""
-    champ_pct = sim['disco']['CHAMP']
-    proj = [t for t in divisions['West'] if t in sim['west']]
-    disco_seed = (proj.index(DISCO_ID) + 1) if DISCO_ID in proj else '?'
-    season_done = not sim['remaining']
-    # Disco (#1 seed) plays a semifinal on Sat Jun 6 — the league hasn't posted
-    # which of the two slots (4:00 PM Invisalign / 6:15 PM Wake Forest) is the #1 seed's.
-    seed_txt = (f'#{disco_seed} seed &middot; bye to the semifinals' if season_done
-                else f'projected #{disco_seed} seed')
+    """Compact playoff banner below the hero (links into the Playoffs tab).
+    Disco Pickles (#1 seed) are the home team; Carolina Havoc (#5) the away team."""
+    when_pre = 'Today' if TODAY == SEMI_DATE else 'Sat Jun 6'
     return f'''
     <section class="playoff-strip" onclick="goPlayoffs()" role="button" tabindex="0">
       <div class="ps-main">
-        <span class="ps-tag">🏆 PLAYOFF BOUND</span>
-        <span class="ps-headline">{seed_txt}</span>
+        <span class="ps-tag">🏆 PLAYOFFS · SEMIFINAL</span>
+        <span class="ps-headline">🥒 Disco Pickles <span class="ps-ha">HOME</span> <span class="ps-vs">vs</span> 🌀 Carolina Havoc <span class="ps-ha away">AWAY</span></span>
       </div>
       <div class="ps-stats">
-        <div class="ps-stat"><span class="ps-stat-num">{champ_pct*100:.0f}%</span><span class="ps-stat-lbl">to win the title</span></div>
-        <div class="ps-stat"><span class="ps-stat-num">Semifinal</span><span class="ps-stat-lbl">Sat Jun 6 &middot; time TBD</span></div>
+        <div class="ps-stat"><span class="ps-stat-num">{when_pre} · 4:00 PM</span><span class="ps-stat-lbl">Invisalign Arena</span></div>
       </div>
       <span class="ps-cta">View Bracket &amp; Odds →</span>
     </section>'''
 
 
+def _bracket_slot(g, key, label_key):
+    """One participant row inside a bracket matchup card."""
+    tid = g.get(key)
+    if tid is None:
+        return (f'<div class="po-br-team po-br-tbd">'
+                f'<span class="po-medal po-medal-sm po-medal-tbd">?</span>'
+                f'<span class="po-br-name">{esc(g.get(label_key, "TBD"))}</span></div>')
+    winner = g.get('winner')
+    cls = 'po-br-won' if winner == tid else ('po-br-lost' if winner else '')
+    dp  = ' po-br-dpteam' if tid == DISCO_ID else ''
+    chk = '<span class="po-br-check">✓</span>' if winner == tid else ''
+    return (f'<div class="po-br-team {cls}{dp}">{team_medal(tid, "sm")}'
+            f'<span class="po-br-seed">{WEST_TEAMS[tid]["seed"]}</span>'
+            f'<span class="po-br-name">{esc(short_name(tid))}</span>{chk}</div>')
+
+
 def build_playoffs_tab(sim):
-    west = sim['west']
-    # current projected seed order (already standings-sorted in divisions['West'])
-    proj = [t for t in divisions['West'] if t in west]
-    seed_name = {i + 1: short_name(t) for i, t in enumerate(proj)}
-    disco_seed = (proj.index(DISCO_ID) + 1) if DISCO_ID in proj else '?'
-
-    champ_pct  = sim['disco']['CHAMP']
-    final_pct  = sim['disco']['CHAMP'] + sim['disco']['RUNNER']
-    seed1_pct  = sim['seed'].get(1, 0.0)
-    season_done = not sim['remaining']   # no West regular-season games left → seeds final
-
-    semi_opp  = sim['semi_opp'].most_common(1)
+    champ_pct = sim['disco']['CHAMP']
+    final_pct = sim['disco']['CHAMP'] + sim['disco']['RUNNER']
     final_opp = sim['final_opp'].most_common(1)
-    semi_opp_name  = short_name(semi_opp[0][0])  if semi_opp  else 'TBD'
     final_opp_name = short_name(final_opp[0][0]) if final_opp else 'TBD'
-    semi_wp  = win_prob(massey.get(DISCO_ID, 0) - massey.get(semi_opp[0][0], 0))  if semi_opp  else 0.5
+
+    SEMI_OPP = 14359  # Carolina Havoc (fixed — Wild Card decided)
+    semi_wp  = win_prob(massey.get(DISCO_ID, 0) - massey.get(SEMI_OPP, 0))
     final_wp = win_prob(massey.get(DISCO_ID, 0) - massey.get(final_opp[0][0], 0)) if final_opp else 0.5
 
-    # ── Title-odds bars (all 6 West teams) ──────────────────────────────────────
-    ranked = sorted(west, key=lambda t: -sim['title'][t])
-    top = max((sim['title'][t] for t in west), default=1) or 1
+    # ── Connected bracket ───────────────────────────────────────────────────────
+    cols = ''
+    for ri, rnd in enumerate(WEST_BRACKET):
+        col_cls = ['po-col-wc', 'po-col-semi', 'po-col-final'][ri]
+        matches = ''
+        for g in rnd['games']:
+            is_dp = DISCO_ID in (g.get('a'), g.get('b'))
+            top = _bracket_slot(g, 'a', 'a_label')
+            bot = _bracket_slot(g, 'b', 'b_label')
+            if g.get('winner'):
+                status = f'<span class="po-br-status done">{esc(short_name(g["winner"]))} advanced ✓</span>'
+            elif rnd['date'] == 'Sat Jun 6' and TODAY == SEMI_DATE:
+                status = '<span class="po-br-status live">🔴 Today</span>'
+            else:
+                status = '<span class="po-br-status up">⏳ Upcoming</span>'
+            matches += f'''
+              <div class="po-br-match{' po-br-match-dp' if is_dp else ''}">
+                {top}{bot}
+                <div class="po-br-meta">🕑 {esc(rnd['date'])} · {esc(g['when'])} · 📍 {esc(g['loc'])}</div>
+                {status}
+              </div>'''
+        cols += f'''
+          <div class="po-br-col {col_cls}">
+            <div class="po-br-colhdr"><span>{esc(rnd['round'])}</span><small>{esc(rnd['date'])}</small></div>
+            {matches}
+          </div>'''
+    cg = WEST_CONSOLATION['game']
+    consolation = f'''
+      <div class="po-conso">
+        <span class="po-conso-lbl">Consolation (2-game guarantee)</span>
+        {team_medal(cg['a'], 'sm')} {esc(short_name(cg['a']))}
+        <span class="po-conso-vs">vs</span>
+        {team_medal(cg['b'], 'sm')} {esc(short_name(cg['b']))}
+        <span class="po-conso-meta">{esc(WEST_CONSOLATION['date'])} · {esc(cg['when'])} · {esc(cg['loc'])}</span>
+      </div>'''
+
+    # ── Semifinal spotlight + head-to-head ──────────────────────────────────────
+    w, l, t, h2h_games = disco_h2h(SEMI_OPP)
+    h2h_scores = ' · '.join(f'<span class="po-h2h-score">{a}–{b}</span>' for _, a, b in h2h_games)
+    when_pre = 'Today' if TODAY == SEMI_DATE else 'Sat Jun 6'
+    # head-to-head vs the two possible final opponents
+    pw, pl, pt, _ = disco_h2h(14357)   # Polar Predators
+    lw, ll, lt, _ = disco_h2h(14355)   # Lamp Lighters
+
+    # ── Title-odds bars ─────────────────────────────────────────────────────────
+    ranked = sorted(sim['teams'], key=lambda t: -sim['title'][t])
+    topp = max((sim['title'][t] for t in sim['teams']), default=1) or 1
     bars = ''
-    for t in ranked:
-        p = sim['title'][t]
-        is_dp = (t == DISCO_ID)
-        bar_w = max(p / top * 100, 2)
-        color = 'var(--pickle-dark)' if is_dp else 'var(--blue)'
+    for tt in ranked:
+        p = sim['title'][tt]
+        is_dp = (tt == DISCO_ID)
+        bar_w = max(p / topp * 100, 1.5)
+        color = WEST_TEAMS[tt]['color']
         bars += f'''
           <div class="po-odds-row{' po-odds-dp' if is_dp else ''}">
-            <span class="po-odds-team">{esc(short_name(t))}{' 🥒' if is_dp else ''}</span>
+            <span class="po-odds-team">{team_medal(tt, 'sm')} {esc(short_name(tt))}</span>
             <div class="po-odds-track"><div class="po-odds-fill" style="width:{bar_w:.0f}%;background:{color}"></div></div>
             <span class="po-odds-pct">{p*100:.0f}%</span>
           </div>'''
 
-    # ── Bracket rounds with schedule ────────────────────────────────────────────
-    def matchup_names(match):
-        out = match
-        for sd in range(1, 7):
-            out = out.replace(f'Seed {sd}', f'Seed {sd} ({seed_name.get(sd, "TBD")})')
-        return out
-    rounds = ''
-    for rnd in WEST_PLAYOFF_SCHEDULE:
-        gcards = ''
-        for g in rnd['games']:
-            slot = f'<span class="po-slot">{g["slot"]}</span>' if g['slot'] else ''
-            gcards += f'''
-              <div class="po-game">
-                <div class="po-game-top">{slot}<span class="po-match">{esc(matchup_names(g["match"]))}</span></div>
-                <div class="po-game-meta"><span class="po-when">🕑 {esc(g["when"])}</span><span class="po-loc">📍 {esc(g["loc"])}</span></div>
-              </div>'''
-        is_champ = 'Championship' in rnd['round']
-        rounds += f'''
-          <div class="po-round{' po-round-champ' if is_champ else ''}">
-            <div class="po-round-hdr"><span class="po-round-name">{esc(rnd["round"])}</span><span class="po-round-sub">{esc(rnd["sub"])}</span></div>
-            {gcards}
-          </div>'''
-
     return f'''
     <div class="po-container">
-      <div class="po-head">
-        <h2 class="po-title">🏆 West Division Playoffs</h2>
-        <p class="po-sub">6 teams · single elimination · two-game guarantee. Top 2 seeds get a bye into the semifinals; seeds 3–6 play a Wild Card round first. June 4–7, 2026.</p>
+      <!-- Bracket -->
+      <div class="po-panel">
+        <h3 class="po-panel-title">Bracket</h3>
+        <div class="po-bracket2-wrap"><div class="po-bracket2">{cols}</div></div>
+        {consolation}
       </div>
 
-      <div class="po-hero">
-        <div class="po-hero-card po-hero-main">
-          <span class="po-hero-label">🥒 Disco Pickles — Championship odds</span>
-          <span class="po-hero-big">{champ_pct*100:.0f}%</span>
-          <span class="po-hero-note">to win the West title</span>
-        </div>
-        <div class="po-hero-card">
-          <span class="po-hero-label">Reach the final</span>
-          <span class="po-hero-mid">{final_pct*100:.0f}%</span>
-        </div>
-        <div class="po-hero-card">
-          <span class="po-hero-label">{'Final seed' if season_done else 'Projected seed'}</span>
-          <span class="po-hero-mid">#{disco_seed}</span>
-          <span class="po-hero-note">{'clinched — bye to semis' if season_done else f'{seed1_pct*100:.0f}% to lock #1'}</span>
-        </div>
+      <!-- Pickle fact (moved below the bracket) -->
+      <div class="pickle-fact-bar pickle-fact-inline">
+        <span class="pickle-fact-icon">🥒</span>
+        <span class="pickle-fact-text"><strong>Did you know?</strong> {_pickle_fact}</span>
       </div>
 
       <div class="po-panels">
         <div class="po-panel">
           <h3 class="po-panel-title">Championship Odds — every West team</h3>
-          <p class="po-panel-sub">From {sim['n']:,} Monte-Carlo simulations using current Massey ratings.</p>
+          <p class="po-panel-sub">{sim['n']:,} Monte-Carlo sims of the actual remaining bracket (Wild Card decided), using Massey ratings.</p>
           <div class="po-odds">{bars}</div>
         </div>
 
         <div class="po-panel">
-          <h3 class="po-panel-title">🥒 Disco Pickles — projected path</h3>
+          <h3 class="po-panel-title">🥒 Disco Pickles — path to the title</h3>
           <div class="po-path">
-            <div class="po-path-step"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE (top-2 seed)</span></div>
-            <div class="po-path-step"><span class="po-path-round">Semifinal · Sat Jun 6</span><span class="po-path-detail">likely vs <strong>{esc(semi_opp_name)}</strong> · <span class="po-wp">{semi_wp*100:.0f}% win</span></span></div>
+            <div class="po-path-step po-path-done"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE (#1 seed) ✓</span></div>
+            <div class="po-path-step"><span class="po-path-round">Semifinal · {when_pre}</span><span class="po-path-detail">vs <strong>Carolina Havoc</strong> · <span class="po-wp">{semi_wp*100:.0f}% win</span></span></div>
             <div class="po-path-step po-path-final"><span class="po-path-round">Championship · Sun Jun 7</span><span class="po-path-detail">likely vs <strong>{esc(final_opp_name)}</strong> · <span class="po-wp">{final_wp*100:.0f}% win</span></span></div>
           </div>
-          <p class="po-panel-sub">Win probabilities use the same logistic curve as the Predictions tab. The final is the real test — most likely against {esc(final_opp_name)}.</p>
+          <p class="po-panel-sub">We swept the season series vs every likely opponent: Carolina <strong>{w}-{l}-{t}</strong>, Polar Predators <strong>{pw}-{pl}-{pt}</strong>, Lamp Lighters <strong>{lw}-{ll}-{lt}</strong>.</p>
         </div>
       </div>
 
+      <!-- Full schedule -->
       <div class="po-panel">
-        <h3 class="po-panel-title">Bracket &amp; Schedule</h3>
-        <p class="po-panel-sub">{'Regular season complete — <strong>seeds are final</strong>. Disco Pickles are the #1 seed and earn a bye into the semifinals.' if season_done else 'Seed names are <em>projected</em> from current standings and firm up once the final regular-season games post. Disco Pickles are the #1 seed.'} Wild Card pairings and which semifinal slot each bye seed plays are set by the league and may differ from the standard bracket shown here.</p>
-        <div class="po-bracket">{rounds}</div>
+        <h3 class="po-panel-title">Playoff Schedule</h3>
+        <div class="po-sched">{build_playoff_schedule_rows()}</div>
       </div>
 
-      <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Odds recompute automatically each time new scores are added.</p>
+      <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Scores aren't in the league feed, so results show which team advanced (per phhl.org). Odds recompute each rebuild.</p>
     </div>'''
+
+
+def build_playoff_schedule_rows():
+    """Flat schedule list across all playoff rounds (incl. consolation)."""
+    items = []
+    for rnd in WEST_BRACKET:
+        for g in rnd['games']:
+            items.append((rnd['round'], rnd['date'], g))
+    items.append((WEST_CONSOLATION['round'], WEST_CONSOLATION['date'], WEST_CONSOLATION['game']))
+    rows = ''
+    for rname, rdate, g in items:
+        a, b = g.get('a'), g.get('b')
+        if a and b:
+            match = (f'{team_medal(a, "sm")} {esc(short_name(a))} '
+                     f'<span class="po-sched-vs">vs</span> {team_medal(b, "sm")} {esc(short_name(b))}')
+        else:
+            match = f'{esc(g.get("a_label", "TBD"))} <span class="po-sched-vs">vs</span> {esc(g.get("b_label", "TBD"))}'
+        if g.get('winner'):
+            chip = f'<span class="po-sched-chip done">{esc(short_name(g["winner"]))} ✓</span>'
+        elif rdate == 'Sat Jun 6' and TODAY == SEMI_DATE:
+            chip = '<span class="po-sched-chip live">🔴 Today</span>'
+        else:
+            chip = '<span class="po-sched-chip up">⏳ Upcoming</span>'
+        dp = ' po-sched-dp' if DISCO_ID in (a, b) else ''
+        rows += f'''
+          <div class="po-sched-row{dp}">
+            <span class="po-sched-round">{esc(rname)}</span>
+            <span class="po-sched-match">{match}</span>
+            <span class="po-sched-meta">{esc(rdate)} · {esc(g['when'])} · {esc(g['loc'])}</span>
+            {chip}
+          </div>'''
+    return rows
 
 
 # ── Assemble full HTML ─────────────────────────────────────────────────────────
@@ -1371,14 +1418,35 @@ HTML = f'''<!DOCTYPE html>
   .hero-record {{ background: #FCD34D !important; color: #92400E !important; font-weight: 800 !important; }}
   .hero-undefeated {{ font-size: 0.85rem; opacity: 0.92; font-weight: 600; }}
 
+  /* Compact hero (slim bar) */
+  .hero-compact {{
+    margin: 1.25rem 1.5rem 0;
+    background: linear-gradient(135deg, #7a0000 0%, #CD0000 60%, #A00000 100%);
+    color: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md);
+    padding: 0.6rem 1.25rem; display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
+  }}
+  .hc-medal {{ font-size: 1.7rem; line-height: 1; }}
+  .hc-id {{ display: flex; flex-direction: column; gap: 0.15rem; }}
+  .hc-name {{ font-size: 1.25rem; font-weight: 800; line-height: 1.05; }}
+  .hc-tags {{ display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }}
+  .hc-tag-lead {{ font-size: 0.64rem; font-weight: 700; background: rgba(255,255,255,.18); padding: 0.08rem 0.5rem; border-radius: 10px; white-space: nowrap; }}
+  .hero-compact .undefeated-badge {{ font-size: 0.64rem; padding: 0.08rem 0.5rem; }}
+  .hc-stats {{ display: flex; flex-direction: column; gap: 0.15rem; margin-left: 0.4rem; }}
+  .hc-rec {{ background: #FCD34D; color: #92400E; font-weight: 800; border-radius: 8px; padding: 0.1rem 0.6rem; font-size: 1rem; width: max-content; }}
+  .hc-meta {{ font-size: 0.74rem; opacity: 0.92; }}
+  .hc-rank {{ margin-left: auto; text-align: center; line-height: 1; }}
+  .hc-rank-num {{ font-size: 1.9rem; font-weight: 900; }}
+  .hc-rank-lbl {{ font-size: 0.68rem; opacity: 0.82; display: block; margin-top: 2px; }}
+  @media (max-width: 600px) {{ .hc-stats {{ margin-left: 0; }} .hc-rank {{ margin-left: auto; }} }}
+
   /* ── Playoff Strip ───────────────────────────────────────────── */
   .playoff-strip {{
-    margin: 1rem 1.5rem 0;
+    margin: 0.9rem 1.5rem 0.4rem;
     background: linear-gradient(135deg, #1A1A1A 0%, #3a0000 100%);
     border-left: 5px solid #FCD34D;
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
-    padding: 1rem 1.5rem;
+    padding: 1.15rem 1.6rem;
     display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
     cursor: pointer; color: #fff;
     transition: transform .15s, box-shadow .15s;
@@ -1409,6 +1477,14 @@ HTML = f'''<!DOCTYPE html>
     border-bottom: 2px solid var(--border);
     margin-bottom: 1.5rem;
     overflow-x: auto;
+  }}
+  /* Tab nav pinned directly under the site header */
+  .tab-nav-top {{
+    margin-bottom: 0;
+    padding: 0 1.5rem;
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 30;
+    box-shadow: 0 1px 6px rgba(0,0,0,.05);
   }}
   .tab-btn {{
     padding: 0.6rem 1.4rem;
@@ -1571,10 +1647,13 @@ HTML = f'''<!DOCTYPE html>
   .pickle-fact-icon {{ font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }}
   .pickle-fact-text {{ flex: 1; }}
   .pickle-fact-text strong {{ color: var(--pickle); }}
+  .pickle-fact-inline {{ border: 1px solid var(--pickle-bdr); border-radius: var(--radius); }}
 
   /* ── Playoffs ────────────────────────────────────────────────── */
   .po-container {{ display: flex; flex-direction: column; gap: 1.5rem; }}
   .po-head {{ text-align: center; }}
+  .po-head-top {{ margin: 1.4rem 1.5rem 0; }}
+  .po-head-top .po-title {{ font-size: 1.35rem; }}
   .po-title {{ font-size: 1.5rem; font-weight: 800; margin-bottom: .35rem; }}
   .po-sub {{ color: var(--text-muted); font-size: .9rem; max-width: 640px; margin: 0 auto; line-height: 1.5; }}
   .po-hero {{ display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 1rem; }}
@@ -1628,6 +1707,84 @@ HTML = f'''<!DOCTYPE html>
   @media (max-width: 720px) {{
     .po-hero {{ grid-template-columns: 1fr; }}
     .po-panels {{ grid-template-columns: 1fr; }}
+  }}
+
+  /* Team medallions */
+  .po-medal {{ display:inline-flex; align-items:center; justify-content:center; border-radius:50%; color:#fff; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,.25); line-height:1; }}
+  .po-medal-sm {{ width:1.55rem; height:1.55rem; font-size:.85rem; }}
+  .po-medal-md {{ width:2.1rem;  height:2.1rem;  font-size:1.1rem; }}
+  .po-medal-lg {{ width:3.4rem;  height:3.4rem;  font-size:1.9rem; }}
+  .po-medal-tbd {{ background:var(--border) !important; color:var(--text-muted); }}
+  .ps-vs {{ opacity:.7; font-weight:600; font-size:.85rem; }}
+  .ps-ha {{ font-size:.58rem; font-weight:800; letter-spacing:.04em; background:#FCD34D; color:#3a0000; padding:.05rem .4rem; border-radius:6px; vertical-align:middle; margin-left:.15rem; }}
+  .ps-ha.away {{ background:rgba(255,255,255,.22); color:#fff; }}
+  .po-path-done .po-path-detail {{ color:var(--win-fg); font-weight:600; }}
+
+  /* Semifinal spotlight */
+  .po-spotlight {{ background:linear-gradient(135deg,#1A1A1A,#3a0000); color:#fff; border-radius:var(--radius); box-shadow:var(--shadow-md); padding:1.25rem 1.5rem; text-align:center; }}
+  .po-spot-tag {{ font-size:.78rem; font-weight:800; letter-spacing:.05em; color:#FCD34D; text-transform:uppercase; }}
+  .po-spot-match {{ display:flex; align-items:center; justify-content:center; gap:1.75rem; margin:.85rem 0; }}
+  .po-spot-team {{ display:flex; flex-direction:column; align-items:center; gap:.3rem; min-width:120px; }}
+  .po-spot-team.dp .po-spot-name {{ color:#A3E635; }}
+  .po-spot-name {{ font-weight:800; font-size:1.05rem; }}
+  .po-spot-seed {{ font-size:.72rem; opacity:.7; }}
+  .po-spot-vs {{ display:flex; flex-direction:column; gap:.3rem; align-items:center; }}
+  .po-spot-vs > span:first-child {{ font-size:.95rem; font-weight:800; opacity:.55; }}
+  .po-spot-wp {{ background:var(--win-fg); color:#fff; border-radius:12px; padding:.15rem .6rem; font-size:.78rem; font-weight:700; }}
+  .po-spot-meta {{ font-size:.8rem; opacity:.85; }}
+  .po-spot-h2h {{ margin-top:.7rem; font-size:.85rem; background:rgba(255,255,255,.08); border-radius:8px; padding:.5rem .9rem; display:inline-block; }}
+  .po-h2h-lbl {{ opacity:.75; }}
+  .po-h2h-score {{ background:rgba(255,255,255,.13); border-radius:5px; padding:.05rem .4rem; font-weight:700; font-size:.8rem; }}
+
+  /* Connected bracket */
+  .po-bracket2-wrap {{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:.5rem; }}
+  .po-bracket2 {{ display:flex; gap:2.4rem; min-width:640px; align-items:stretch; }}
+  .po-br-col {{ display:flex; flex-direction:column; justify-content:space-around; flex:1 1 0; position:relative; gap:1.5rem; }}
+  .po-col-final {{ justify-content:center; }}
+  .po-br-colhdr {{ text-align:center; font-weight:800; font-size:.85rem; margin-bottom:.15rem; }}
+  .po-br-colhdr small {{ display:block; font-weight:500; font-size:.7rem; color:var(--text-muted); }}
+  .po-br-match {{ position:relative; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:.45rem; box-shadow:var(--shadow); }}
+  .po-br-match-dp {{ border-color:var(--pickle-dark); box-shadow:0 0 0 2px var(--pickle-bdr); }}
+  .po-br-team {{ display:flex; align-items:center; gap:.4rem; padding:.3rem .2rem; font-size:.85rem; }}
+  .po-br-team + .po-br-team {{ border-top:1px solid var(--border); }}
+  .po-br-seed {{ font-size:.7rem; color:var(--text-muted); font-weight:700; min-width:.9rem; text-align:center; }}
+  .po-br-name {{ flex:1; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
+  .po-br-won {{ font-weight:800; }}
+  .po-br-won .po-br-name {{ color:var(--win-fg); }}
+  .po-br-lost {{ opacity:.45; }}
+  .po-br-dpteam .po-br-name {{ color:var(--pickle-dark); }}
+  .po-br-check {{ color:var(--win-fg); font-weight:800; }}
+  .po-br-tbd {{ opacity:.6; font-style:italic; }}
+  .po-br-meta {{ font-size:.67rem; color:var(--text-muted); margin-top:.3rem; text-align:center; line-height:1.3; }}
+  .po-br-status {{ display:block; text-align:center; font-size:.7rem; font-weight:700; margin-top:.2rem; }}
+  .po-br-status.done {{ color:var(--win-fg); }}
+  .po-br-status.live {{ color:var(--loss-fg); }}
+  .po-br-status.up {{ color:var(--text-muted); }}
+  .po-col-wc .po-br-match::after, .po-col-semi .po-br-match::after {{ content:''; position:absolute; left:100%; top:50%; width:1.2rem; height:2px; background:var(--border); }}
+  .po-col-semi .po-br-match::before, .po-col-final .po-br-match::before {{ content:''; position:absolute; right:100%; top:50%; width:1.2rem; height:2px; background:var(--border); }}
+  .po-col-semi::after {{ content:''; position:absolute; left:100%; margin-left:1.2rem; top:25%; bottom:25%; width:2px; background:var(--border); }}
+
+  /* Consolation + schedule */
+  .po-conso {{ margin-top:1rem; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; background:var(--bg); border:1px dashed var(--border); border-radius:8px; padding:.6rem .9rem; font-size:.85rem; }}
+  .po-conso-lbl {{ font-weight:700; color:var(--text-muted); font-size:.78rem; margin-right:.5rem; }}
+  .po-conso-vs {{ color:var(--text-muted); font-size:.8rem; }}
+  .po-conso-meta {{ margin-left:auto; font-size:.75rem; color:var(--text-muted); }}
+  .po-sched {{ display:flex; flex-direction:column; gap:.4rem; }}
+  .po-sched-row {{ display:grid; grid-template-columns:6.5rem 1fr auto auto; align-items:center; gap:.75rem; padding:.5rem .7rem; background:var(--bg); border-radius:8px; font-size:.85rem; }}
+  .po-sched-dp {{ background:var(--pickle-bg); }}
+  .po-sched-round {{ font-weight:700; font-size:.72rem; color:var(--text-muted); text-transform:uppercase; }}
+  .po-sched-match {{ display:flex; align-items:center; gap:.35rem; flex-wrap:wrap; }}
+  .po-sched-vs {{ color:var(--text-muted); font-size:.78rem; }}
+  .po-sched-meta {{ font-size:.74rem; color:var(--text-muted); white-space:nowrap; }}
+  .po-sched-chip {{ font-size:.72rem; font-weight:700; border-radius:10px; padding:.15rem .55rem; white-space:nowrap; }}
+  .po-sched-chip.done {{ background:var(--win-bg); color:var(--win-fg); }}
+  .po-sched-chip.live {{ background:var(--loss-bg); color:var(--loss-fg); }}
+  .po-sched-chip.up {{ background:#E2E8F0; color:var(--text-muted); }}
+  @media (max-width: 768px) {{
+    .po-spot-match {{ gap:.85rem; }}
+    .po-spot-team {{ min-width:88px; }}
+    .po-sched-row {{ grid-template-columns:1fr auto; }}
+    .po-sched-meta {{ grid-column:1 / -1; white-space:normal; }}
   }}
 
   /* ── Predictions ─────────────────────────────────────────────── */
@@ -1974,49 +2131,27 @@ HTML = f'''<!DOCTYPE html>
   <div class="last-updated">🔄 Last updated: {LAST_UPDATED}</div>
 </header>
 
-<!-- ── Disco Pickles Hero ───────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-badges">
-      <div class="division-badge">⭐ West Division Leaders</div>
-      {'<div class="undefeated-badge">🔥 UNDEFEATED</div>' if dp_l == 0 else ''}
-    </div>
-    <div class="team-name">🥒 Disco Pickles</div>
-    <div class="record-line">
-      <span class="hero-stat hero-record">{dp_w}-{dp_l}-{dp_t}</span>
-      <span class="hero-stat">{dp_pts} pts</span>
-      <span class="hero-stat">GF: {dp_gf}</span>
-      <span class="hero-stat">GA: {dp_ga}</span>
-      <span class="hero-stat">GD: {gd_sign(dp_gd_v)}</span>
-    </div>
-    {f'<div class="hero-undefeated">{dp_w} win{"s" if dp_w != 1 else ""} &middot; {dp_t} tie{"s" if dp_t != 1 else ""} &middot; {dp_l} loss{"es" if dp_l != 1 else ""} — perfect season, never beaten</div>' if dp_l == 0 else ''}
-  </div>
-  <div class="hero-right">
-    <div class="hero-rank">#{dp_div_rank}</div>
-    <div class="hero-rank-lbl">West Division</div>
-  </div>
-</section>
+<!-- ── Tab Navigation (directly below header) ───────────────────────────────── -->
+<nav class="tab-nav tab-nav-top">
+  <button class="tab-btn active" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
+  <button class="tab-btn" onclick="showTab('standings',this)">Standings</button>
+  <button class="tab-btn" onclick="showTab('results',this)">Game Results</button>
+  <button class="tab-btn" onclick="showTab('predictions',this)">Predictions</button>
+  <button class="tab-btn" onclick="showTab('schedule',this)">Season Schedule</button>
+  <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
+</nav>
+
+<!-- ── West Division Playoffs title (above the semifinal strip) ──────────────── -->
+<div class="po-head po-head-top">
+  <h2 class="po-title">🏆 West Division Playoffs</h2>
+  <p class="po-sub">6 teams · single elimination · two-game guarantee. Disco Pickles are the <strong>#1 seed</strong> ({dp_w}-{dp_l}-{dp_t}, undefeated). June 4–7, 2026.</p>
+</div>
 
 <!-- ── Playoff Strip ────────────────────────────────────────────────────────── -->
 {playoff_strip}
 
-<!-- ── Pickle Fact ────────────────────────────────────────────────────────── -->
-<div class="pickle-fact-bar">
-  <span class="pickle-fact-icon">🥒</span>
-  <span class="pickle-fact-text"><strong>Did you know?</strong> {_pickle_fact}</span>
-</div>
-
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
 <main class="tabs-wrap">
-  <nav class="tab-nav">
-    <button class="tab-btn" onclick="showTab('standings',this)">Standings</button>
-    <button class="tab-btn" onclick="showTab('results',this)">Game Results</button>
-    <button class="tab-btn" onclick="showTab('predictions',this)">Predictions</button>
-    <button class="tab-btn active" onclick="showTab('playoffs',this)">🏆 Playoffs</button>
-    <button class="tab-btn" onclick="showTab('schedule',this)">Season Schedule</button>
-    <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
-  </nav>
-
   <!-- Standings -->
   <div id="tab-standings" class="tab-panel">
     <div class="standings-grid">
