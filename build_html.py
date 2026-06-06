@@ -1442,7 +1442,7 @@ HTML = f'''<!DOCTYPE html>
   /* ── Playoff Strip ───────────────────────────────────────────── */
   .playoff-strip {{
     margin: 0.9rem 1.5rem 0.4rem;
-    background: linear-gradient(135deg, #1A1A1A 0%, #3a0000 100%);
+    background: linear-gradient(135deg, #1a2e05 0%, #3f6212 55%, #4d7c0f 100%);
     border-left: 5px solid #FCD34D;
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
@@ -1460,7 +1460,7 @@ HTML = f'''<!DOCTYPE html>
   .ps-stat-num {{ font-size: 1.5rem; font-weight: 800; line-height: 1; }}
   .ps-stat-lbl {{ font-size: 0.72rem; opacity: 0.82; margin-top: 0.2rem; white-space: nowrap; }}
   .ps-cta {{
-    background: #FCD34D; color: #3a0000; font-weight: 800;
+    background: #FCD34D; color: #1a2e05; font-weight: 800;
     border-radius: 20px; padding: 0.5rem 1.1rem; font-size: 0.85rem; white-space: nowrap;
   }}
   .playoff-strip:hover .ps-cta {{ background: #fde68a; }}
@@ -1716,7 +1716,7 @@ HTML = f'''<!DOCTYPE html>
   .po-medal-lg {{ width:3.4rem;  height:3.4rem;  font-size:1.9rem; }}
   .po-medal-tbd {{ background:var(--border) !important; color:var(--text-muted); }}
   .ps-vs {{ opacity:.7; font-weight:600; font-size:.85rem; }}
-  .ps-ha {{ font-size:.58rem; font-weight:800; letter-spacing:.04em; background:#FCD34D; color:#3a0000; padding:.05rem .4rem; border-radius:6px; vertical-align:middle; margin-left:.15rem; }}
+  .ps-ha {{ font-size:.58rem; font-weight:800; letter-spacing:.04em; background:#FCD34D; color:#1a2e05; padding:.05rem .4rem; border-radius:6px; vertical-align:middle; margin-left:.15rem; }}
   .ps-ha.away {{ background:rgba(255,255,255,.22); color:#fff; }}
   .po-path-done .po-path-detail {{ color:var(--win-fg); font-weight:600; }}
 
