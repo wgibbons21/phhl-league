@@ -1017,25 +1017,42 @@ WEST_TEAMS = {
     14359: {'seed': 5, 'emoji': '🌀',   'color': '#7C3AED'},   # Carolina Havoc
     14358: {'seed': 6, 'emoji': '🎺',   'color': '#B45309'},   # Brass Bonanza
 }
-# Bracket rounds. 'winner' = team id once known (None = TBD). a/b are seeds' team ids;
-# a_label/b_label are placeholders when the participant isn't decided yet.
+# Bracket rounds. 'winner' = team id once known (None = TBD); 'sa'/'sb' = scores for a/b.
+# Playoff games aren't in the DaySmart feed, so results are entered here from phhl.org
+# (or directly from the user when the league hasn't posted yet).
 WEST_BRACKET = [
-    {'round': 'Wild Card',    'date': 'Thu Jun 4', 'games': [
+    {'round': 'Wild Card',    'date': 'Thu Jun 4', 'date_obj': date(2026, 6, 4), 'games': [
         {'a': 14360, 'b': 14359, 'when': '5:15 PM', 'loc': 'Invisalign Arena',      'winner': 14359},
         {'a': 14355, 'b': 14358, 'when': '5:30 PM', 'loc': 'Invisalign Arena',      'winner': 14355},
     ]},
-    {'round': 'Semifinals',   'date': 'Sat Jun 6', 'games': [
-        {'a': 14356, 'b': 14359, 'when': '4:00 PM', 'loc': 'Invisalign Arena',       'winner': None, 'feature': True},
-        {'a': 14357, 'b': 14355, 'when': '6:15 PM', 'loc': 'Polar Ice Wake Forest',  'winner': None},
+    {'round': 'Semifinals',   'date': 'Sat Jun 6', 'date_obj': date(2026, 6, 6), 'games': [
+        {'a': 14356, 'b': 14359, 'when': '4:00 PM', 'loc': 'Invisalign Arena',       'winner': 14356, 'sa': 4, 'sb': 2},
+        {'a': 14357, 'b': 14355, 'when': '6:15 PM', 'loc': 'Polar Ice Wake Forest',  'winner': 14357, 'sa': 5, 'sb': 4, 'ot': True},
     ]},
-    {'round': 'Championship', 'date': 'Sun Jun 7', 'games': [
-        {'a': None, 'b': None, 'a_label': 'Semifinal 1 winner', 'b_label': 'Semifinal 2 winner',
-         'when': '11:15 AM', 'loc': 'Invisalign Arena', 'winner': None},
+    {'round': 'Championship', 'date': 'Sun Jun 7', 'date_obj': date(2026, 6, 7), 'games': [
+        {'a': 14356, 'b': 14357, 'when': '11:15 AM', 'loc': 'Invisalign Arena', 'winner': None},
     ]},
 ]
-WEST_CONSOLATION = {'round': 'Consolation', 'date': 'Sun Jun 7',
+WEST_CONSOLATION = {'round': 'Consolation', 'date': 'Sun Jun 7', 'date_obj': date(2026, 6, 7),
     'game': {'a': 14360, 'b': 14358, 'when': '1:30 PM', 'loc': 'Polar Ice Wake Forest', 'winner': None}}
 SEMI_DATE = date(2026, 6, 6)
+
+
+def _date_prefix(d):
+    """'Today' / 'Tomorrow' / 'Sat Jun 7' relative to TODAY."""
+    delta = (d - TODAY).days
+    if delta == 0: return 'Today'
+    if delta == 1: return 'Tomorrow'
+    return d.strftime('%a %b %-d')
+
+
+def disco_next_game():
+    """Disco's next undecided playoff game as (round, game), or (None, None)."""
+    for rnd in WEST_BRACKET:
+        for g in rnd['games']:
+            if DISCO_ID in (g.get('a'), g.get('b')) and not g.get('winner'):
+                return rnd, g
+    return None, None
 
 
 def team_medal(tid, size='md'):
@@ -1061,15 +1078,15 @@ def disco_h2h(opp):
 
 
 def simulate_west_playoffs(n_sims=20000):
-    """Monte-Carlo the *actual* remaining bracket (Wild Card already decided):
-    run both semifinals + the final from current Massey ratings."""
+    """Monte-Carlo the remaining bracket, respecting any games already decided
+    (known 'winner' is used as-is; undecided games are simulated from Massey)."""
     import random, math
     from collections import Counter
     rng = random.Random(42)
     teams = list(WEST_TEAMS)
     R = {t: massey.get(t, 0.0) for t in teams}
     semi_games = next(r['games'] for r in WEST_BRACKET if r['round'] == 'Semifinals')
-    semis = [(g['a'], g['b']) for g in semi_games]
+    champ_game = next(r['games'] for r in WEST_BRACKET if r['round'] == 'Championship')[0]
 
     def play(a, b):
         pa = 1 / (1 + math.exp(-0.4 * (R[a] - R[b])))
@@ -1077,13 +1094,16 @@ def simulate_west_playoffs(n_sims=20000):
 
     title = Counter(); disco = Counter(); final_opp = Counter()
     for _ in range(n_sims):
-        w = [play(a, b) for a, b in semis]      # semifinal winners
-        champ = play(w[0], w[1])
+        # semifinal winners — known result or simulated
+        sw = [g['winner'] if g.get('winner') else play(g['a'], g['b']) for g in semi_games]
+        ca = champ_game.get('a') or sw[0]
+        cb = champ_game.get('b') or sw[1]
+        champ = champ_game['winner'] if champ_game.get('winner') else play(ca, cb)
         title[champ] += 1
         if champ == DISCO_ID:
             disco['CHAMP'] += 1
-            final_opp[w[1] if w[0] == DISCO_ID else w[0]] += 1
-        elif DISCO_ID in w:                      # reached final, lost
+            final_opp[cb if ca == DISCO_ID else ca] += 1
+        elif DISCO_ID in (ca, cb):               # reached final, lost
             disco['RUNNER'] += 1
             final_opp[champ] += 1
         else:
@@ -1098,17 +1118,31 @@ def simulate_west_playoffs(n_sims=20000):
 
 
 def build_playoff_strip(sim):
-    """Compact playoff banner below the hero (links into the Playoffs tab).
-    Disco Pickles (#1 seed) are the home team; Carolina Havoc (#5) the away team."""
-    when_pre = 'Today' if TODAY == SEMI_DATE else 'Sat Jun 6'
+    """Compact playoff banner showing Disco's next game. Higher seed is home."""
+    rnd, g = disco_next_game()
+    if not g:
+        return f'''
+    <section class="playoff-strip" onclick="goPlayoffs()" role="button" tabindex="0">
+      <div class="ps-main">
+        <span class="ps-tag">🏆 WEST PLAYOFFS</span>
+        <span class="ps-headline">🥒 Disco Pickles — see the bracket</span>
+      </div>
+      <span class="ps-cta">View Bracket &amp; Odds →</span>
+    </section>'''
+    opp = g['a'] if g['b'] == DISCO_ID else g['b']
+    disco_home = WEST_TEAMS[DISCO_ID]['seed'] < WEST_TEAMS[opp]['seed']
+    de, oe = WEST_TEAMS[DISCO_ID]['emoji'], WEST_TEAMS[opp]['emoji']
+    dha, oha = ('HOME', 'AWAY') if disco_home else ('AWAY', 'HOME')
+    dcls = 'ps-ha' if disco_home else 'ps-ha away'
+    ocls = 'ps-ha away' if disco_home else 'ps-ha'
     return f'''
     <section class="playoff-strip" onclick="goPlayoffs()" role="button" tabindex="0">
       <div class="ps-main">
-        <span class="ps-tag">🏆 PLAYOFFS · SEMIFINAL</span>
-        <span class="ps-headline">🥒 Disco Pickles <span class="ps-ha">HOME</span> <span class="ps-vs">vs</span> 🌀 Carolina Havoc <span class="ps-ha away">AWAY</span></span>
+        <span class="ps-tag">🏆 PLAYOFFS · {rnd['round'].upper()}</span>
+        <span class="ps-headline">{de} Disco Pickles <span class="{dcls}">{dha}</span> <span class="ps-vs">vs</span> {oe} {esc(short_name(opp))} <span class="{ocls}">{oha}</span></span>
       </div>
       <div class="ps-stats">
-        <div class="ps-stat"><span class="ps-stat-num">{when_pre} · 4:00 PM</span><span class="ps-stat-lbl">Invisalign Arena</span></div>
+        <div class="ps-stat"><span class="ps-stat-num">{_date_prefix(rnd['date_obj'])} · {esc(g['when'])}</span><span class="ps-stat-lbl">{esc(g['loc'])}</span></div>
       </div>
       <span class="ps-cta">View Bracket &amp; Odds →</span>
     </section>'''
@@ -1125,9 +1159,11 @@ def _bracket_slot(g, key, label_key):
     cls = 'po-br-won' if winner == tid else ('po-br-lost' if winner else '')
     dp  = ' po-br-dpteam' if tid == DISCO_ID else ''
     chk = '<span class="po-br-check">✓</span>' if winner == tid else ''
+    sc  = g.get('sa' if key == 'a' else 'sb')
+    score = f'<span class="po-br-score">{sc}</span>' if sc is not None else ''
     return (f'<div class="po-br-team {cls}{dp}">{team_medal(tid, "sm")}'
             f'<span class="po-br-seed">{WEST_TEAMS[tid]["seed"]}</span>'
-            f'<span class="po-br-name">{esc(short_name(tid))}</span>{chk}</div>')
+            f'<span class="po-br-name">{esc(short_name(tid))}</span>{chk}{score}</div>')
 
 
 def build_playoffs_tab(sim):
@@ -1136,9 +1172,8 @@ def build_playoffs_tab(sim):
     final_opp = sim['final_opp'].most_common(1)
     final_opp_name = short_name(final_opp[0][0]) if final_opp else 'TBD'
 
-    SEMI_OPP = 14359  # Carolina Havoc (fixed — Wild Card decided)
-    semi_wp  = win_prob(massey.get(DISCO_ID, 0) - massey.get(SEMI_OPP, 0))
-    final_wp = win_prob(massey.get(DISCO_ID, 0) - massey.get(final_opp[0][0], 0)) if final_opp else 0.5
+    final_opp_id = final_opp[0][0] if final_opp else 14357   # Polar Predators
+    final_wp = win_prob(massey.get(DISCO_ID, 0) - massey.get(final_opp_id, 0))
 
     # ── Connected bracket ───────────────────────────────────────────────────────
     cols = ''
@@ -1150,9 +1185,15 @@ def build_playoffs_tab(sim):
             top = _bracket_slot(g, 'a', 'a_label')
             bot = _bracket_slot(g, 'b', 'b_label')
             if g.get('winner'):
-                status = f'<span class="po-br-status done">{esc(short_name(g["winner"]))} advanced ✓</span>'
-            elif rnd['date'] == 'Sat Jun 6' and TODAY == SEMI_DATE:
+                if g.get('sa') is not None:
+                    ot = ' (OT)' if g.get('ot') else ''
+                    status = f'<span class="po-br-status done">Final{ot} · {esc(short_name(g["winner"]))} ✓</span>'
+                else:
+                    status = f'<span class="po-br-status done">{esc(short_name(g["winner"]))} advanced ✓</span>'
+            elif rnd['date_obj'] == TODAY:
                 status = '<span class="po-br-status live">🔴 Today</span>'
+            elif (rnd['date_obj'] - TODAY).days == 1:
+                status = '<span class="po-br-status live">Tomorrow</span>'
             else:
                 status = '<span class="po-br-status up">⏳ Upcoming</span>'
             matches += f'''
@@ -1176,13 +1217,11 @@ def build_playoffs_tab(sim):
         <span class="po-conso-meta">{esc(WEST_CONSOLATION['date'])} · {esc(cg['when'])} · {esc(cg['loc'])}</span>
       </div>'''
 
-    # ── Semifinal spotlight + head-to-head ──────────────────────────────────────
-    w, l, t, h2h_games = disco_h2h(SEMI_OPP)
-    h2h_scores = ' · '.join(f'<span class="po-h2h-score">{a}–{b}</span>' for _, a, b in h2h_games)
-    when_pre = 'Today' if TODAY == SEMI_DATE else 'Sat Jun 6'
-    # head-to-head vs the two possible final opponents
-    pw, pl, pt, _ = disco_h2h(14357)   # Polar Predators
-    lw, ll, lt, _ = disco_h2h(14355)   # Lamp Lighters
+    # ── Head-to-head vs the finalist + championship timing ──────────────────────
+    fw, fl, ft, f_games = disco_h2h(final_opp_id)
+    f_scores = ' · '.join(f'<span class="po-h2h-score">{a}–{b}</span>' for _, a, b in f_games)
+    champ_rnd = next(r for r in WEST_BRACKET if r['round'] == 'Championship')
+    champ_when = f"{_date_prefix(champ_rnd['date_obj'])} · {champ_rnd['games'][0]['when']}"
 
     # ── Title-odds bars ─────────────────────────────────────────────────────────
     ranked = sorted(sim['teams'], key=lambda t: -sim['title'][t])
@@ -1218,18 +1257,18 @@ def build_playoffs_tab(sim):
       <div class="po-panels">
         <div class="po-panel">
           <h3 class="po-panel-title">Championship Odds — every West team</h3>
-          <p class="po-panel-sub">{sim['n']:,} Monte-Carlo sims of the actual remaining bracket (Wild Card decided), using Massey ratings.</p>
+          <p class="po-panel-sub">{sim['n']:,} Monte-Carlo sims of the championship game (semifinals decided), using Massey ratings.</p>
           <div class="po-odds">{bars}</div>
         </div>
 
         <div class="po-panel">
           <h3 class="po-panel-title">🥒 Disco Pickles — path to the title</h3>
           <div class="po-path">
-            <div class="po-path-step po-path-done"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE (#1 seed) ✓</span></div>
-            <div class="po-path-step"><span class="po-path-round">Semifinal · {when_pre}</span><span class="po-path-detail">vs <strong>Carolina Havoc</strong> · <span class="po-wp">{semi_wp*100:.0f}% win</span></span></div>
-            <div class="po-path-step po-path-final"><span class="po-path-round">Championship · Sun Jun 7</span><span class="po-path-detail">likely vs <strong>{esc(final_opp_name)}</strong> · <span class="po-wp">{final_wp*100:.0f}% win</span></span></div>
+            <div class="po-path-step po-path-done"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE — #1 seed ✓</span></div>
+            <div class="po-path-step po-path-done"><span class="po-path-round">Semifinal</span><span class="po-path-detail">beat <strong>Carolina Havoc</strong> 4–2 ✓</span></div>
+            <div class="po-path-step po-path-final"><span class="po-path-round">Championship · {champ_when}</span><span class="po-path-detail">vs <strong>{esc(final_opp_name)}</strong> · <span class="po-wp">{final_wp*100:.0f}% win</span></span></div>
           </div>
-          <p class="po-panel-sub">We swept the season series vs every likely opponent: Carolina <strong>{w}-{l}-{t}</strong>, Polar Predators <strong>{pw}-{pl}-{pt}</strong>, Lamp Lighters <strong>{lw}-{ll}-{lt}</strong>.</p>
+          <p class="po-panel-sub">One game for the title. Season series vs <strong>{esc(final_opp_name)}</strong>: Disco <strong>{fw}-{fl}-{ft}</strong> &nbsp;{f_scores}.</p>
         </div>
       </div>
 
@@ -1239,29 +1278,35 @@ def build_playoffs_tab(sim):
         <div class="po-sched">{build_playoff_schedule_rows()}</div>
       </div>
 
-      <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Scores aren't in the league feed, so results show which team advanced (per phhl.org). Odds recompute each rebuild.</p>
+      <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Playoff scores are entered manually (they aren't in the DaySmart feed). Odds recompute each rebuild.</p>
     </div>'''
 
 
 def build_playoff_schedule_rows():
     """Flat schedule list across all playoff rounds (incl. consolation)."""
-    items = []
-    for rnd in WEST_BRACKET:
-        for g in rnd['games']:
-            items.append((rnd['round'], rnd['date'], g))
-    items.append((WEST_CONSOLATION['round'], WEST_CONSOLATION['date'], WEST_CONSOLATION['game']))
+    items = [(r['round'], r['date'], r['date_obj'], g) for r in WEST_BRACKET for g in r['games']]
+    items.append((WEST_CONSOLATION['round'], WEST_CONSOLATION['date'],
+                  WEST_CONSOLATION['date_obj'], WEST_CONSOLATION['game']))
     rows = ''
-    for rname, rdate, g in items:
+    for rname, rdate, dobj, g in items:
         a, b = g.get('a'), g.get('b')
         if a and b:
             match = (f'{team_medal(a, "sm")} {esc(short_name(a))} '
                      f'<span class="po-sched-vs">vs</span> {team_medal(b, "sm")} {esc(short_name(b))}')
         else:
             match = f'{esc(g.get("a_label", "TBD"))} <span class="po-sched-vs">vs</span> {esc(g.get("b_label", "TBD"))}'
-        if g.get('winner'):
-            chip = f'<span class="po-sched-chip done">{esc(short_name(g["winner"]))} ✓</span>'
-        elif rdate == 'Sat Jun 6' and TODAY == SEMI_DATE:
+        winner = g.get('winner')
+        if winner:
+            if g.get('sa') is not None:
+                ws, ls = (g['sa'], g['sb']) if winner == a else (g['sb'], g['sa'])
+                ot = ' OT' if g.get('ot') else ''
+                chip = f'<span class="po-sched-chip done">{esc(short_name(winner))} {ws}–{ls}{ot} ✓</span>'
+            else:
+                chip = f'<span class="po-sched-chip done">{esc(short_name(winner))} ✓</span>'
+        elif dobj == TODAY:
             chip = '<span class="po-sched-chip live">🔴 Today</span>'
+        elif (dobj - TODAY).days == 1:
+            chip = '<span class="po-sched-chip live">Tomorrow</span>'
         else:
             chip = '<span class="po-sched-chip up">⏳ Upcoming</span>'
         dp = ' po-sched-dp' if DISCO_ID in (a, b) else ''
@@ -1754,6 +1799,8 @@ HTML = f'''<!DOCTYPE html>
   .po-br-lost {{ opacity:.45; }}
   .po-br-dpteam .po-br-name {{ color:var(--pickle-dark); }}
   .po-br-check {{ color:var(--win-fg); font-weight:800; }}
+  .po-br-score {{ font-weight:800; font-size:.95rem; min-width:1.1rem; text-align:right; font-variant-numeric:tabular-nums; }}
+  .po-br-won .po-br-score {{ color:var(--win-fg); }}
   .po-br-tbd {{ opacity:.6; font-style:italic; }}
   .po-br-meta {{ font-size:.67rem; color:var(--text-muted); margin-top:.3rem; text-align:center; line-height:1.3; }}
   .po-br-status {{ display:block; text-align:center; font-size:.7rem; font-weight:700; margin-top:.2rem; }}
