@@ -84,6 +84,51 @@ def fetch_games(token, existing_games):
     return updated
 
 
+def fetch_playoff_games(token):
+    """Fetch playoff games, which live under a team's `playoffEvents` relationship
+    (NOT the regular league events feed). All West playoff games are reachable from
+    any West team; we use Disco Pickles (14356). Returns a list of simplified game
+    dicts, or None on failure (so the caller keeps the cached copy).
+    """
+    try:
+        import requests
+    except ImportError:
+        return None
+    headers = {"Accept": "application/vnd.api+json"}
+    if token:
+        if not token.startswith("Bearer "):
+            token = "Bearer " + token
+        headers["Authorization"] = token
+    cookies = {"api_company": "polarice"}
+    inc = "league.playoffEvents.homeTeam,league.playoffEvents.visitingTeam"
+    url = f"{BASE_URL}teams/14356?cache[save]=false&include={inc}&company=polarice"
+    try:
+        resp = requests.get(url, headers=headers, cookies=cookies, timeout=15)
+    except Exception as e:
+        print(f"  Playoff fetch failed: {e}")
+        return None
+    if resp.status_code != 200:
+        print(f"  Playoff fetch: HTTP {resp.status_code} — keeping cached playoff games")
+        return None
+    games = []
+    for o in resp.json().get('included', []):
+        if o.get('type') != 'events':
+            continue
+        a = o.get('attributes', {})
+        games.append({
+            'id': o.get('id'),
+            'hteam_id': a.get('hteam_id'),
+            'vteam_id': a.get('vteam_id'),
+            'home_score': a.get('home_score'),
+            'visiting_score': a.get('visiting_score'),
+            'is_overtime': a.get('is_overtime'),
+            'start': a.get('start'),
+        })
+    scored = sum(1 for g in games if g['home_score'] is not None)
+    print(f"  Playoff fetch: {len(games)} playoff events ({scored} with scores)")
+    return games
+
+
 def apply_overrides(games, overrides):
     """Apply manual score overrides to games (overrides win on conflicts)."""
     override_count = 0
@@ -196,6 +241,13 @@ def main():
         new_games = fetch_games(args.token, old_games)
         print(f"  Result: {len(new_games)} games")
 
+    # Playoff games live under a separate relationship (not in the main feed)
+    if args.offline:
+        playoff_games = stored_data.get('playoff_games', [])
+    else:
+        _pf = fetch_playoff_games(args.token)
+        playoff_games = _pf if _pf is not None else stored_data.get('playoff_games', [])
+
     # Detect changes before overrides
     changes = detect_changes(old_games, new_games)
 
@@ -213,6 +265,7 @@ def main():
     # Save merged data
     merged = {
         'games': new_games,
+        'playoff_games': playoff_games,
         'team_names': team_names,
         'future_weekends': future_weekends,
         'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
@@ -237,6 +290,18 @@ def main():
             print(f"  Game {o['id']}: {o['old']} → {o['new']}")
             if o['note']:
                 print(f"    Note: {o['note']}")
+
+    # Playoff scores pulled from the feed
+    _scored_pf = [g for g in playoff_games if g.get('home_score') is not None]
+    if _scored_pf:
+        _names = {int(k): v for k, v in team_names.items()}
+        def _sn(tid):
+            n = _names.get(tid, str(tid)); p = n.split(' - '); return p[1] if len(p) > 1 else n
+        print(f"\n{'─'*40}")
+        print(f"PLAYOFF SCORES IN FEED ({len(_scored_pf)}):")
+        for g in sorted(_scored_pf, key=lambda x: x.get('start', '')):
+            ot = ' (OT)' if g.get('is_overtime') else ''
+            print(f"  {_sn(g['hteam_id'])} {g['home_score']}-{g['visiting_score']} {_sn(g['vteam_id'])}{ot}")
 
     # DP stats after override
     w, l, t, gf, ga = compute_dp_stats(new_games)

@@ -631,7 +631,7 @@ def build_predictions_tab():
             bar_color = 'var(--win-fg)' if rating >= 0 else 'var(--loss-fg)'
             rat_cls   = 'pos-rating' if rating >= 0 else 'neg-rating'
             row_cls   = 'massey-row dp-massey-row' if is_dp else 'massey-row'
-            gp        = sum(1 for g in completed_games if tid in (g['hid'], g['vid']))
+            gp        = sum(1 for g in completed_games + playoff_massey_games if tid in (g['hid'], g['vid']))
             rows_html += f'''
             <div class="{row_cls}">
               <span class="massey-rank">#{rank}</span>
@@ -1022,8 +1022,8 @@ WEST_TEAMS = {
 # (or directly from the user when the league hasn't posted yet).
 WEST_BRACKET = [
     {'round': 'Wild Card',    'date': 'Thu Jun 4', 'date_obj': date(2026, 6, 4), 'games': [
-        {'a': 14360, 'b': 14359, 'when': '5:15 PM', 'loc': 'Invisalign Arena',      'winner': 14359},
-        {'a': 14355, 'b': 14358, 'when': '5:30 PM', 'loc': 'Invisalign Arena',      'winner': 14355},
+        {'a': 14360, 'b': 14359, 'when': '5:15 PM', 'loc': 'Invisalign Arena',      'winner': 14359, 'sa': 1, 'sb': 4},
+        {'a': 14355, 'b': 14358, 'when': '5:30 PM', 'loc': 'Invisalign Arena',      'winner': 14355, 'sa': 8, 'sb': 6},
     ]},
     {'round': 'Semifinals',   'date': 'Sat Jun 6', 'date_obj': date(2026, 6, 6), 'games': [
         {'a': 14356, 'b': 14359, 'when': '4:00 PM', 'loc': 'Invisalign Arena',       'winner': 14356, 'sa': 4, 'sb': 2},
@@ -1036,6 +1036,42 @@ WEST_BRACKET = [
 WEST_CONSOLATION = {'round': 'Consolation', 'date': 'Sun Jun 7', 'date_obj': date(2026, 6, 7),
     'game': {'a': 14360, 'b': 14358, 'when': '1:30 PM', 'loc': 'Polar Ice Wake Forest', 'winner': None}}
 SEMI_DATE = date(2026, 6, 6)
+
+# Auto-fill bracket results from playoff games fetched by update_league.py
+# (data['playoff_games'], under the team's playoffEvents relationship). Only fills
+# games NOT already decided manually — so hand-entered results win (e.g. an OT flag
+# the feed missed). Matched by the unordered pair of team IDs.
+_pf_results = {}
+for _pg in data.get('playoff_games', []):
+    _h, _v = _pg.get('hteam_id'), _pg.get('vteam_id')
+    _hs, _vs = _pg.get('home_score'), _pg.get('visiting_score')
+    if _h and _v and _hs is not None and _vs is not None:
+        _pf_results[frozenset((_h, _v))] = (_h, int(_hs), int(_vs), bool(_pg.get('is_overtime')))
+for _r in WEST_BRACKET:
+    for _g in _r['games']:
+        if _g.get('a') and _g.get('b') and _g.get('winner') is None:
+            _res = _pf_results.get(frozenset((_g['a'], _g['b'])))
+            if _res:
+                _h, _hs, _vs, _ot = _res
+                _g['sa'], _g['sb'] = (_hs, _vs) if _g['a'] == _h else (_vs, _hs)
+                _g['winner'] = _g['a'] if _g['sa'] > _g['sb'] else _g['b']
+                if _ot:
+                    _g['ot'] = True
+
+# Fold decided playoff games into the Massey ratings (they aren't in the regular
+# DaySmart feed). These refine the power rankings + playoff odds but are deliberately
+# kept OUT of regular-season standings and the rolling prediction-accuracy backtest.
+playoff_massey_games = [
+    {'hid': g['a'], 'vid': g['b'], 'hs': g['sa'], 'vs': g['sb']}
+    for r in WEST_BRACKET for g in r['games']
+    if g.get('winner') and g.get('sa') is not None
+]
+massey, massey_components = compute_massey_ratings(completed_games + playoff_massey_games)
+massey_ranked_by_component = [
+    sorted([(tid, massey.get(tid, 0.0)) for tid in comp], key=lambda x: -x[1])
+    for comp in massey_components
+]
+massey_ranked = [pair for comp in massey_ranked_by_component for pair in comp]
 
 
 def _date_prefix(d):
