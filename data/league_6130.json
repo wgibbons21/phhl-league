@@ -10062,8 +10062,8 @@
     },
     {
       "id": "633643",
-      "hteam_id": null,
-      "vteam_id": null,
+      "hteam_id": 14356,
+      "vteam_id": 14357,
       "home_score": null,
       "visiting_score": null,
       "is_overtime": false,
@@ -10139,5 +10139,5 @@
       "matchups_published": true
     }
   ],
-  "last_updated": "2026-06-06 20:11:23"
+  "last_updated": "2026-06-08 19:13:33"
 }

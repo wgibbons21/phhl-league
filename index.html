@@ -171,6 +171,55 @@
     border-radius: 20px; padding: 0.5rem 1.1rem; font-size: 0.85rem; white-space: nowrap;
   }
   .playoff-strip:hover .ps-cta { background: #fde68a; }
+  /* Champions banner + confetti */
+  .playoff-strip.champions {
+    background: linear-gradient(135deg, #3f6212 0%, #4D7C0F 40%, #B8860B 100%);
+    border-left-color: #FCD34D;
+    box-shadow: 0 0 0 1px rgba(252,211,77,.4), var(--shadow-md);
+    animation: champ-glow 2.4s ease-in-out infinite;
+  }
+  .playoff-strip.champions .ps-tag { color: #FEF3C7; letter-spacing: .06em; }
+  @keyframes champ-glow {
+    0%,100% { box-shadow: 0 0 0 1px rgba(252,211,77,.35), 0 4px 14px rgba(0,0,0,.18); }
+    50%     { box-shadow: 0 0 18px 2px rgba(252,211,77,.55), 0 6px 20px rgba(0,0,0,.22); }
+  }
+  .champ-hero {
+    margin: 1rem 1.5rem 0.5rem;
+    background: linear-gradient(135deg, #365314 0%, #4D7C0F 45%, #B8860B 100%);
+    border: 2px solid #FCD34D;
+    border-radius: var(--radius);
+    box-shadow: 0 0 24px rgba(252,211,77,.40), var(--shadow-md);
+    padding: 1.4rem 1.75rem;
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+    color: #fff; text-align: center; cursor: pointer;
+    animation: champ-glow 2.4s ease-in-out infinite;
+  }
+  .champ-cup { font-size: 3.6rem; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,.35)); animation: champ-bob 1.9s ease-in-out infinite; }
+  .champ-cup-right { animation-delay: .35s; }
+  .champ-text { display: flex; flex-direction: column; gap: 0.15rem; }
+  .champ-eyebrow { font-size: 0.82rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #FEF3C7; }
+  .champ-title { font-size: 2rem; font-weight: 900; line-height: 1.05; }
+  .champ-score { font-size: 1rem; opacity: .96; }
+  .champ-sub { font-size: 0.8rem; opacity: .85; margin-top: 0.15rem; }
+  @keyframes champ-bob { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-7px) rotate(5deg); } }
+  @media (max-width: 560px) { .champ-cup-right { display: none; } .champ-title { font-size: 1.6rem; } }
+
+  .confetti-layer { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 9999; }
+  .confetti-piece {
+    position: absolute; top: -8vh; border-radius: 2px; opacity: .9;
+    animation-name: confetti-fall; animation-timing-function: linear;
+    animation-iteration-count: infinite; will-change: transform;
+  }
+  .confetti-emoji { font-size: 1.15rem; opacity: 1; }
+  @keyframes confetti-fall {
+    0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); }
+    50%  { transform: translateY(50vh)  translateX(var(--sway, 12px)) rotate(180deg); }
+    100% { transform: translateY(110vh) translateX(0) rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .confetti-layer { display: none; }
+    .playoff-strip.champions, .champ-hero, .champ-cup { animation: none; }
+  }
   @media (max-width: 768px) {
     .playoff-strip { gap: 1rem; }
     .ps-stats { margin-left: 0; width: 100%; justify-content: space-between; gap: 1rem; }
@@ -469,6 +518,11 @@
   .po-br-status.done { color:var(--win-fg); }
   .po-br-status.live { color:var(--loss-fg); }
   .po-br-status.up { color:var(--text-muted); }
+  .po-br-status.champ { color:#B8860B; font-weight:800; }
+  .po-path-champ .po-path-detail { color:#B8860B; font-weight:700; }
+  .po-notes { list-style:none; display:flex; flex-direction:column; gap:.55rem; margin-top:.4rem; }
+  .po-notes li { font-size:.86rem; line-height:1.45; padding-left:.2rem; }
+  .po-note-tag { display:inline-block; font-size:.62rem; font-weight:800; letter-spacing:.04em; color:#fff; background:var(--loss-fg); border-radius:5px; padding:.05rem .4rem; margin-right:.4rem; vertical-align:middle; }
   .po-col-wc .po-br-match::after, .po-col-semi .po-br-match::after { content:''; position:absolute; left:100%; top:50%; width:1.2rem; height:2px; background:var(--border); }
   .po-col-semi .po-br-match::before, .po-col-final .po-br-match::before { content:''; position:absolute; right:100%; top:50%; width:1.2rem; height:2px; background:var(--border); }
   .po-col-semi::after { content:''; position:absolute; left:100%; margin-left:1.2rem; top:25%; bottom:25%; width:2px; background:var(--border); }
@@ -837,7 +891,7 @@
     <div class="subtitle">Polar Hurricanes House League</div>
   </div>
   <div class="season-badge">Spring 2026</div>
-  <div class="last-updated">🔄 Last updated: 8:11 PM on Saturday, June 6, 2026</div>
+  <div class="last-updated">🔄 Last updated: 7:13 PM on Monday, June 8, 2026</div>
 </header>
 
 <!-- ── Tab Navigation (directly below header) ───────────────────────────────── -->
@@ -850,6 +904,19 @@
   <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
 </nav>
 
+<!-- ── Champions hero (only when Disco win the title) ───────────────────────── -->
+
+    <section class="champ-hero" onclick="goPlayoffs()" role="button" tabindex="0" aria-label="West Division Champions">
+      <div class="champ-cup">🏆</div>
+      <div class="champ-text">
+        <div class="champ-eyebrow">West Division Champions</div>
+        <div class="champ-title">🥒 Disco Pickles</div>
+        <div class="champ-score">defeated 🐻‍❄️ Polar Predators <strong>5–1</strong> in the final</div>
+        <div class="champ-sub">Undefeated all season · Spring 2026 🏒</div>
+      </div>
+      <div class="champ-cup champ-cup-right">🏆</div>
+    </section>
+
 <!-- ── West Division Playoffs title (above the semifinal strip) ──────────────── -->
 <div class="po-head po-head-top">
   <h2 class="po-title">🏆 West Division Playoffs</h2>
@@ -858,16 +925,6 @@
 
 <!-- ── Playoff Strip ────────────────────────────────────────────────────────── -->
 
-    <section class="playoff-strip" onclick="goPlayoffs()" role="button" tabindex="0">
-      <div class="ps-main">
-        <span class="ps-tag">🏆 PLAYOFFS · CHAMPIONSHIP</span>
-        <span class="ps-headline">🥒 Disco Pickles <span class="ps-ha">HOME</span> <span class="ps-vs">vs</span> 🐻‍❄️ Polar Predators <span class="ps-ha away">AWAY</span></span>
-      </div>
-      <div class="ps-stats">
-        <div class="ps-stat"><span class="ps-stat-num">Tomorrow · 11:15 AM</span><span class="ps-stat-lbl">Invisalign Arena</span></div>
-      </div>
-      <span class="ps-cta">View Bracket &amp; Odds →</span>
-    </section>
 
 <!-- ── Main Content ─────────────────────────────────────────────────────────── -->
 <main class="tabs-wrap">
@@ -1832,56 +1889,56 @@
             <div class="massey-row dp-massey-row">
               <span class="massey-rank">#1</span>
               <span class="massey-team">Disco Pickles 🥒</span>
-              <span class="massey-gp">10&#8239;GP</span>
+              <span class="massey-gp">11&#8239;GP</span>
               <div class="massey-bar-wrap">
                 <div class="massey-bar" style="width:100%;background:var(--win-fg)"></div>
               </div>
-              <span class="massey-rating pos-rating">+2.58</span>
+              <span class="massey-rating pos-rating">+2.84</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#2</span>
               <span class="massey-team">Polar Predators</span>
-              <span class="massey-gp">10&#8239;GP</span>
+              <span class="massey-gp">11&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:83%;background:var(--win-fg)"></div>
+                <div class="massey-bar" style="width:66%;background:var(--win-fg)"></div>
               </div>
-              <span class="massey-rating pos-rating">+2.15</span>
+              <span class="massey-rating pos-rating">+1.89</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#3</span>
               <span class="massey-team">Lamp Lighters</span>
               <span class="massey-gp">11&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:28%;background:var(--win-fg)"></div>
+                <div class="massey-bar" style="width:24%;background:var(--win-fg)"></div>
               </div>
-              <span class="massey-rating pos-rating">+0.73</span>
+              <span class="massey-rating pos-rating">+0.69</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#4</span>
               <span class="massey-team">Carolina Havoc</span>
               <span class="massey-gp">11&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:48%;background:var(--loss-fg)"></div>
+                <div class="massey-bar" style="width:43%;background:var(--loss-fg)"></div>
               </div>
-              <span class="massey-rating neg-rating">-1.27</span>
+              <span class="massey-rating neg-rating">-1.24</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#5</span>
               <span class="massey-team">Brass Bonanza</span>
               <span class="massey-gp">10&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:80%;background:var(--loss-fg)"></div>
+                <div class="massey-bar" style="width:73%;background:var(--loss-fg)"></div>
               </div>
-              <span class="massey-rating neg-rating">-2.08</span>
+              <span class="massey-rating neg-rating">-2.09</span>
             </div>
             <div class="massey-row">
               <span class="massey-rank">#6</span>
               <span class="massey-team">Ice Outlaws</span>
               <span class="massey-gp">10&#8239;GP</span>
               <div class="massey-bar-wrap">
-                <div class="massey-bar" style="width:81%;background:var(--loss-fg)"></div>
+                <div class="massey-bar" style="width:73%;background:var(--loss-fg)"></div>
               </div>
-              <span class="massey-rating neg-rating">-2.12</span>
+              <span class="massey-rating neg-rating">-2.09</span>
             </div>
           </div>
         </div>
@@ -2500,9 +2557,9 @@
             <div class="po-br-colhdr"><span>Championship</span><small>Sun Jun 7</small></div>
             
               <div class="po-br-match po-br-match-dp">
-                <div class="po-br-team  po-br-dpteam"><span class="po-medal po-medal-sm" style="background:#4D7C0F" title="Disco Pickles">🥒</span><span class="po-br-seed">1</span><span class="po-br-name">Disco Pickles</span></div><div class="po-br-team "><span class="po-medal po-medal-sm" style="background:#0EA5E9" title="Polar Predators">🐻‍❄️</span><span class="po-br-seed">2</span><span class="po-br-name">Polar Predators</span></div>
+                <div class="po-br-team po-br-won po-br-dpteam"><span class="po-medal po-medal-sm" style="background:#4D7C0F" title="Disco Pickles">🥒</span><span class="po-br-seed">1</span><span class="po-br-name">Disco Pickles</span><span class="po-br-check">✓</span><span class="po-br-score">5</span></div><div class="po-br-team po-br-lost"><span class="po-medal po-medal-sm" style="background:#0EA5E9" title="Polar Predators">🐻‍❄️</span><span class="po-br-seed">2</span><span class="po-br-name">Polar Predators</span><span class="po-br-score">1</span></div>
                 <div class="po-br-meta">🕑 Sun Jun 7 · 11:15 AM · 📍 Invisalign Arena</div>
-                <span class="po-br-status live">Tomorrow</span>
+                <span class="po-br-status champ">🏆 Disco Pickles — CHAMPIONS</span>
               </div>
           </div></div></div>
         
@@ -2518,7 +2575,7 @@
       <!-- Pickle fact (moved below the bracket) -->
       <div class="pickle-fact-bar pickle-fact-inline">
         <span class="pickle-fact-icon">🥒</span>
-        <span class="pickle-fact-text"><strong>Did you know?</strong> Humans have been pickling cucumbers for over 4,000 years. Some of the earliest evidence dates to around 2030 BC in the Tigris Valley of ancient Mesopotamia. Aristotle praised pickles for their healing properties, and Cleopatra reportedly credited them as a beauty secret. When archaeologists dig up snacks older than most civilizations, it really puts your pre-game nutrition into perspective.</span>
+        <span class="pickle-fact-text"><strong>Did you know?</strong> Americans eat roughly 9 pounds of pickles per person per year, adding up to about 2.5 billion pounds nationally. The United States also observes <em>National Pickle Day</em> every November 14th — which is absolutely a real holiday. Presumably not a federal one, but it should be.</span>
       </div>
 
       <div class="po-panels">
@@ -2529,12 +2586,12 @@
           <div class="po-odds-row po-odds-dp">
             <span class="po-odds-team"><span class="po-medal po-medal-sm" style="background:#4D7C0F" title="Disco Pickles">🥒</span> Disco Pickles</span>
             <div class="po-odds-track"><div class="po-odds-fill" style="width:100%;background:#4D7C0F"></div></div>
-            <span class="po-odds-pct">54%</span>
+            <span class="po-odds-pct">100%</span>
           </div>
           <div class="po-odds-row">
             <span class="po-odds-team"><span class="po-medal po-medal-sm" style="background:#0EA5E9" title="Polar Predators">🐻‍❄️</span> Polar Predators</span>
-            <div class="po-odds-track"><div class="po-odds-fill" style="width:86%;background:#0EA5E9"></div></div>
-            <span class="po-odds-pct">46%</span>
+            <div class="po-odds-track"><div class="po-odds-fill" style="width:2%;background:#0EA5E9"></div></div>
+            <span class="po-odds-pct">0%</span>
           </div>
           <div class="po-odds-row">
             <span class="po-odds-team"><span class="po-medal po-medal-sm" style="background:#F59E0B" title="Lamp Lighters">💡</span> Lamp Lighters</span>
@@ -2559,13 +2616,13 @@
         </div>
 
         <div class="po-panel">
-          <h3 class="po-panel-title">🥒 Disco Pickles — path to the title</h3>
+          <h3 class="po-panel-title">🥒 Disco Pickles — title run</h3>
           <div class="po-path">
             <div class="po-path-step po-path-done"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE — #1 seed ✓</span></div>
             <div class="po-path-step po-path-done"><span class="po-path-round">Semifinal</span><span class="po-path-detail">beat <strong>Carolina Havoc</strong> 4–2 ✓</span></div>
-            <div class="po-path-step po-path-final"><span class="po-path-round">Championship · Tomorrow · 11:15 AM</span><span class="po-path-detail">vs <strong>Polar Predators</strong> · <span class="po-wp">54% win</span></span></div>
+            <div class="po-path-step po-path-final po-path-champ"><span class="po-path-round">Championship</span><span class="po-path-detail">🏆 beat <strong>Polar Predators</strong> 5–1 — <strong>CHAMPIONS!</strong></span></div>
           </div>
-          <p class="po-panel-sub">One game for the title. Season series vs <strong>Polar Predators</strong>: Disco <strong>2-0-0</strong> &nbsp;<span class="po-h2h-score">6–5</span> · <span class="po-h2h-score">4–2</span>.</p>
+          <p class="po-panel-sub">🏆 <strong>Champions!</strong> Disco beat Polar Predators 5–1 in the final to cap a perfect season — undefeated start to finish.</p>
         </div>
       </div>
 
@@ -2601,14 +2658,25 @@
             <span class="po-sched-round">Championship</span>
             <span class="po-sched-match"><span class="po-medal po-medal-sm" style="background:#4D7C0F" title="Disco Pickles">🥒</span> Disco Pickles <span class="po-sched-vs">vs</span> <span class="po-medal po-medal-sm" style="background:#0EA5E9" title="Polar Predators">🐻‍❄️</span> Polar Predators</span>
             <span class="po-sched-meta">Sun Jun 7 · 11:15 AM · Invisalign Arena</span>
-            <span class="po-sched-chip live">Tomorrow</span>
+            <span class="po-sched-chip done">Disco Pickles 5–1 ✓</span>
           </div>
           <div class="po-sched-row">
             <span class="po-sched-round">Consolation</span>
             <span class="po-sched-match"><span class="po-medal po-medal-sm" style="background:#475569" title="Ice Outlaws">🤠</span> Ice Outlaws <span class="po-sched-vs">vs</span> <span class="po-medal po-medal-sm" style="background:#B45309" title="Brass Bonanza">🎺</span> Brass Bonanza</span>
             <span class="po-sched-meta">Sun Jun 7 · 1:30 PM · Polar Ice Wake Forest</span>
-            <span class="po-sched-chip live">Tomorrow</span>
+            <span class="po-sched-chip up">No score posted yet</span>
           </div></div>
+      </div>
+
+      <!-- Around the league: North/South ADV bracket -->
+      <div class="po-panel po-aroundleague">
+        <h3 class="po-panel-title">🏒 Around the 10U ADV — North/South Bracket</h3>
+        <p class="po-panel-sub">The other 10U Advanced bracket (10 teams, North + South) ran alongside ours. Its final: <strong>Thunder Blades</strong> (#1) vs <strong>Flying SAUCErs</strong> (#3) — result pending.</p>
+        <ul class="po-notes">
+          <li><span class="po-note-tag">UPSET</span> #3 <strong>Flying SAUCErs</strong> stunned #2 <strong>Hawks (District 6)</strong> — the regular-season goal-differential leader (+70!) — <strong>3–2</strong> in the semifinal to crash the title game.</li>
+          <li><span class="po-note-tag">UPSETS</span> Both bottom seeds won their Wild Card games: #10 <strong>10S3</strong> over #8 Puckaneers 4–0, and #9 <strong>Mighty Canes</strong> over #7 Frozen Fury 4–1.</li>
+          <li>Top seed <strong>Thunder Blades</strong> (8-0-1) cruised to the final (7–2, then 4–1) — much like our Pickles' run.</li>
+        </ul>
       </div>
 
       <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Playoff scores are entered manually (they aren't in the DaySmart feed). Odds recompute each rebuild.</p>
@@ -2807,7 +2875,7 @@
 </main>
 
 <footer class="site-footer">
-  Generated June 6, 2026 · 10U Advance League · Polar Ice Hockey League · 72 games completed · 0 upcoming · 0 TBD
+  Generated June 8, 2026 · 10U Advance League · Polar Ice Hockey League · 72 games completed · 0 upcoming · 0 TBD
 </footer>
 
 <script>
@@ -2822,6 +2890,31 @@
     if (btn) showTab('playoffs', btn);
     document.querySelector('.tabs-wrap').scrollIntoView({ behavior: 'smooth' });
   }
+</script>
+
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+<script>
+(function(){
+  var layer = document.getElementById('confettiLayer');
+  if(!layer) return;
+  var colors = ['#4D7C0F','#65A30D','#84CC16','#FCD34D','#F59E0B','#16A34A','#ffffff'];
+  var emojis = ['\uD83E\uDD52','\uD83C\uDFC6','\uD83C\uDF89'];  // pickle, trophy, party
+  var N = 90;
+  for(var i=0;i<N;i++){
+    var p = document.createElement('span');
+    var useEmoji = Math.random() < 0.12;
+    p.className = 'confetti-piece' + (useEmoji ? ' confetti-emoji' : '');
+    if(useEmoji){ p.textContent = emojis[Math.floor(Math.random()*emojis.length)]; }
+    else { p.style.background = colors[Math.floor(Math.random()*colors.length)]; }
+    p.style.left = (Math.random()*100) + 'vw';
+    if(!useEmoji){ var s = 6 + Math.random()*8; p.style.width = s+'px'; p.style.height = (s*0.45+3)+'px'; }
+    var dur = 6 + Math.random()*7;
+    p.style.animationDuration = dur + 's';
+    p.style.animationDelay = (-Math.random()*dur) + 's';
+    p.style.setProperty('--sway', (8 + Math.random()*24) + 'px');
+    layer.appendChild(p);
+  }
+})();
 </script>
 </body>
 </html>

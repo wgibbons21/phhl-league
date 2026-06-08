@@ -1030,7 +1030,7 @@ WEST_BRACKET = [
         {'a': 14357, 'b': 14355, 'when': '6:15 PM', 'loc': 'Polar Ice Wake Forest',  'winner': 14357, 'sa': 5, 'sb': 4, 'ot': True},
     ]},
     {'round': 'Championship', 'date': 'Sun Jun 7', 'date_obj': date(2026, 6, 7), 'games': [
-        {'a': 14356, 'b': 14357, 'when': '11:15 AM', 'loc': 'Invisalign Arena', 'winner': None},
+        {'a': 14356, 'b': 14357, 'when': '11:15 AM', 'loc': 'Invisalign Arena', 'winner': 14356, 'sa': 5, 'sb': 1},
     ]},
 ]
 WEST_CONSOLATION = {'round': 'Consolation', 'date': 'Sun Jun 7', 'date_obj': date(2026, 6, 7),
@@ -1072,6 +1072,10 @@ massey_ranked_by_component = [
     for comp in massey_components
 ]
 massey_ranked = [pair for comp in massey_ranked_by_component for pair in comp]
+
+# Did the Disco Pickles win the championship? (drives the celebration + confetti)
+_champ_game = next(r['games'][0] for r in WEST_BRACKET if r['round'] == 'Championship')
+disco_champion = (_champ_game.get('winner') == DISCO_ID)
 
 
 def _date_prefix(d):
@@ -1153,8 +1157,30 @@ def simulate_west_playoffs(n_sims=20000):
     }
 
 
+def build_champ_banner():
+    """Big celebratory champions hero (shown above everything when Disco win it all)."""
+    if not disco_champion:
+        return ''
+    cg = _champ_game
+    runner = cg['b'] if cg['a'] == DISCO_ID else cg['a']
+    ws, ls = (cg['sa'], cg['sb']) if cg['winner'] == cg['a'] else (cg['sb'], cg['sa'])
+    return f'''
+    <section class="champ-hero" onclick="goPlayoffs()" role="button" tabindex="0" aria-label="West Division Champions">
+      <div class="champ-cup">🏆</div>
+      <div class="champ-text">
+        <div class="champ-eyebrow">West Division Champions</div>
+        <div class="champ-title">🥒 Disco Pickles</div>
+        <div class="champ-score">defeated {WEST_TEAMS[runner]['emoji']} {esc(short_name(runner))} <strong>{ws}–{ls}</strong> in the final</div>
+        <div class="champ-sub">Undefeated all season · Spring 2026 🏒</div>
+      </div>
+      <div class="champ-cup champ-cup-right">🏆</div>
+    </section>'''
+
+
 def build_playoff_strip(sim):
     """Compact playoff banner showing Disco's next game. Higher seed is home."""
+    if disco_champion:
+        return ''   # the big champ-hero banner handles the celebration
     rnd, g = disco_next_game()
     if not g:
         return f'''
@@ -1211,6 +1237,21 @@ def build_playoffs_tab(sim):
     final_opp_id = final_opp[0][0] if final_opp else 14357   # Polar Predators
     final_wp = win_prob(massey.get(DISCO_ID, 0) - massey.get(final_opp_id, 0))
 
+    # Championship result (for the path panel)
+    cg = _champ_game
+    if disco_champion:
+        c_ds = cg['sa'] if cg['a'] == DISCO_ID else cg['sb']
+        c_os = cg['sb'] if cg['a'] == DISCO_ID else cg['sa']
+        champ_step = (f'<div class="po-path-step po-path-final po-path-champ">'
+                      f'<span class="po-path-round">Championship</span>'
+                      f'<span class="po-path-detail">🏆 beat <strong>{esc(final_opp_name)}</strong> '
+                      f'{c_ds}–{c_os} — <strong>CHAMPIONS!</strong></span></div>')
+    else:
+        champ_step = (f'<div class="po-path-step po-path-final">'
+                      f'<span class="po-path-round">Championship · {champ_when}</span>'
+                      f'<span class="po-path-detail">vs <strong>{esc(final_opp_name)}</strong> · '
+                      f'<span class="po-wp">{final_wp*100:.0f}% win</span></span></div>')
+
     # ── Connected bracket ───────────────────────────────────────────────────────
     cols = ''
     for ri, rnd in enumerate(WEST_BRACKET):
@@ -1221,17 +1262,20 @@ def build_playoffs_tab(sim):
             top = _bracket_slot(g, 'a', 'a_label')
             bot = _bracket_slot(g, 'b', 'b_label')
             if g.get('winner'):
-                if g.get('sa') is not None:
+                if rnd['round'] == 'Championship':
+                    status = f'<span class="po-br-status champ">🏆 {esc(short_name(g["winner"]))} — CHAMPIONS</span>'
+                elif g.get('sa') is not None:
                     ot = ' (OT)' if g.get('ot') else ''
                     status = f'<span class="po-br-status done">Final{ot} · {esc(short_name(g["winner"]))} ✓</span>'
                 else:
                     status = f'<span class="po-br-status done">{esc(short_name(g["winner"]))} advanced ✓</span>'
             elif rnd['date_obj'] == TODAY:
                 status = '<span class="po-br-status live">🔴 Today</span>'
-            elif (rnd['date_obj'] - TODAY).days == 1:
-                status = '<span class="po-br-status live">Tomorrow</span>'
+            elif rnd['date_obj'] > TODAY:
+                status = ('<span class="po-br-status live">Tomorrow</span>' if (rnd['date_obj'] - TODAY).days == 1
+                          else '<span class="po-br-status up">⏳ Upcoming</span>')
             else:
-                status = '<span class="po-br-status up">⏳ Upcoming</span>'
+                status = '<span class="po-br-status up">No score posted yet</span>'
             matches += f'''
               <div class="po-br-match{' po-br-match-dp' if is_dp else ''}">
                 {top}{bot}
@@ -1298,13 +1342,13 @@ def build_playoffs_tab(sim):
         </div>
 
         <div class="po-panel">
-          <h3 class="po-panel-title">🥒 Disco Pickles — path to the title</h3>
+          <h3 class="po-panel-title">🥒 Disco Pickles — {'title run' if disco_champion else 'path to the title'}</h3>
           <div class="po-path">
             <div class="po-path-step po-path-done"><span class="po-path-round">Wild Card</span><span class="po-path-detail">BYE — #1 seed ✓</span></div>
             <div class="po-path-step po-path-done"><span class="po-path-round">Semifinal</span><span class="po-path-detail">beat <strong>Carolina Havoc</strong> 4–2 ✓</span></div>
-            <div class="po-path-step po-path-final"><span class="po-path-round">Championship · {champ_when}</span><span class="po-path-detail">vs <strong>{esc(final_opp_name)}</strong> · <span class="po-wp">{final_wp*100:.0f}% win</span></span></div>
+            {champ_step}
           </div>
-          <p class="po-panel-sub">One game for the title. Season series vs <strong>{esc(final_opp_name)}</strong>: Disco <strong>{fw}-{fl}-{ft}</strong> &nbsp;{f_scores}.</p>
+          <p class="po-panel-sub">{f"🏆 <strong>Champions!</strong> Disco beat {esc(final_opp_name)} {c_ds}–{c_os} in the final to cap a perfect season — undefeated start to finish." if disco_champion else f"One game for the title. Season series vs <strong>{esc(final_opp_name)}</strong>: Disco <strong>{fw}-{fl}-{ft}</strong> &nbsp;{f_scores}."}</p>
         </div>
       </div>
 
@@ -1312,6 +1356,17 @@ def build_playoffs_tab(sim):
       <div class="po-panel">
         <h3 class="po-panel-title">Playoff Schedule</h3>
         <div class="po-sched">{build_playoff_schedule_rows()}</div>
+      </div>
+
+      <!-- Around the league: North/South ADV bracket -->
+      <div class="po-panel po-aroundleague">
+        <h3 class="po-panel-title">🏒 Around the 10U ADV — North/South Bracket</h3>
+        <p class="po-panel-sub">The other 10U Advanced bracket (10 teams, North + South) ran alongside ours. Its final: <strong>Thunder Blades</strong> (#1) vs <strong>Flying SAUCErs</strong> (#3) — result pending.</p>
+        <ul class="po-notes">
+          <li><span class="po-note-tag">UPSET</span> #3 <strong>Flying SAUCErs</strong> stunned #2 <strong>Hawks (District 6)</strong> — the regular-season goal-differential leader (+70!) — <strong>3–2</strong> in the semifinal to crash the title game.</li>
+          <li><span class="po-note-tag">UPSETS</span> Both bottom seeds won their Wild Card games: #10 <strong>10S3</strong> over #8 Puckaneers 4–0, and #9 <strong>Mighty Canes</strong> over #7 Frozen Fury 4–1.</li>
+          <li>Top seed <strong>Thunder Blades</strong> (8-0-1) cruised to the final (7–2, then 4–1) — much like our Pickles' run.</li>
+        </ul>
       </div>
 
       <p class="po-caveat">⚠️ Single-elimination is high-variance and these are 10U games — a hot goalie swings everything. Playoff scores are entered manually (they aren't in the DaySmart feed). Odds recompute each rebuild.</p>
@@ -1341,10 +1396,11 @@ def build_playoff_schedule_rows():
                 chip = f'<span class="po-sched-chip done">{esc(short_name(winner))} ✓</span>'
         elif dobj == TODAY:
             chip = '<span class="po-sched-chip live">🔴 Today</span>'
-        elif (dobj - TODAY).days == 1:
-            chip = '<span class="po-sched-chip live">Tomorrow</span>'
+        elif dobj > TODAY:
+            chip = ('<span class="po-sched-chip live">Tomorrow</span>' if (dobj - TODAY).days == 1
+                    else '<span class="po-sched-chip up">⏳ Upcoming</span>')
         else:
-            chip = '<span class="po-sched-chip up">⏳ Upcoming</span>'
+            chip = '<span class="po-sched-chip up">No score posted yet</span>'
         dp = ' po-sched-dp' if DISCO_ID in (a, b) else ''
         rows += f'''
           <div class="po-sched-row{dp}">
@@ -1366,6 +1422,34 @@ predictions_html= build_predictions_tab()
 playoff_sim     = simulate_west_playoffs()
 playoffs_html   = build_playoffs_tab(playoff_sim)
 playoff_strip   = build_playoff_strip(playoff_sim)
+champ_banner    = build_champ_banner()
+
+# Floating confetti — only when the Disco Pickles are champions. 🥒🏆
+confetti_html = '''
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+<script>
+(function(){
+  var layer = document.getElementById('confettiLayer');
+  if(!layer) return;
+  var colors = ['#4D7C0F','#65A30D','#84CC16','#FCD34D','#F59E0B','#16A34A','#ffffff'];
+  var emojis = ['\\uD83E\\uDD52','\\uD83C\\uDFC6','\\uD83C\\uDF89'];  // pickle, trophy, party
+  var N = 90;
+  for(var i=0;i<N;i++){
+    var p = document.createElement('span');
+    var useEmoji = Math.random() < 0.12;
+    p.className = 'confetti-piece' + (useEmoji ? ' confetti-emoji' : '');
+    if(useEmoji){ p.textContent = emojis[Math.floor(Math.random()*emojis.length)]; }
+    else { p.style.background = colors[Math.floor(Math.random()*colors.length)]; }
+    p.style.left = (Math.random()*100) + 'vw';
+    if(!useEmoji){ var s = 6 + Math.random()*8; p.style.width = s+'px'; p.style.height = (s*0.45+3)+'px'; }
+    var dur = 6 + Math.random()*7;
+    p.style.animationDuration = dur + 's';
+    p.style.animationDelay = (-Math.random()*dur) + 's';
+    p.style.setProperty('--sway', (8 + Math.random()*24) + 'px');
+    layer.appendChild(p);
+  }
+})();
+</script>''' if disco_champion else ''
 spotlight_html  = build_spotlight_tab()
 schedule_html   = build_schedule_tab()
 hero_upcoming   = build_hero_upcoming()
@@ -1545,6 +1629,55 @@ HTML = f'''<!DOCTYPE html>
     border-radius: 20px; padding: 0.5rem 1.1rem; font-size: 0.85rem; white-space: nowrap;
   }}
   .playoff-strip:hover .ps-cta {{ background: #fde68a; }}
+  /* Champions banner + confetti */
+  .playoff-strip.champions {{
+    background: linear-gradient(135deg, #3f6212 0%, #4D7C0F 40%, #B8860B 100%);
+    border-left-color: #FCD34D;
+    box-shadow: 0 0 0 1px rgba(252,211,77,.4), var(--shadow-md);
+    animation: champ-glow 2.4s ease-in-out infinite;
+  }}
+  .playoff-strip.champions .ps-tag {{ color: #FEF3C7; letter-spacing: .06em; }}
+  @keyframes champ-glow {{
+    0%,100% {{ box-shadow: 0 0 0 1px rgba(252,211,77,.35), 0 4px 14px rgba(0,0,0,.18); }}
+    50%     {{ box-shadow: 0 0 18px 2px rgba(252,211,77,.55), 0 6px 20px rgba(0,0,0,.22); }}
+  }}
+  .champ-hero {{
+    margin: 1rem 1.5rem 0.5rem;
+    background: linear-gradient(135deg, #365314 0%, #4D7C0F 45%, #B8860B 100%);
+    border: 2px solid #FCD34D;
+    border-radius: var(--radius);
+    box-shadow: 0 0 24px rgba(252,211,77,.40), var(--shadow-md);
+    padding: 1.4rem 1.75rem;
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+    color: #fff; text-align: center; cursor: pointer;
+    animation: champ-glow 2.4s ease-in-out infinite;
+  }}
+  .champ-cup {{ font-size: 3.6rem; line-height: 1; filter: drop-shadow(0 3px 6px rgba(0,0,0,.35)); animation: champ-bob 1.9s ease-in-out infinite; }}
+  .champ-cup-right {{ animation-delay: .35s; }}
+  .champ-text {{ display: flex; flex-direction: column; gap: 0.15rem; }}
+  .champ-eyebrow {{ font-size: 0.82rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #FEF3C7; }}
+  .champ-title {{ font-size: 2rem; font-weight: 900; line-height: 1.05; }}
+  .champ-score {{ font-size: 1rem; opacity: .96; }}
+  .champ-sub {{ font-size: 0.8rem; opacity: .85; margin-top: 0.15rem; }}
+  @keyframes champ-bob {{ 0%,100% {{ transform: translateY(0) rotate(-5deg); }} 50% {{ transform: translateY(-7px) rotate(5deg); }} }}
+  @media (max-width: 560px) {{ .champ-cup-right {{ display: none; }} .champ-title {{ font-size: 1.6rem; }} }}
+
+  .confetti-layer {{ position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 9999; }}
+  .confetti-piece {{
+    position: absolute; top: -8vh; border-radius: 2px; opacity: .9;
+    animation-name: confetti-fall; animation-timing-function: linear;
+    animation-iteration-count: infinite; will-change: transform;
+  }}
+  .confetti-emoji {{ font-size: 1.15rem; opacity: 1; }}
+  @keyframes confetti-fall {{
+    0%   {{ transform: translateY(-10vh) translateX(0) rotate(0deg); }}
+    50%  {{ transform: translateY(50vh)  translateX(var(--sway, 12px)) rotate(180deg); }}
+    100% {{ transform: translateY(110vh) translateX(0) rotate(360deg); }}
+  }}
+  @media (prefers-reduced-motion: reduce) {{
+    .confetti-layer {{ display: none; }}
+    .playoff-strip.champions, .champ-hero, .champ-cup {{ animation: none; }}
+  }}
   @media (max-width: 768px) {{
     .playoff-strip {{ gap: 1rem; }}
     .ps-stats {{ margin-left: 0; width: 100%; justify-content: space-between; gap: 1rem; }}
@@ -1843,6 +1976,11 @@ HTML = f'''<!DOCTYPE html>
   .po-br-status.done {{ color:var(--win-fg); }}
   .po-br-status.live {{ color:var(--loss-fg); }}
   .po-br-status.up {{ color:var(--text-muted); }}
+  .po-br-status.champ {{ color:#B8860B; font-weight:800; }}
+  .po-path-champ .po-path-detail {{ color:#B8860B; font-weight:700; }}
+  .po-notes {{ list-style:none; display:flex; flex-direction:column; gap:.55rem; margin-top:.4rem; }}
+  .po-notes li {{ font-size:.86rem; line-height:1.45; padding-left:.2rem; }}
+  .po-note-tag {{ display:inline-block; font-size:.62rem; font-weight:800; letter-spacing:.04em; color:#fff; background:var(--loss-fg); border-radius:5px; padding:.05rem .4rem; margin-right:.4rem; vertical-align:middle; }}
   .po-col-wc .po-br-match::after, .po-col-semi .po-br-match::after {{ content:''; position:absolute; left:100%; top:50%; width:1.2rem; height:2px; background:var(--border); }}
   .po-col-semi .po-br-match::before, .po-col-final .po-br-match::before {{ content:''; position:absolute; right:100%; top:50%; width:1.2rem; height:2px; background:var(--border); }}
   .po-col-semi::after {{ content:''; position:absolute; left:100%; margin-left:1.2rem; top:25%; bottom:25%; width:2px; background:var(--border); }}
@@ -2224,6 +2362,9 @@ HTML = f'''<!DOCTYPE html>
   <button class="tab-btn" onclick="showTab('spotlight',this)">🥒 Disco Pickles</button>
 </nav>
 
+<!-- ── Champions hero (only when Disco win the title) ───────────────────────── -->
+{champ_banner}
+
 <!-- ── West Division Playoffs title (above the semifinal strip) ──────────────── -->
 <div class="po-head po-head-top">
   <h2 class="po-title">🏆 West Division Playoffs</h2>
@@ -2285,6 +2426,7 @@ HTML = f'''<!DOCTYPE html>
     document.querySelector('.tabs-wrap').scrollIntoView({{ behavior: 'smooth' }});
   }}
 </script>
+{confetti_html}
 </body>
 </html>'''
 
