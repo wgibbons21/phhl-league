@@ -1432,11 +1432,12 @@ confetti_html = '''
   var layer = document.getElementById('confettiLayer');
   if(!layer) return;
   var colors = ['#4D7C0F','#65A30D','#84CC16','#FCD34D','#F59E0B','#16A34A','#ffffff'];
-  var emojis = ['\\uD83E\\uDD52','\\uD83C\\uDFC6','\\uD83C\\uDF89'];  // pickle, trophy, party
+  // weighted toward pickles 🥒 (x4) vs trophy / party
+  var emojis = ['\\uD83E\\uDD52','\\uD83E\\uDD52','\\uD83E\\uDD52','\\uD83E\\uDD52','\\uD83C\\uDFC6','\\uD83C\\uDF89'];
   var N = 90;
   for(var i=0;i<N;i++){
     var p = document.createElement('span');
-    var useEmoji = Math.random() < 0.12;
+    var useEmoji = Math.random() < 0.20;
     p.className = 'confetti-piece' + (useEmoji ? ' confetti-emoji' : '');
     if(useEmoji){ p.textContent = emojis[Math.floor(Math.random()*emojis.length)]; }
     else { p.style.background = colors[Math.floor(Math.random()*colors.length)]; }
