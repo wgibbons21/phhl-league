@@ -658,11 +658,19 @@
         teamId: String(team.id),
         teamName: attrs.name || '',
         leagueName: league?.attributes?.name || '',
+        leagueProgramId: league?.attributes?.program_id,
         product: product?.attributes?.name || '',
         price: product?.attributes?.price,
         fallbackFacility: facility?.attributes?.name || '',
         registrationUrl: buildRegistrationUrl(String(team.id))
       };
+    }
+
+    function isOpenHockeyTeam(team, included) {
+      const base = teamBase(team, included);
+      if (Number(base.leagueProgramId) === PROGRAM_ID) return true;
+      const text = `${base.teamName} ${base.leagueName} ${base.product}`.toLowerCase();
+      return text.includes('stick & puck') || text.includes('stick and puck') || text.includes('s&p');
     }
 
     async function fetchEventsForTeam(team, included) {
@@ -725,12 +733,11 @@
           include: 'league,league.season,product,facility',
           'filter[status]': 'active',
           'filter[online_signup]': 'true',
-          'filter[league.program_id]': PROGRAM_ID,
           'filter[league.registration_closed]': 'false',
           'filter[league.season.online_registration_enabled]': 'true',
           'filter[league.season.signup_end__gte]': todayStartString()
         });
-        const activeTeams = teams.filter((team) => team.attributes?.has_upcoming_events);
+        const activeTeams = teams.filter((team) => team.attributes?.has_upcoming_events && isOpenHockeyTeam(team, included));
         state.all = (await parallelLimit(activeTeams, 5, (team) => fetchEventsForTeam(team, included)))
           .filter((event) => event.openSlots > 0 && event.registrationStatus === 'open')
           .sort((a, b) => a.start - b.start);
