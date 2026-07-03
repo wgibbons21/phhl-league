@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Polar Ice Open Hockey</title>
+  <style>
+    :root {
+      --canes-red: #cc0000;
+      --storm-red: #a50000;
+      --black: #111111;
+      --charcoal: #202429;
+      --steel: #6f7a84;
+      --ice: #f4f7f9;
+      --panel: #ffffff;
+      --line: #d9dfe5;
+      --soft-red: #fff0f0;
+      --warn: #946200;
+      --danger: #b42318;
+      --shadow: 0 18px 44px rgba(17, 17, 17, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--ice);
+      color: var(--black);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a, button, input, select { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid rgba(204, 0, 0, 0.35);
+      outline-offset: 2px;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    header {
+      background:
+        linear-gradient(135deg, rgba(204, 0, 0, 0.92), rgba(17, 17, 17, 0.96) 58%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.11) 0 1px, transparent 1px 26px);
+      color: #fff;
+      border-bottom: 5px solid var(--canes-red);
+    }
+
+    .topbar {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 56px);
+      line-height: 0.96;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .subtle {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 15px;
+      margin-top: 10px;
+      max-width: 620px;
+    }
+
+    .status {
+      min-width: 188px;
+      text-align: right;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+    }
+
+    .status strong {
+      display: block;
+      color: #fff;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 900;
+    }
+
+    .filters {
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+    }
+
+    .filterbar {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1.4fr) minmax(150px, .8fr) minmax(150px, .8fr) minmax(170px, .9fr) auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--steel);
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .control, .select {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 6px;
+      padding: 0 12px;
+      color: var(--black);
+    }
+
+    .segmented {
+      display: inline-grid;
+      grid-template-columns: repeat(3, minmax(58px, 1fr));
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+      width: 100%;
+    }
+
+    .segmented button {
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: #fff;
+      color: var(--steel);
+      padding: 0 10px;
+      min-width: 0;
+      font-weight: 800;
+    }
+
+    .segmented button:last-child { border-right: 0; }
+    .segmented button.active {
+      background: var(--black);
+      color: #fff;
+    }
+
+    .refresh {
+      height: 42px;
+      border: 1px solid var(--canes-red);
+      background: var(--canes-red);
+      color: #fff;
+      border-radius: 6px;
+      padding: 0 16px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .refresh:hover { background: var(--storm-red); }
+    .refresh:disabled { opacity: .62; cursor: progress; }
+
+    main {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 20px 46px;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 15px;
+      min-height: 86px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--steel);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 900;
+    }
+
+    .metric small {
+      display: block;
+      color: var(--steel);
+      margin-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .agenda {
+      display: grid;
+      gap: 16px;
+    }
+
+    .day-group {
+      display: grid;
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .date-rail {
+      position: sticky;
+      top: 92px;
+      border-radius: 8px;
+      background: var(--black);
+      color: #fff;
+      min-height: 112px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--canes-red);
+    }
+
+    .date-rail .weekday {
+      display: block;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .date-rail .month-day {
+      display: block;
+      margin-top: 7px;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .date-rail .count {
+      display: block;
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .event-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .event-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 136px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--canes-red);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 10px 26px rgba(17, 17, 17, 0.08);
+    }
+
+    .event-card.next {
+      border-color: rgba(204, 0, 0, 0.55);
+      border-left-color: var(--canes-red);
+      background: linear-gradient(90deg, #fff8f8, #fff);
+    }
+
+    .time-block {
+      color: var(--black);
+      border-right: 1px solid var(--line);
+      min-height: 74px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .time-block .start {
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .time-block .duration {
+      color: var(--steel);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .event-main {
+      min-width: 0;
+    }
+
+    .event-name {
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 900;
+      margin-bottom: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .event-detail {
+      color: var(--steel);
+      font-size: 13px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .event-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #e9eef2;
+      color: var(--charcoal);
+    }
+
+    .pill.slots {
+      background: #edf8f1;
+      color: #1d6b38;
+    }
+
+    .pill.low { background: #fff4d8; color: var(--warn); }
+    .pill.none { background: #fde7e7; color: var(--danger); }
+
+    .actions {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      min-width: 122px;
+    }
+
+    .price {
+      color: var(--charcoal);
+      font-weight: 900;
+    }
+
+    .register {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border-radius: 6px;
+      border: 1px solid var(--canes-red);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 900;
+      padding: 8px 14px;
+      background: var(--canes-red);
+      white-space: nowrap;
+    }
+
+    .register:hover { background: var(--storm-red); }
+
+    .empty, .error {
+      padding: 34px;
+      text-align: center;
+      color: var(--steel);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .error { color: var(--danger); }
+
+    .loader {
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #fff, var(--canes-red), transparent);
+      background-size: 220px 100%;
+      animation: sweep 1s linear infinite;
+      opacity: 0;
+    }
+
+    .loader.loading { opacity: 1; }
+
+    @keyframes sweep {
+      from { background-position: -220px 0; }
+      to { background-position: calc(100% + 220px) 0; }
+    }
+
+    @media (max-width: 860px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .status { text-align: left; }
+      .filterbar { grid-template-columns: 1fr 1fr; }
+      .filterbar > div:first-child { grid-column: 1 / -1; }
+      .refresh { width: 100%; }
+      .summary-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .day-group { grid-template-columns: 1fr; }
+      .date-rail {
+        position: static;
+        min-height: auto;
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .date-rail .month-day { margin-top: 0; }
+      .date-rail .count { margin-top: 0; margin-left: auto; }
+      .event-card { grid-template-columns: 118px minmax(0, 1fr); }
+      .actions {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr auto;
+        justify-items: stretch;
+        align-items: center;
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .filterbar { grid-template-columns: 1fr; }
+      .summary-row { grid-template-columns: 1fr; }
+      .topbar { padding-top: 22px; }
+      h1 { font-size: 34px; }
+      .event-card { grid-template-columns: 1fr; gap: 12px; }
+      .time-block {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        min-height: 0;
+        padding-bottom: 12px;
+      }
+      .actions { grid-template-columns: 1fr; }
+      .register { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <div>
+          <h1>Open Hockey</h1>
+          <div class="subtle">Polar Ice open sessions grouped by skate date, with fast access to times, rinks, available spots, and registration.</div>
+        </div>
+        <div class="status" id="status">
+          <strong>Loading</strong>
+          <span>Fetching DaySmart</span>
+        </div>
+      </div>
+      <div class="loader loading" id="loader"></div>
+    </header>
+
+    <section class="filters">
+      <div class="filterbar">
+        <div>
+          <label for="search">Search</label>
+          <input class="control" id="search" type="search" placeholder="Stick & Puck, pickup, goalie, rink">
+        </div>
+        <div>
+          <label for="location">Location</label>
+          <select class="select" id="location"><option value="">All locations</option></select>
+        </div>
+        <div>
+          <label for="type">Activity</label>
+          <select class="select" id="type"><option value="">All activities</option></select>
+        </div>
+        <div>
+          <label>Date Range</label>
+          <div class="segmented" id="range">
+            <button type="button" data-days="7" class="active">7 days</button>
+            <button type="button" data-days="14">14 days</button>
+            <button type="button" data-days="45">45 days</button>
+          </div>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button class="refresh" id="refresh" type="button">Refresh</button>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="summary-row" aria-label="Summary">
+        <div class="metric"><span>Sessions</span><strong id="metricEvents">0</strong><small id="metricDates">No dates</small></div>
+        <div class="metric"><span>Open Slots</span><strong id="metricSlots">0</strong><small id="metricCapacity">Public DaySmart summary</small></div>
+        <div class="metric"><span>Locations</span><strong id="metricLocations">0</strong><small id="metricLocationNames">All Polar Ice</small></div>
+        <div class="metric"><span>Next Skate</span><strong id="metricNext">--</strong><small id="metricNextDetail">No upcoming event</small></div>
+      </section>
+
+      <section class="agenda" id="rows" aria-label="Open hockey events">
+        <div class="empty">Loading open hockey sessions...</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API = 'https://api.daysmartrecreation.com/v1';
+    const COMPANY = 'polarice';
+    const PROGRAM_ID = 2;
+    const CUSTOMER_ID = '71665';
+    const MEMBER_BASE = 'https://apps.daysmartrecreation.com/dash/x/#/online/polarice';
+
+    const state = {
+      all: [],
+      filtered: [],
+      days: 7,
+      loading: false,
+      loadedAt: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function apiUrl(path, params = {}) {
+      const url = new URL(`${API}/${path.replace(/^\/+/, '')}`);
+      url.searchParams.set('company', COMPANY);
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') url.searchParams.set(key, value);
+      });
+      return url.toString();
+    }
+
+    async function apiGet(path, params = {}) {
+      const response = await fetch(apiUrl(path, params), {
+        headers: { Accept: 'application/vnd.api+json' },
+        credentials: 'include'
+      });
+      const payload = await response.json();
+      if (!response.ok) {
+        const detail = payload.errors?.[0]?.detail || payload.errors?.[0]?.title || response.statusText;
+        throw new Error(detail);
+      }
+      return payload;
+    }
+
+    function mapIncluded(payload) {
+      const map = new Map();
+      (payload.included || []).forEach((item) => map.set(`${item.type}:${item.id}`, item));
+      return map;
+    }
+
+    function related(item, name, included) {
+      const ref = item.relationships?.[name]?.data;
+      if (!ref) return null;
+      return included.get(`${ref.type}:${ref.id}`) || null;
+    }
+
+    async function fetchAll(path, params) {
+      let page = 1;
+      const data = [];
+      const included = new Map();
+      while (true) {
+        const payload = await apiGet(path, { ...params, 'page[number]': page });
+        data.push(...(payload.data || []));
+        mapIncluded(payload).forEach((value, key) => included.set(key, value));
+        const meta = payload.meta?.page || {};
+        if (page >= Number(meta['last-page'] || page)) break;
+        page += 1;
+      }
+      return { data, included };
+    }
+
+    function todayStartString() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd} 00:00:00`;
+    }
+
+    function toLocalDateTime(raw) {
+      if (!raw) return null;
+      const [date, time = '00:00:00'] = raw.split('T');
+      const [year, month, day] = date.split('-').map(Number);
+      const [hour, minute] = time.split(':').map(Number);
+      return new Date(year, month - 1, day, hour, minute || 0, 0);
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    function formatDayParts(date) {
+      return {
+        weekday: date.toLocaleDateString(undefined, { weekday: 'short' }),
+        monthDay: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+      };
+    }
+
+    function dateKey(date) {
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function formatTime(start, end) {
+      const opts = { hour: 'numeric', minute: '2-digit' };
+      return `${start.toLocaleTimeString(undefined, opts)} - ${end.toLocaleTimeString(undefined, opts)}`;
+    }
+
+    function formatStartTime(date) {
+      return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    }
+
+    function formatEndTime(date) {
+      return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    }
+
+    function buildRegistrationUrl(teamId) {
+      const url = `${MEMBER_BASE}/teams/${encodeURIComponent(teamId)}`;
+      return `${url}?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+    }
+
+    function money(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return '';
+      if (n === 0) return 'Free';
+      return `$${n.toFixed(n % 1 ? 2 : 0)}`;
+    }
+
+    function teamBase(team, included) {
+      const attrs = team.attributes || {};
+      const league = related(team, 'league', included);
+      const product = related(team, 'product', included);
+      const facility = related(team, 'facility', included);
+      return {
+        teamId: String(team.id),
+        teamName: attrs.name || '',
+        leagueName: league?.attributes?.name || '',
+        product: product?.attributes?.name || '',
+        price: product?.attributes?.price,
+        fallbackFacility: facility?.attributes?.name || '',
+        registrationUrl: buildRegistrationUrl(String(team.id))
+      };
+    }
+
+    async function fetchEventsForTeam(team, included) {
+      const base = teamBase(team, included);
+      const { data, included: eventIncluded } = await fetchAll(`teams/${team.id}/registrableEvents`, {
+        'page[size]': 500,
+        sort: 'start',
+        include: 'summary,eventType,resource.facility',
+        'filter[published]': 'true',
+        'filter[unconstrained]': 1,
+        'filter[start_gmt__gte]': todayStartString()
+      });
+      return data.map((event) => {
+        const attrs = event.attributes || {};
+        const summary = related(event, 'summary', eventIncluded);
+        const eventType = related(event, 'eventType', eventIncluded);
+        const resource = related(event, 'resource', eventIncluded);
+        const resourceFacility = resource ? related(resource, 'facility', eventIncluded) : null;
+        const summaryAttrs = summary?.attributes || {};
+        const start = toLocalDateTime(attrs.start);
+        const end = toLocalDateTime(attrs.end);
+        return {
+          id: String(event.id),
+          teamId: base.teamId,
+          name: summaryAttrs.name || attrs.desc || base.teamName,
+          teamName: base.teamName,
+          leagueName: base.leagueName,
+          activity: eventType?.attributes?.name || summaryAttrs.event_type || base.product || 'Open Hockey',
+          product: base.product,
+          facility: resourceFacility?.attributes?.name || base.fallbackFacility,
+          rink: resource?.attributes?.name || '',
+          price: base.price,
+          openSlots: Number(summaryAttrs.open_slots ?? summaryAttrs.remaining_registration_slots ?? attrs.register_capacity ?? 0),
+          registrationStatus: summaryAttrs.registration_status || '',
+          start,
+          end,
+          url: base.registrationUrl
+        };
+      }).filter((event) => event.start && event.end);
+    }
+
+    async function parallelLimit(items, limit, worker) {
+      const results = [];
+      let cursor = 0;
+      async function run() {
+        while (cursor < items.length) {
+          const index = cursor++;
+          results[index] = await worker(items[index], index);
+        }
+      }
+      await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
+      return results.flat();
+    }
+
+    async function load() {
+      setLoading(true);
+      try {
+        const { data: teams, included } = await fetchAll('teams', {
+          'page[size]': 100,
+          include: 'league,league.season,product,facility',
+          'filter[status]': 'active',
+          'filter[online_signup]': 'true',
+          'filter[league.program_id]': PROGRAM_ID,
+          'filter[league.registration_closed]': 'false',
+          'filter[league.season.online_registration_enabled]': 'true',
+          'filter[league.season.signup_end__gte]': todayStartString()
+        });
+        const activeTeams = teams.filter((team) => team.attributes?.has_upcoming_events);
+        state.all = (await parallelLimit(activeTeams, 5, (team) => fetchEventsForTeam(team, included)))
+          .filter((event) => event.openSlots > 0 && event.registrationStatus === 'open')
+          .sort((a, b) => a.start - b.start);
+        state.loadedAt = new Date();
+        populateFilters();
+        applyFilters();
+      } catch (error) {
+        showError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function setLoading(isLoading) {
+      state.loading = isLoading;
+      $('loader').classList.toggle('loading', isLoading);
+      $('refresh').disabled = isLoading;
+      if (isLoading) {
+        $('status').innerHTML = '<strong>Loading</strong><span>Fetching DaySmart</span>';
+      }
+    }
+
+    function populateFilters() {
+      const loc = $('location');
+      const type = $('type');
+      const currentLoc = loc.value;
+      const currentType = type.value;
+      const locations = [...new Set(state.all.map((e) => e.facility).filter(Boolean))].sort();
+      const types = [...new Set(state.all.map((e) => classify(e)).filter(Boolean))].sort();
+      loc.innerHTML = '<option value="">All locations</option>' + locations.map((name) => `<option>${escapeHtml(name)}</option>`).join('');
+      type.innerHTML = '<option value="">All activities</option>' + types.map((name) => `<option>${escapeHtml(name)}</option>`).join('');
+      loc.value = locations.includes(currentLoc) ? currentLoc : '';
+      type.value = types.includes(currentType) ? currentType : '';
+    }
+
+    function classify(event) {
+      const text = `${event.name} ${event.teamName} ${event.leagueName} ${event.product}`.toLowerCase();
+      if (text.includes('goalie')) return 'Goalie';
+      if (text.includes('stick') || text.includes('s&p')) return 'Stick & Puck';
+      if (text.includes('youth') || /\b(8u|10u|12u|14u|hs)\b/.test(text)) return 'Youth Pickup';
+      if (text.includes('coach')) return 'Coaching';
+      if (text.includes('usphl')) return 'USPHL';
+      return 'Adult Pickup';
+    }
+
+    function applyFilters() {
+      const q = $('search').value.trim().toLowerCase();
+      const location = $('location').value;
+      const type = $('type').value;
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + Number(state.days));
+      state.filtered = state.all.filter((event) => {
+        const text = `${event.name} ${event.teamName} ${event.leagueName} ${event.facility} ${event.rink} ${event.product}`.toLowerCase();
+        return event.start >= start &&
+          event.start < end &&
+          (!q || text.includes(q)) &&
+          (!location || event.facility === location) &&
+          (!type || classify(event) === type);
+      });
+      render();
+    }
+
+    function render() {
+      const agenda = $('rows');
+      if (!state.filtered.length) {
+        agenda.innerHTML = '<div class="empty">No matching open sessions.</div>';
+      } else {
+        agenda.innerHTML = renderAgenda(state.filtered);
+      }
+      renderMetrics();
+      const loaded = state.loadedAt ? `Updated ${state.loadedAt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}` : 'Not updated';
+      $('status').innerHTML = `<strong>${state.filtered.length}</strong><span>${loaded}</span>`;
+    }
+
+    function renderAgenda(events) {
+      const groups = [];
+      events.forEach((event) => {
+        const key = dateKey(event.start);
+        let group = groups[groups.length - 1];
+        if (!group || group.key !== key) {
+          group = { key, date: event.start, events: [] };
+          groups.push(group);
+        }
+        group.events.push(event);
+      });
+      return groups.map(renderDayGroup).join('');
+    }
+
+    function renderDayGroup(group) {
+      const parts = formatDayParts(group.date);
+      const count = group.events.length === 1 ? '1 session' : `${group.events.length} sessions`;
+      return `<section class="day-group" aria-label="${escapeHtml(formatDate(group.date))}">
+        <div class="date-rail">
+          <span class="weekday">${escapeHtml(parts.weekday)}</span>
+          <span class="month-day">${escapeHtml(parts.monthDay)}</span>
+          <span class="count">${count}</span>
+        </div>
+        <div class="event-stack">
+          ${group.events.map(renderEventCard).join('')}
+        </div>
+      </section>`;
+    }
+
+    function renderEventCard(event, index) {
+      const lowClass = event.openSlots <= 0 ? 'none' : event.openSlots <= 4 ? 'low' : '';
+      const isNext = state.filtered[0]?.id === event.id ? ' next' : '';
+      const rink = event.rink ? `<span class="pill">${escapeHtml(event.rink)}</span>` : '';
+      const facility = event.facility ? `<span class="pill">${escapeHtml(event.facility)}</span>` : '';
+      return `<article class="event-card${isNext}" aria-label="${escapeHtml(event.name)} at ${escapeHtml(formatStartTime(event.start))}">
+        <div class="time-block">
+          <span class="start">${formatStartTime(event.start)}</span>
+          <span class="duration">until ${formatEndTime(event.end)}</span>
+        </div>
+        <div class="event-main">
+          <div class="event-name">${escapeHtml(event.name)}</div>
+          <div class="event-detail">${escapeHtml(classify(event))}${event.product ? ` / ${escapeHtml(event.product)}` : ''}</div>
+          <div class="event-meta">
+            ${facility}
+            ${rink}
+            <span class="pill slots ${lowClass}">${event.openSlots} open</span>
+          </div>
+        </div>
+        <div class="actions">
+          <div class="price">${money(event.price) || 'Price varies'}</div>
+          <a class="register" href="${escapeHtml(event.url)}" target="_blank" rel="noopener">Open / Register</a>
+        </div>
+      </article>`;
+    }
+
+    function renderMetrics() {
+      const events = state.filtered;
+      const slots = events.reduce((sum, event) => sum + Math.max(0, event.openSlots || 0), 0);
+      const locations = [...new Set(events.map((event) => event.facility).filter(Boolean))];
+      $('metricEvents').textContent = events.length;
+      $('metricSlots').textContent = slots;
+      $('metricLocations').textContent = locations.length;
+      $('metricLocationNames').textContent = locations.length ? locations.slice(0, 3).join(', ') + (locations.length > 3 ? '...' : '') : 'No locations';
+      if (events.length) {
+        const first = events[0];
+        $('metricNext').textContent = formatDate(first.start);
+        $('metricNextDetail').textContent = `${formatTime(first.start, first.end)} · ${first.facility}`;
+        const last = events[events.length - 1];
+        $('metricDates').textContent = `${formatDate(first.start)} through ${formatDate(last.start)}`;
+      } else {
+        $('metricNext').textContent = '--';
+        $('metricNextDetail').textContent = 'No upcoming event';
+        $('metricDates').textContent = 'No dates';
+      }
+      $('metricCapacity').textContent = 'Open slots from event summaries';
+    }
+
+    function showError(message) {
+      $('rows').innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+      $('status').innerHTML = '<strong>Error</strong><span>DaySmart request failed</span>';
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]));
+    }
+
+    $('search').addEventListener('input', applyFilters);
+    $('location').addEventListener('change', applyFilters);
+    $('type').addEventListener('change', applyFilters);
+    $('refresh').addEventListener('click', load);
+    $('range').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-days]');
+      if (!button) return;
+      state.days = Number(button.dataset.days);
+      [...$('range').querySelectorAll('button')].forEach((btn) => btn.classList.toggle('active', btn === button));
+      applyFilters();
+    });
+
+    load();
+  </script>
+</body>
+</html>
